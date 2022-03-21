@@ -28,8 +28,6 @@ namespace dae
 		void RemoveComponent() {
 			return m_EntityManager.RemoveComponent<TComponent>();
 		}
-
-		//void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
 		GameObject() = default;

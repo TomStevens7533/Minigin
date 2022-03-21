@@ -73,20 +73,23 @@ namespace dae {
 
 	void GameObject::Update()
 	{
+		//Update this gameobject component first
+		m_EntityManager.Update();
 
 		for (auto& child : m_Children)
 		{
 			child->Update();
 		}
 
-		m_EntityManager.Update();
-				  
-		auto fpsComponent =  m_EntityManager.GetComponent<FPSComponent>();
-		auto textComponent = m_EntityManager.GetComponent<TextComponent>();
+		
 
-		if (fpsComponent != nullptr && textComponent != nullptr) {
-			textComponent->SetText(std::to_string(fpsComponent->GetFpsCount()));
-		}
+		//TODO make fpscomponent own a textcomponent to replace this
+		//auto fpsComponent =  m_EntityManager.GetComponent<FPSComponent>();
+		//auto textComponent = m_EntityManager.GetComponent<TextComponent>();
+
+		//if (fpsComponent != nullptr && textComponent != nullptr) {
+		//	textComponent->SetText(std::to_string(fpsComponent->GetFpsCount()));
+		//}
 
 	
 

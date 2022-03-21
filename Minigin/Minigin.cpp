@@ -68,22 +68,11 @@ void dae::Minigin::LoadGame() const
 
 	auto go = std::make_shared<dae::GameObject>();
 
-
-
-	auto fontfps = ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
-	auto textComponent = std::make_shared<TextComponent>("fps: ", fontfps);
-	textComponent->SetPosition(glm::vec2{ 10, 10 });
-	go->AddComponent<TextComponent>(textComponent);
-	auto fpsComponent = std::make_shared<FPSComponent>();
-	go->AddComponent<FPSComponent>(fpsComponent);
-	go->AddComponent<FPSComponent>(fpsComponent);
-
 	auto texComp = std::make_shared<TextureComponent>();
 	texComp->SetTexture("background.jpg");
 	texComp->SetPosition({ 0,0 });
 
 	go->AddComponent<TextureComponent>(texComp);
-
 	scene.Add(go);
 
 	auto goChild = std::make_shared<dae::GameObject>();
@@ -94,10 +83,10 @@ void dae::Minigin::LoadGame() const
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 
-	textComponent = std::make_shared<TextComponent>("Programming 4 assignment", font);
+	auto textComponent = std::make_shared<TextComponent>("Programming 4 assignment", font);
 	textComponent->SetPosition(glm::vec2{ 80.f, 20.f });
 	goChild->AddComponent<TextComponent>(textComponent);
-	scene.Add(goChild);
+	go->AddChild(goChild);
 
 
 }
@@ -135,11 +124,17 @@ void dae::Minigin::Run()
 
 
 		float lag = 0.f;
+
+		SDL_Event e;
 		while (doContinue)
 		{
+			//TODO add proper event system to catch user events
+			SDL_PollEvent(&e);
+			if (e.type == SDL_QUIT) {
+				doContinue;
+			}
 
-
-			doContinue = input.ProcessInput();
+			input.ProcessInput();
 			sceneManager.Update();
 			time.Update();
 
