@@ -1,6 +1,8 @@
 #include "BaseComponent.h"
+#include "Subject.h"
+
 namespace dae {
-	class HealthComponent final : public BaseComponent
+	class HealthComponent final : public BaseComponent, public Subject
 	{
 	public:
 		HealthComponent(int health) : m_Health{health} {};

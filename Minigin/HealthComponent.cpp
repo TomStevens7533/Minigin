@@ -5,9 +5,10 @@ namespace dae {
 	void HealthComponent::DecreaseHealth(int healthDecrease)
 	{
 		m_Health -= healthDecrease;
-		std::cout << "decrease health\n";
 		if (m_Health <= 0) {
-			//Notify observer that this entity died;
+			//Notify observers that this entity died;
+			notify(this, EventType::ENTITY_DIED);
+			//EventManager::GetInstance().ThrowEvent(EventType::ENTITY_DIED);
 		}
 	}	 
 		 

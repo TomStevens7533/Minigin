@@ -3,14 +3,10 @@
 #include <map>
 #include <memory>
 #include "Singleton.h"
+#include "Command.h"
 namespace dae
 {
-	class Command
-	{
-	public:
-		virtual ~Command() { std::cout << "deleting command\n"; };
-		virtual void Excecute() = 0;
-	};
+
 	enum class ControllerButton
 	{
 		GAMEPAD_DPAD_UP = 0x0001,

@@ -6,12 +6,14 @@
 #include "glm/glm.hpp"
 #include "Texture2D.h"
 #include "RenderComponent.h"
+#include "Observer.h"
+#include "Subject.h"
 
 namespace dae {
-	class TextComponent final: public BaseComponent
+	class TextComponent final: public BaseComponent, public Observer, public Subject
 	{
 	public:
-		TextComponent(const std::string& text, const std::shared_ptr<Font>& font);
+		TextComponent(const std::string& text, const std::shared_ptr<Font>& font, glm::vec3 color = {255, 255, 255});
 		~TextComponent();
 
 		void SetText(const std::string& text);
@@ -20,6 +22,9 @@ namespace dae {
 		void Render() const override;
 		void Update() override;
 		void LateUpdate() override;
+
+		virtual void onNotify(const BaseComponent* entity, EventType event) override
+;
 
 	private:
 		
@@ -31,7 +36,7 @@ namespace dae {
 
 		bool m_NeedsUpdate;
 		std::string m_Text;
-
+		glm::vec3 m_Color;
 
 	};
 }

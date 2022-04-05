@@ -80,6 +80,7 @@ InputManager::~InputManager() {
 }
 void InputManager::HandleCommands()
 {
+
 	for (auto& mapElement : m_CommandMap)
 	{
 		HandleCommand(mapElement.first.first, mapElement.first.second, mapElement.second.get());
@@ -102,7 +103,6 @@ bool InputManager::RemoveCommand(ControllerButton button, KeyState state)
 }
 bool InputManager::HandleCommand(ControllerButton button, KeyState state, Command* command)
 {
-	//at throws exception when element is not in map
 	switch (state)
 	{
 	case KeyState::DOWN:
