@@ -1,8 +1,7 @@
 #pragma once
 #include <limits.h>
 namespace dae {
-
-
+	class GameObject;
 	class BaseComponent
 	{
 	public:
@@ -12,10 +11,11 @@ namespace dae {
 
 		virtual void Render() const = 0;
 
-
-
+		GameObject* GetAttachedGameObject() const { return m_Parent; }
 	protected:
-	
+		void SetAttachedGo(GameObject* parentGO) { m_Parent = parentGO; }
+	private:
+		GameObject* m_Parent = nullptr;
 	};
 
 

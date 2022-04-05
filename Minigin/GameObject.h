@@ -18,6 +18,7 @@ namespace dae
 
 		template<class TComponent>
 		bool AddComponent(std::shared_ptr<BaseComponent> component) {
+			component->SetAttachedGo(this);
 			return m_EntityManager.AddComponent<TComponent>(component);
 		}
 		template<class TComponent>
