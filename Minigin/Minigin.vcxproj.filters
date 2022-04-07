@@ -102,6 +102,9 @@
     <ClInclude Include="Subject.h">
       <Filter>Observer/Subject</Filter>
     </ClInclude>
+    <ClInclude Include="LivesDisplayComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -169,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="Subject.cpp">
       <Filter>Observer/Subject</Filter>
+    </ClCompile>
+    <ClCompile Include="LivesDisplayComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -62,25 +62,5 @@ namespace dae {
 
 	}
 
-	void TextComponent::onNotify(const BaseComponent*, EventType event)
-	{
-		switch (event)
-		{
-		case dae::EventType::ENTITY_DIED:
-			m_Text = std::to_string(std::stoi(m_Text) - 1);
-			m_NeedsUpdate = true;
-			break;
-		case dae::EventType::SCORE_INCREASE:
-				m_Text =std::to_string(std::stoi(m_Text) + 100);
-				m_NeedsUpdate = true;
-				if(std::stoi(m_Text) > 500)
-					notify(this, EventType::WIN_GAME);
-				break;
-		default:
-			break;
-		}
-	}
-
-
 
 }

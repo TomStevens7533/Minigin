@@ -2,6 +2,8 @@
 #include <memory>
 #include "Observer.h"
 namespace dae {
+	
+
 	class Subject
 	{
 	public:
@@ -12,10 +14,8 @@ namespace dae {
 		void removeObserver(std::shared_ptr<Observer> observer);
 		
 	protected:
-		void notify(const BaseComponent* entity, EventType event);
-
+		void notify(const BaseComponent* entity, EventType event, EventArgs* args =  nullptr);
 	private:
 		Observer* head_ = nullptr;
-		// Other stuff...
 	};
 }

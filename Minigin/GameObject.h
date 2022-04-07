@@ -23,7 +23,7 @@ namespace dae
 		}
 		template<class TComponent>
 		TComponent* const GetComponent() {
-			return m_EntityManager.GetComponent<TComponent>();
+			return m_EntityManager.GetComponent<TComponent>().get();
 		}
 		template<class TComponent>
 		void RemoveComponent() {

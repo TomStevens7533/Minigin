@@ -11,10 +11,10 @@ namespace dae {
 
 		virtual void Render() const = 0;
 
-		GameObject* GetAttachedGameObject() const { return m_Parent; }
-		void SetAttachedGo(GameObject* parentGO) { m_Parent = parentGO; }
-	private:
-		GameObject* m_Parent = nullptr;
+		GameObject* GetAttachedGameObject() const { return m_pParent; }
+		void SetAttachedGo(GameObject* parentGO) { m_pParent = parentGO; }
+	protected:
+		GameObject* m_pParent = nullptr;
 	};
 
 

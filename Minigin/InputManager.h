@@ -60,6 +60,7 @@ namespace dae
 		class InputManagerImpl;
 		std::unique_ptr<InputManagerImpl> m_pPimpl;
 	private:
+		//TODO: find way to make value(command) unique pointer while stil being able to dynamically add players
 		std::vector<std::map<std::pair<ControllerButton, KeyState>, std::shared_ptr<Command>>> m_CommandContainer;
 	};
 }

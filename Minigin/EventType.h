@@ -7,7 +7,7 @@
 namespace dae {
 	enum class EventType
 	{	//TODO Change to customizable system
-		ENTITY_DIED, SCORE_INCREASE, WIN_GAME
+		ENTITY_DIED, SCORE_INCREASE, WIN_GAME, HEALTH_SET
 	};
 	class EventManager final : public Singleton<EventManager>
 	{

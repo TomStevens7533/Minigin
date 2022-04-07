@@ -10,7 +10,7 @@
 #include "Subject.h"
 
 namespace dae {
-	class TextComponent final: public BaseComponent, public Observer, public Subject
+	class TextComponent final: public BaseComponent
 	{
 	public:
 		TextComponent(const std::string& text, const std::shared_ptr<Font>& font, glm::vec3 color = {255, 255, 255});
@@ -23,12 +23,9 @@ namespace dae {
 		void Update() override;
 		void LateUpdate() override;
 
-		virtual void onNotify(const BaseComponent* entity, EventType event) override
-;
+
 
 	private:
-		
-
 		RenderComponent m_RenderComponent;
 
 		std::shared_ptr<Font> m_Font;

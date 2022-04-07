@@ -18,6 +18,7 @@
 #include "Time.h"
 #include "RenderComponent.h"
 #include "Achievment.h"
+#include "LivesDisplayComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -83,85 +84,11 @@ void dae::Minigin::Initialize()
 /**
  * Code constructing the scene world starts here
  */
-void dae::Minigin::LoadGame() const
-{
-	//Background + SceneLoading
-	//-------------------------------------------------------------
-	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
-	auto go = std::make_shared<dae::GameObject>();
-	auto texComp = std::make_shared<TextureComponent>();
-	texComp->SetTexture("background.jpg");
-	texComp->SetPosition({ 0,0 });
-	go->AddComponent<TextureComponent>(texComp);
-	scene.Add(go);
-
-	auto goChild = std::make_shared<dae::GameObject>();
-	texComp = std::make_shared<TextureComponent>();
-	texComp->SetTexture("logo.png");
-	texComp->SetPosition(glm::vec2{ 216, 180 });
-	goChild->AddComponent<TextureComponent>(texComp);
+static void CreatePlayer(int amount = 1) {
+	auto scene = SceneManager::GetInstance().GetScene("Demo");
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 22);
 
-
-	//UI element
-	// ---------------------------------------------------
-	//p1
-	glm::vec3 p1Color = { 255.f, 0.f, 0.f };
-	auto piUILiveGo = std::make_shared<dae::GameObject>();
-	auto liveCounterP1Ui = std::make_shared<TextComponent>("P1 Lives: ", font, p1Color);
-	liveCounterP1Ui->SetPosition(glm::vec2{ 40.f, 70.f });
-	piUILiveGo->AddComponent<TextComponent>(liveCounterP1Ui);
-	scene.Add(piUILiveGo);
-
-	auto p1ScoreUI = std::make_shared<dae::GameObject>();
-	auto scoreComponentP1UI = std::make_shared<TextComponent>("P1 Score: ", font, p1Color);
-	scoreComponentP1UI->SetPosition(glm::vec2{ 40.f, 110.f });
-	p1ScoreUI->AddComponent<TextComponent>(scoreComponentP1UI);
-	scene.Add(p1ScoreUI);
-
-	//p2
-	glm::vec3 p2Color = { 0.f, 255.f, 0.f };
-	auto p2UIGO = std::make_shared<dae::GameObject>();
-	auto liveComponentP2UI = std::make_shared<TextComponent>("P2 Lives: ", font, p2Color);
-	liveComponentP2UI->SetPosition(glm::vec2{ 40.f, 150.f });
-	p2UIGO->AddComponent<TextComponent>(liveComponentP2UI);
-	scene.Add(p2UIGO);
-
-	auto p2ScoreUI = std::make_shared<dae::GameObject>();
-	auto scoreComponentP2UI = std::make_shared<TextComponent>("P2 Score: ", font, p2Color);
-	scoreComponentP2UI->SetPosition(glm::vec2{ 40.f, 190.f });
-	p2ScoreUI->AddComponent<TextComponent>(scoreComponentP2UI);
-	scene.Add(p2ScoreUI);
-
-	//Observers & event queues assignemnt;
-	//score display
-	//Lives counter
-	//p1
-	auto scoreDisplayGo = std::make_shared<GameObject>();
-	auto scoreTextComponentp1 = std::make_shared<TextComponent>("0", font, p1Color);
-	scoreTextComponentp1->SetPosition(glm::vec2{ 140.f, 110.f });
-	scoreDisplayGo->AddComponent<TextComponent>(scoreTextComponentp1);
-	int lives = 5;
-	auto liveDisplayGO = std::make_shared<GameObject>();
-	auto liveCounterP1 = std::make_shared<TextComponent>(std::to_string(lives), font, p1Color);
-	liveCounterP1->SetPosition(glm::vec2{ 140.f, 70.f });
-	liveDisplayGO->AddComponent<TextComponent>(liveCounterP1);
-	scoreDisplayGo->AddChild(liveDisplayGO);
-	scene.Add(scoreDisplayGo);
-
-	//p2
-	scoreDisplayGo = std::make_shared<GameObject>();
-	auto scoreTextComponentp2 = std::make_shared<TextComponent>("0", font, p2Color);
-	scoreTextComponentp2->SetPosition(glm::vec2{ 140.f, 190.f });
-	scoreDisplayGo->AddComponent<TextComponent>(scoreTextComponentp2);
-	liveDisplayGO = std::make_shared<GameObject>();
-	auto liveCounterP2 = std::make_shared<TextComponent>(std::to_string(lives), font, p2Color);
-	liveCounterP2->SetPosition(glm::vec2{ 140.f, 150.f });
-	liveDisplayGO->AddComponent<TextComponent>(liveCounterP2);
-	scoreDisplayGo->AddChild(liveDisplayGO);
-	scene.Add(scoreDisplayGo);
-
-
+	///commands
 	//Simulation commands
 	class DamageCommand : public Command {
 	public:
@@ -185,44 +112,75 @@ void dae::Minigin::LoadGame() const
 		int m_Score;
 	};
 
-	//Player Creation
-	//--------------------------------------------------
-	//p1
-	auto PeterPepper1 = std::make_shared<GameObject>();
-	auto healthComponent = std::make_shared<HealthComponent>(10);
-	auto inputComponent = std::make_shared<InputComponent>(0);
+	glm::vec2 uiPos = glm::vec2{ 60.f, 20.f };
+	for (size_t i = 0; i < amount; i++)
+	{
+		glm::vec3 color = { static_cast<float>(rand() % 255), static_cast<float>(rand() % 255), static_cast<float>(rand() % 255) };
+		//UI Creation
+		auto scoreDisplayGo = std::make_shared<GameObject>();
+		auto textComp = std::make_shared<TextComponent>("0", font, color);
+		textComp->SetPosition(uiPos);
+		scoreDisplayGo->AddComponent<TextComponent>(textComp);
 
-	PeterPepper1->AddComponent<HealthComponent>(healthComponent);
-	PeterPepper1->AddComponent<InputComponent>(inputComponent);
+		//UI translate
+		uiPos.y += 40.f;
 
-	inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_EAST, new DamageCommand(healthComponent, 10), KeyState::PRESSED);
-	healthComponent->addObserver(liveCounterP1);
+		auto liveDisplayGO = std::make_shared<GameObject>();
+		textComp = std::make_shared<TextComponent>(" ", font, color);
+		textComp->SetPosition(uiPos);
+		auto liveDisplaycomp = std::make_shared<LivesDisplayComponent>();
 
-	
-	IncreaseScoreCommand* scoreCommand = new IncreaseScoreCommand(100, scoreComponentP1UI);
-	scoreCommand->addObserver(scoreTextComponentp1);
-	inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_NORTH, scoreCommand, KeyState::PRESSED);
-	//add peterpepper1 to scene
-	scene.Add(PeterPepper1);
+		liveDisplayGO->AddComponent<TextComponent>(textComp);
+		liveDisplayGO->AddComponent<LivesDisplayComponent>(liveDisplaycomp);
+		scoreDisplayGo->AddChild(liveDisplayGO);
+		scene->Add(scoreDisplayGo);
 
-	//p2
-	auto PeterPepper2 = std::make_shared<GameObject>();
-	healthComponent = std::make_shared<HealthComponent>(10);
-	inputComponent = std::make_shared<InputComponent>(1);
-	healthComponent->addObserver(liveComponentP2UI);
-
-	inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_WEST, new DamageCommand(healthComponent, 10), KeyState::PRESSED);
-	scoreCommand = new IncreaseScoreCommand(100, scoreComponentP2UI);
-	scoreCommand->addObserver(scoreComponentP2UI);
-	inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_SOUTH, scoreCommand, KeyState::PRESSED);
+		//Player Creation
+		//--------------------------------------------------
+		auto PeterPepper = std::make_shared<GameObject>();
+		auto healthComponent = std::make_shared<HealthComponent>();
+		auto inputComponent = std::make_shared<InputComponent>(static_cast<int>(i));
 
 
-	//add peterpepper2 to scene
-	scene.Add(PeterPepper2);
+		PeterPepper->AddComponent<HealthComponent>(healthComponent);
+		PeterPepper->AddComponent<InputComponent>(inputComponent);
+
+		inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_EAST, new DamageCommand(healthComponent, 10), KeyState::PRESSED);
+		healthComponent->addObserver(liveDisplaycomp);
+		healthComponent->SetHealth(10);
+		healthComponent->SetLives(5);
+
+
+		scene->Add(PeterPepper);
+
+		//UI translate
+		uiPos.y += 40.f;
+	}
 
 
 
+}
 
+void dae::Minigin::LoadGame() const
+{
+	//Background + SceneLoading
+	//-------------------------------------------------------------
+	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
+	auto go = std::make_shared<dae::GameObject>();
+	auto texComp = std::make_shared<TextureComponent>();
+	texComp->SetTexture("background.jpg");
+	texComp->SetPosition({ 0,0 });
+	go->AddComponent<TextureComponent>(texComp);
+	scene.Add(go);
+
+	auto goChild = std::make_shared<dae::GameObject>();
+	texComp = std::make_shared<TextureComponent>();
+	texComp->SetTexture("logo.png");
+	texComp->SetPosition(glm::vec2{ 216, 180 });
+	goChild->AddComponent<TextureComponent>(texComp);
+
+	//player creation
+	CreatePlayer(2);
 
 }
 
