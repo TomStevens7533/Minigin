@@ -13,6 +13,9 @@ namespace dae
 		void Update();
 		void LateUpdate();
 
+		//start is called after everthing is initialized
+		void Start();
+
 		void Render() const;
 
 		inline std::string GetSceneName() { return m_Name; }

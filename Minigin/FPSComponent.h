@@ -9,7 +9,7 @@ namespace dae {
 		~FPSComponent() = default;
 
 
-
+		virtual void Start() {};
 		void Render() const override;
 		void Update() override;
 		void LateUpdate() override;

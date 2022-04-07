@@ -22,7 +22,7 @@ namespace dae {
 		void Render() const override;
 		void Update() override;
 		void LateUpdate() override;
-
+		virtual void Start() override {};
 
 
 	private:

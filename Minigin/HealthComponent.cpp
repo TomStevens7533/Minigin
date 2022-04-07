@@ -4,6 +4,15 @@
 namespace dae {
 
 	HealthComponent::HealthComponent(int health, int lives) : m_Health{ health }, m_Lives{ lives } {}
+
+	void HealthComponent::Start()
+	{
+		HealthArgs args;
+		args.lives = m_Lives;
+		args.health = m_Health;
+		notify(this, EventType::ENTITY_DIED, &args);
+	}
+
 	void HealthComponent::DecreaseHealth(int healthDecrease)
 	{
 		m_Health -= healthDecrease;

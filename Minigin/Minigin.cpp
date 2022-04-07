@@ -19,6 +19,7 @@
 #include "RenderComponent.h"
 #include "Achievment.h"
 #include "LivesDisplayComponent.h"
+#include "ScoreDisplayComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -105,7 +106,9 @@ static void CreatePlayer(int amount = 1) {
 	public:
 		IncreaseScoreCommand(int score, std::shared_ptr<TextComponent> scoreComp) : m_Score{ score }, m_ScoreComponent{ scoreComp } {};
 		virtual void Excecute() {
-			notify(m_ScoreComponent.get(), EventType::SCORE_INCREASE);
+			ScoreArgs args;
+			args.scoreIncrease = m_Score;
+			notify(m_ScoreComponent.get(), EventType::SCORE_INCREASE, &args);
 		}
 	private:
 		std::shared_ptr<TextComponent> m_ScoreComponent; //Just used to simulate baseComponent
@@ -119,8 +122,11 @@ static void CreatePlayer(int amount = 1) {
 		//UI Creation
 		auto scoreDisplayGo = std::make_shared<GameObject>();
 		auto textComp = std::make_shared<TextComponent>("0", font, color);
+		auto scoreDisplayComponent = std::make_shared<ScoreDisplayComponent>("Score: ");
 		textComp->SetPosition(uiPos);
 		scoreDisplayGo->AddComponent<TextComponent>(textComp);
+		scoreDisplayGo->AddComponent<ScoreDisplayComponent>(scoreDisplayComponent);
+
 
 		//UI translate
 		uiPos.y += 40.f;
@@ -128,7 +134,7 @@ static void CreatePlayer(int amount = 1) {
 		auto liveDisplayGO = std::make_shared<GameObject>();
 		textComp = std::make_shared<TextComponent>(" ", font, color);
 		textComp->SetPosition(uiPos);
-		auto liveDisplaycomp = std::make_shared<LivesDisplayComponent>();
+		auto liveDisplaycomp = std::make_shared<LivesDisplayComponent>("Player " + std::to_string(i + 1) + ": ");
 
 		liveDisplayGO->AddComponent<TextComponent>(textComp);
 		liveDisplayGO->AddComponent<LivesDisplayComponent>(liveDisplaycomp);
@@ -146,6 +152,9 @@ static void CreatePlayer(int amount = 1) {
 		PeterPepper->AddComponent<InputComponent>(inputComponent);
 
 		inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_EAST, new DamageCommand(healthComponent, 10), KeyState::PRESSED);
+		auto* scoreCommand = new IncreaseScoreCommand(100, textComp);
+		scoreCommand->addObserver(scoreDisplayComponent);
+		inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_NORTH, scoreCommand, KeyState::PRESSED);
 		healthComponent->addObserver(liveDisplaycomp);
 		healthComponent->SetHealth(10);
 		healthComponent->SetLives(5);
@@ -181,6 +190,9 @@ void dae::Minigin::LoadGame() const
 
 	//player creation
 	CreatePlayer(2);
+
+	//Call start after everything is initialized
+	scene.Start();
 
 }
 

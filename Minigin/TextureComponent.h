@@ -13,7 +13,7 @@ namespace dae {
 	
 		void SetTexture(const std::string& filename);
 		void SetPosition(const glm::vec2& pos);
-
+		virtual void Start() override {};
 		void Render() const override;
 		void Update() override;
 		void LateUpdate() override;

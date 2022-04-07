@@ -23,6 +23,14 @@ void Scene::Update()
 	}
 }
 
+void dae::Scene::Start()
+{
+	for (const auto& object : m_Objects)
+	{
+		object->Start();
+	}
+}
+
 void Scene::Render() const
 {
 	for (const auto& object : m_Objects)

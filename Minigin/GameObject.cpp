@@ -71,6 +71,17 @@ namespace dae {
 		go->SetParent(this);
 	}
 
+	void GameObject::Start()
+	{
+		//this component first
+		m_EntityManager.Start();
+
+		for (auto& child : m_Children)
+		{
+			child->Start();
+		}
+	}
+
 	void GameObject::Update()
 	{
 		//Update this gameobject component first

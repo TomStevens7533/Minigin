@@ -9,9 +9,10 @@ namespace dae {
 
 		void AddCommand(ControllerButton button, Command* command, KeyState state);
 		
-		void Render() const override {};
-		void Update() override;
-		void LateUpdate() override {};
+		virtual void Start() override {};
+		virtual void Render() const override {};
+		virtual void Update() override;
+		virtual void LateUpdate() override {};
 	private:
 		int m_deviceIdx{};
 	};

@@ -67,7 +67,7 @@ namespace dae
 			return nullptr;
 		}
 
-
+		void Start();
 		void Update();
 		void LateUpdate();
 		void Render() const;

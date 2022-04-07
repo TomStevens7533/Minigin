@@ -12,6 +12,14 @@ namespace dae {
 	}
 
 
+	void EntityManager::Start()
+	{
+		for (auto mapPair : m_ComponentSet)
+		{
+			mapPair->Start();
+		}
+	}
+
 	void EntityManager::Update()
 	{
 		for (auto mapPair : m_ComponentSet)
