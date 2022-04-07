@@ -37,30 +37,29 @@ namespace dae
 		~InputManager();
 
 		void ProcessInput();
-		void AddCommand(ControllerButton button, Command* command, KeyState state);
-		bool RemoveCommand(ControllerButton button, KeyState state);
-		void HandleCommands();
+		void AddCommand(ControllerButton button, Command* command, KeyState state, int playerIdx);
+		bool RemoveCommand(ControllerButton button, KeyState state, int playerIdx);
+		void HandleCommands(int playerIdx);
+
+		void SetNewPlayerAmount(int playerAmount);
+		int GetDeviceAmount();
 
 		InputManager(const InputManager&& e) = delete;
 		InputManager& operator=(InputManager e) = delete;
 
 	public:
 		friend class Singleton<InputManager>;
-		bool IsKeyDown(ControllerButton button) const;
-		bool IsKeyPressed(ControllerButton button) const;
-		bool IsKeyReleased(ControllerButton button) const;
-		bool HandleCommand(ControllerButton button, KeyState state, Command* command);
+		bool IsKeyDown(ControllerButton button, int deviceIdx) const;
+		bool IsKeyPressed(ControllerButton button, int deviceIdx) const;
+		bool IsKeyReleased(ControllerButton button, int deviceIdx) const;
+		bool HandleCommand(ControllerButton button, KeyState state, Command* command, int playerIdx);
 
 
 
 	private:
 		class InputManagerImpl;
 		std::unique_ptr<InputManagerImpl> m_pPimpl;
-
-
 	private:
-
-		std::map<std::pair<ControllerButton, KeyState>, std::unique_ptr<Command>> m_CommandMap;
-
+		std::vector<std::map<std::pair<ControllerButton, KeyState>, std::shared_ptr<Command>>> m_CommandContainer;
 	};
 }

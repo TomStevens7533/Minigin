@@ -15,52 +15,62 @@ public:
 	InputManagerImpl();
 	void ProcessInputImpl();
 
-	bool IsKeyDownImpl(ControllerButton button) const;
-	bool IsKeyPressedImpl(ControllerButton button) const;
-	bool IsKeyReleasedImpl(ControllerButton button) const;
+	void SetNewPlayerAmountImpl(int playerAmount) {
+		m_PreviousStateVec.resize(playerAmount);
+		m_CurrentStateVec.resize(playerAmount);
+		m_PlayerAmount = playerAmount;
+	}
+
+	bool IsKeyDownImpl(ControllerButton button, int deviceIdx) const;
+	bool IsKeyPressedImpl(ControllerButton button, int deviceIdx) const;
+	bool IsKeyReleasedImpl(ControllerButton button, int deviceIdx) const;
 
 private:
-	XINPUT_STATE m_PreviousState;
-	XINPUT_STATE m_CurrentState;
+	std::vector<XINPUT_STATE> m_PreviousStateVec{};
+	std::vector<XINPUT_STATE> m_CurrentStateVec{};
+	int m_PlayerAmount = 0;
 };
 
 InputManager::InputManagerImpl::InputManagerImpl()
 {
-	ZeroMemory(&m_PreviousState, sizeof(XINPUT_STATE));
-	ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
+	for (size_t i = 0; i < m_PlayerAmount; i++)
+	{
+		ZeroMemory(&m_PreviousStateVec[i], sizeof(XINPUT_STATE));
+		ZeroMemory(&m_CurrentStateVec[i], sizeof(XINPUT_STATE));
+	}
+
 }
 void InputManager::InputManagerImpl::ProcessInputImpl()
 {
 	// todo: read the input
-	CopyMemory(&m_PreviousState, &m_CurrentState, sizeof(XINPUT_STATE));
-	ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
+	for (int i = 0; i < m_PlayerAmount; i++)
+	{
+		CopyMemory(&m_PreviousStateVec[i], &m_CurrentStateVec[i], sizeof(XINPUT_STATE));
+		ZeroMemory(&m_CurrentStateVec[i], sizeof(XINPUT_STATE));
 
-	XInputGetState(0, &m_CurrentState);
-
+		XInputGetState(i, &m_CurrentStateVec[i]);
+	}
 }
-
-
-
-bool InputManager::InputManagerImpl::IsKeyDownImpl(ControllerButton button) const
+bool InputManager::InputManagerImpl::IsKeyDownImpl(ControllerButton button, int deviceIdx) const
 {	//check if key is pressed down
-	if (m_CurrentState.Gamepad.wButtons & static_cast<unsigned int>(button)) {
+	if (m_CurrentStateVec[deviceIdx].Gamepad.wButtons & static_cast<unsigned int>(button)) {
 		return true;
 	}
 	return false;
 
 }
 
-bool InputManager::InputManagerImpl::IsKeyPressedImpl(ControllerButton button) const
+bool InputManager::InputManagerImpl::IsKeyPressedImpl(ControllerButton button, int deviceIdx) const
 {  //Check if key is pressed this frame
-	if ((m_CurrentState.Gamepad.wButtons & static_cast<unsigned int>(button)) && !(m_PreviousState.Gamepad.wButtons & static_cast<unsigned int>(button))) {
+	if ((m_CurrentStateVec[deviceIdx].Gamepad.wButtons & static_cast<unsigned int>(button)) && !(m_PreviousStateVec[deviceIdx].Gamepad.wButtons & static_cast<unsigned int>(button))) {
 		return true;
 	}
 	return false;
 }
 
-bool InputManager::InputManagerImpl::IsKeyReleasedImpl(ControllerButton button) const
+bool InputManager::InputManagerImpl::IsKeyReleasedImpl(ControllerButton button, int deviceIdx) const
 { //Check if key is released this frame
-	if (!(m_CurrentState.Gamepad.wButtons & static_cast<unsigned int>(button)) && (m_PreviousState.Gamepad.wButtons & static_cast<unsigned int>(button))) {
+	if (!(m_CurrentStateVec[deviceIdx].Gamepad.wButtons & static_cast<unsigned int>(button)) && (m_PreviousStateVec[deviceIdx].Gamepad.wButtons & static_cast<unsigned int>(button))) {
 		return true;
 	}
 	return false;
@@ -70,55 +80,72 @@ bool InputManager::InputManagerImpl::IsKeyReleasedImpl(ControllerButton button) 
 
 //InputManager
 InputManager::InputManager() : m_pPimpl{ std::make_unique<InputManagerImpl>() } {
+	SetNewPlayerAmount(1);
 }
 //destructor visibility
 InputManager::~InputManager() {
-	for (auto& pair : m_CommandMap)
+	for (auto& playerVec : m_CommandContainer)
 	{
-		pair.second.reset();
+		for (auto& pair : playerVec) {
+			pair.second.reset();
+		}
 	}
 }
-void InputManager::HandleCommands()
+void InputManager::HandleCommands(int playerIdx)
 {
-
-	for (auto& mapElement : m_CommandMap)
+	for (auto& mapElement : m_CommandContainer[playerIdx])
 	{
-		HandleCommand(mapElement.first.first, mapElement.first.second, mapElement.second.get());
+		HandleCommand(mapElement.first.first, mapElement.first.second, mapElement.second.get(), playerIdx);
 	}
+}
+
+void dae::InputManager::SetNewPlayerAmount(int playerAmount)
+{
+	for (size_t i = 0; i < (playerAmount - GetDeviceAmount()); i++)
+	{
+		//TODO: change if uniqueptr
+		m_CommandContainer.emplace_back();
+	}
+	m_pPimpl->SetNewPlayerAmountImpl(playerAmount);
+}
+
+int InputManager::GetDeviceAmount()
+{
+	return static_cast<int>(m_CommandContainer.size());
 }
 
 void InputManager::ProcessInput()
 {
 	m_pPimpl->ProcessInputImpl();
 }
-void InputManager::AddCommand(ControllerButton button, Command* command, KeyState state)
+void InputManager::AddCommand(ControllerButton button, Command* command, KeyState state, int playerIdx)
 {	//Add command
 	//overwite previous command when key is the same
-	m_CommandMap[std::make_pair(button, state)].reset(command);
+	m_CommandContainer[playerIdx][std::make_pair(button, state)].reset(command);
 }
-bool InputManager::RemoveCommand(ControllerButton button, KeyState state)
+bool InputManager::RemoveCommand(ControllerButton button, KeyState state, int playerIdx)
 {
 	//return 0 or 1 if element is erased
-	return m_CommandMap.erase(std::make_pair(button, state));
+	return m_CommandContainer[playerIdx].erase(std::make_pair(button, state));
 }
-bool InputManager::HandleCommand(ControllerButton button, KeyState state, Command* command)
+bool InputManager::HandleCommand(ControllerButton button, KeyState state, Command* command, int deviceIdx)
 {
 	switch (state)
 	{
 	case KeyState::DOWN:
-		if (IsKeyDown(button)) {
+		if (IsKeyDown(button, deviceIdx)) {
 			command->Excecute();
 			return true;
 		}
 		break;
 	case KeyState::PRESSED:
-		if (IsKeyPressed(button)) {
+		if (IsKeyPressed(button, deviceIdx)) {
 			command->Excecute();
 			return true;
 		}
 		break;
 	case KeyState::RELEASED:
-		if (IsKeyReleased(button)) {
+		if (IsKeyReleased(button, deviceIdx)) {
 			command->Excecute();
 			return true;
 		}
@@ -130,17 +157,17 @@ bool InputManager::HandleCommand(ControllerButton button, KeyState state, Comman
 }
 
 
-bool InputManager::IsKeyDown(ControllerButton button) const
+bool InputManager::IsKeyDown(ControllerButton button, int deviceIdx) const
 {
-	return m_pPimpl->IsKeyDownImpl(button);
+	return m_pPimpl->IsKeyDownImpl(button, deviceIdx);
 }
 
-bool InputManager::IsKeyPressed(ControllerButton button) const
+bool InputManager::IsKeyPressed(ControllerButton button, int deviceIdx) const
 {
-	return m_pPimpl->IsKeyPressedImpl(button);
+	return m_pPimpl->IsKeyPressedImpl(button, deviceIdx);
 }
-bool InputManager::IsKeyReleased(ControllerButton button) const
+bool InputManager::IsKeyReleased(ControllerButton button, int deviceIdx) const
 {
-	return m_pPimpl->IsKeyReleasedImpl(button);
+	return m_pPimpl->IsKeyReleasedImpl(button, deviceIdx);
 }
 

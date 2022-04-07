@@ -190,7 +190,7 @@ void dae::Minigin::LoadGame() const
 	//p1
 	auto PeterPepper1 = std::make_shared<GameObject>();
 	auto healthComponent = std::make_shared<HealthComponent>(10);
-	auto inputComponent = std::make_shared<InputComponent>();
+	auto inputComponent = std::make_shared<InputComponent>(0);
 
 	PeterPepper1->AddComponent<HealthComponent>(healthComponent);
 	PeterPepper1->AddComponent<InputComponent>(inputComponent);
@@ -208,7 +208,7 @@ void dae::Minigin::LoadGame() const
 	//p2
 	auto PeterPepper2 = std::make_shared<GameObject>();
 	healthComponent = std::make_shared<HealthComponent>(10);
-	inputComponent = std::make_shared<InputComponent>();
+	inputComponent = std::make_shared<InputComponent>(1);
 	healthComponent->addObserver(liveComponentP2UI);
 
 	inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_WEST, new DamageCommand(healthComponent, 10), KeyState::PRESSED);

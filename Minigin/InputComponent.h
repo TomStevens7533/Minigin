@@ -4,7 +4,7 @@ namespace dae {
 	class InputComponent final : public BaseComponent
 	{
 	public:
-		InputComponent() = default;
+		InputComponent(int deviceIdx);
 		~InputComponent() = default;
 
 		void AddCommand(ControllerButton button, Command* command, KeyState state);
@@ -12,6 +12,8 @@ namespace dae {
 		void Render() const override {};
 		void Update() override;
 		void LateUpdate() override {};
+	private:
+		int m_deviceIdx{};
 	};
 }
 
