@@ -40,10 +40,8 @@ void PrintSDLVersion()
 void dae::Minigin::Initialize()
 {
 	std::cout << "---USER INFO----\n";
-	std::cout << "FACEBUTTON NORTH: INCREASE SCORE PLAYER 1 (RED) \n";
-	std::cout << "FACEBUTTON EAST: DECREASE LIVES PLAYER 1  (RED)  \n";
-	std::cout << "FACEBUTTON SOUTH:  INCREASE SCORE PLAYER 2 (GREEN) \n";
-	std::cout << "FACEBUTTON WEST: DECREASE LIVES PLAYER 2 (GREEN) \n";
+	std::cout << "FACEBUTTON NORTH: INCREASE SCORE \n";
+	std::cout << "FACEBUTTON EAST: DECREASE LIVES  \n";
 	std::cout << "ACHIEVMENT: ACH_WIN_ONE_GAME ONLY GETS CALLED FOR PLAYER 2\n";
 
 	std::cout << std::endl;
@@ -237,7 +235,6 @@ void dae::Minigin::Run()
 			//TODO add proper event system to catch user events
 			SDL_PollEvent(&e);
 			SteamAPI_RunCallbacks();
-
 			if (e.type == SDL_QUIT) {
 				doContinue = false;
 			}

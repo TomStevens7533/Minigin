@@ -4,10 +4,7 @@
 #include "EventType.h"
 namespace dae {
 
-	struct EventArgs {
-		bool nothing;
-	};
-
+	struct EventArgs {};
 	class Observer
 	{
 	public:
