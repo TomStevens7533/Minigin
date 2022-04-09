@@ -15,10 +15,10 @@ namespace dae {
 		void Render() const override;
 		void Update() override;
 		void LateUpdate() override;
-		void SetData(std::shared_ptr<void> newData);
+		void SetData(Texture2D* newData);
 
 	private:
-		std::shared_ptr<void> m_DataToRender;
+		Texture2D* m_DataToRender;
 	};
 
 

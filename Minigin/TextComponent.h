@@ -25,7 +25,7 @@ namespace dae {
 
 
 	private:
-		std::shared_ptr<RenderComponent> m_pRenderComponent;
+		RenderComponent* m_pRenderComponent;
 
 		std::shared_ptr<Font> m_Font;
 		std::shared_ptr<Texture2D> m_TextTexture;

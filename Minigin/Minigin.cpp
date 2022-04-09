@@ -20,6 +20,7 @@
 #include "Achievment.h"
 #include "LivesDisplayComponent.h"
 #include "ScoreDisplayComponent.h"
+#include "SpriteComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -144,10 +145,14 @@ static void CreatePlayer(int amount = 1) {
 		auto PeterPepper = std::make_shared<GameObject>();
 		auto healthComponent = std::make_shared<HealthComponent>();
 		auto inputComponent = std::make_shared<InputComponent>(static_cast<int>(i));
+		auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png",15, 11, 1.f);
+		spriteComponent->AddAnimation("Move", 0, 0, 3, 1);
 
 
 		PeterPepper->AddComponent<HealthComponent>(healthComponent);
 		PeterPepper->AddComponent<InputComponent>(inputComponent);
+		PeterPepper->AddComponent<SpriteComponent>(spriteComponent);
+
 
 		inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_EAST, new DamageCommand(healthComponent, 10), KeyState::PRESSED);
 		auto* scoreCommand = new IncreaseScoreCommand(100, textComp);
@@ -187,7 +192,7 @@ void dae::Minigin::LoadGame() const
 	goChild->AddComponent<TextureComponent>(texComp);
 
 	//player creation
-	CreatePlayer(2);
+	CreatePlayer(1);
 
 	//Call start after everything is initialized
 	scene.Start();

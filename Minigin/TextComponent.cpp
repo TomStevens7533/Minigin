@@ -49,7 +49,7 @@ namespace dae {
 			SDL_FreeSurface(surf);
 			m_TextTexture = std::make_shared<Texture2D>(texture);
 			m_NeedsUpdate = false;
-			m_pRenderComponent->SetData(m_TextTexture);
+			m_pRenderComponent->SetData(m_TextTexture.get());
 		}
 	}
 
@@ -61,8 +61,8 @@ namespace dae {
 
 	void TextComponent::Start()
 	{
-		m_pRenderComponent.reset(m_pParent->AddOrGetComponent<dae::RenderComponent>());
-		m_pRenderComponent->SetData(m_TextTexture);
+		m_pRenderComponent = m_pParent->AddOrGetComponent<dae::RenderComponent>();
+		m_pRenderComponent->SetData(m_TextTexture.get());
 	}
 
 }

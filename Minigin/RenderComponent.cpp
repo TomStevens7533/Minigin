@@ -11,13 +11,13 @@ namespace dae {
 
 	RenderComponent::~RenderComponent()
 	{
-
+		m_DataToRender = nullptr;
 	}
 
 	void RenderComponent::Render() const
 	{
 		Transform trans = m_pParent->GetTransform();
-		Renderer::GetInstance().RenderTexture(*std::reinterpret_pointer_cast<Texture2D>(m_DataToRender), trans.GetPosition().x, trans.GetPosition().y);
+		Renderer::GetInstance().RenderTexture(*(m_DataToRender), trans.GetPosition().x, trans.GetPosition().y);
 	}
 
 	void RenderComponent::Update()
@@ -29,7 +29,7 @@ namespace dae {
 	{
 
 	}
-	void RenderComponent::SetData(std::shared_ptr<void> newData)
+	void RenderComponent::SetData(Texture2D* newData)
 	{
 		m_DataToRender = newData;
 	}

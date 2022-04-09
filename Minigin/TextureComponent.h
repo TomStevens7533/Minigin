@@ -19,7 +19,7 @@ namespace dae {
 
 	private:
 		std::shared_ptr<Texture2D> m_Texture;
-		std::shared_ptr<RenderComponent> m_RenderComponent;
+		RenderComponent* m_pRenderComponent;
 	};
 }
 

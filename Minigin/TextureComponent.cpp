@@ -15,16 +15,13 @@ namespace dae {
 	}
 	void TextureComponent::Start()
 	{
-		m_RenderComponent.reset(m_pParent->AddOrGetComponent<dae::RenderComponent>());
-		m_RenderComponent->SetData(m_Texture);
+		m_pRenderComponent = (m_pParent->AddOrGetComponent<dae::RenderComponent>());
+		m_pRenderComponent->SetData(m_Texture.get());
 	}
 	TextureComponent::~TextureComponent()
 	{
 		m_Texture.reset();
-		m_RenderComponent.reset();
 	}
-
-
 	void TextureComponent::SetTexture(const std::string& filename)
 	{
 		m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
@@ -32,7 +29,7 @@ namespace dae {
 
 	void TextureComponent::Render() const
 	{
-		m_RenderComponent->Render();
+		m_pRenderComponent->Render();
 	}
 
 	void TextureComponent::Update()
