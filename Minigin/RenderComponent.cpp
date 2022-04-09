@@ -22,7 +22,7 @@ namespace dae {
 
 	void RenderComponent::Update()
 	{
-
+		
 	}
 
 	void RenderComponent::LateUpdate()

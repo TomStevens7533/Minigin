@@ -53,7 +53,7 @@ namespace dae
 		void ChangeRootPos(int newRootPos);
 		int GetPosFromRoot();
 
-		inline Transform GetTransform() { return m_Transform; }
+		inline Transform& GetTransform() { return m_Transform; }
 
 
 	private:

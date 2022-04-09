@@ -8,7 +8,7 @@ namespace dae {
 		~InputComponent() = default;
 
 		void AddCommand(ControllerButton button, Command* command, KeyState state);
-		
+		int GetDeviceIdx() { return m_deviceIdx; };
 		virtual void Start() override {};
 		virtual void Render() const override {};
 		virtual void Update() override;

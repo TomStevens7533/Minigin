@@ -21,6 +21,7 @@
 #include "LivesDisplayComponent.h"
 #include "ScoreDisplayComponent.h"
 #include "SpriteComponent.h"
+#include "RigidbodyComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -100,6 +101,42 @@ static void CreatePlayer(int amount = 1) {
 		std::shared_ptr<HealthComponent> m_ComponentToDamage;
 		int m_Damage;
 	};
+	class MoveLeftCommand : public Command {
+	public:
+		MoveLeftCommand(std::shared_ptr<RigidbodyComponent> componentToDamage) : m_Component{ componentToDamage } {};
+		virtual void Excecute() {
+			m_Component->SetVelocityX(-500.f);
+		}
+	private:
+		std::shared_ptr<RigidbodyComponent> m_Component;
+	};
+	class MoveRightCommand : public Command {
+	public:
+		MoveRightCommand(std::shared_ptr<RigidbodyComponent> componentToDamage) : m_Component{ componentToDamage } {};
+		virtual void Excecute() {
+			m_Component->SetVelocityX(500.f);
+		}
+	private:
+		std::shared_ptr<RigidbodyComponent> m_Component;
+	};
+	class MoveUpCommand : public Command {
+	public:
+		MoveUpCommand(std::shared_ptr<RigidbodyComponent> componentToDamage) : m_Component{ componentToDamage } {};
+		virtual void Excecute() {
+			m_Component->SetVelocityY(-500.f);
+		}
+	private:
+		std::shared_ptr<RigidbodyComponent> m_Component;
+	};
+	class MoveDownCommand : public Command {
+	public:
+		MoveDownCommand(std::shared_ptr<RigidbodyComponent> componentToDamage) : m_Component{ componentToDamage } {};
+		virtual void Excecute() {
+			m_Component->SetVelocityY(500.f);
+		}
+	private:
+		std::shared_ptr<RigidbodyComponent> m_Component;
+	};
 	//Increase Score simulation 
 	class IncreaseScoreCommand : public Command, public Subject {
 	public:
@@ -146,15 +183,30 @@ static void CreatePlayer(int amount = 1) {
 		auto healthComponent = std::make_shared<HealthComponent>();
 		auto inputComponent = std::make_shared<InputComponent>(static_cast<int>(i));
 		auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png",15, 11, 1.f);
-		spriteComponent->AddAnimation("Move", 0, 0, 3, 1);
+		auto rigidBodyComp = std::make_shared<RigidbodyComponent>();
 
+
+		//Anims
+		spriteComponent->AddAnimation("MoveForward", 0, 0, 3, 1);
+		spriteComponent->AddAnimation("Move", 3, 0, 6, 1);
+		spriteComponent->AddAnimation("MoveBackwards", 6, 0, 9, 1);
 
 		PeterPepper->AddComponent<HealthComponent>(healthComponent);
 		PeterPepper->AddComponent<InputComponent>(inputComponent);
 		PeterPepper->AddComponent<SpriteComponent>(spriteComponent);
+		PeterPepper->AddComponent<RigidbodyComponent>(rigidBodyComp);
+
 
 
 		inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_EAST, new DamageCommand(healthComponent, 10), KeyState::PRESSED);
+		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT, new MoveLeftCommand(rigidBodyComp), KeyState::PRESSED);
+		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, new MoveRightCommand(rigidBodyComp), KeyState::PRESSED);
+		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP, new MoveUpCommand(rigidBodyComp), KeyState::PRESSED);
+		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN, new MoveDownCommand(rigidBodyComp), KeyState::PRESSED);
+
+
+
+
 		auto* scoreCommand = new IncreaseScoreCommand(100, textComp);
 		scoreCommand->addObserver(scoreDisplayComponent);
 		inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_NORTH, scoreCommand, KeyState::PRESSED);
