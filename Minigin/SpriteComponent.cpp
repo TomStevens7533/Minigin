@@ -1,3 +1,4 @@
+#include "MiniginPCH.h"
 #include "SpriteComponent.h"
 #include "Texture2D.h"
 #include <SDL.h>
@@ -26,12 +27,12 @@ dae::SpriteComponent::SpriteComponent(int startCol, int startRow, int colAmount,
 	SDL_GetError();
 
 	//Create unique ptr based upon that
-	m_SpriteTexture = std::make_unique<Texture2D>(spriteTexture);
+	//m_SpriteTexture = std::make_unique<Texture2D>(spriteTexture);
 }
 
-dae::SpriteComponent::SpriteComponent(std::string path, int col, int row)
+dae::SpriteComponent::SpriteComponent(std::string path, int, int)
 {
-	m_SpriteTexture = std::make_unique<Texture2D>(dae::ResourceManager::GetInstance().LoadTexture(path));
+	//m_SpriteTexture = std::make_unique<Texture2D>(dae::ResourceManager::GetInstance().LoadTexture(path));
 }
 dae::SpriteComponent::~SpriteComponent()
 {

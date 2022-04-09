@@ -23,6 +23,10 @@ namespace dae
 			return m_EntityManager.AddComponent<TComponent>(component);
 		}
 		template<class TComponent>
+		TComponent* AddOrGetComponent() {
+			return m_EntityManager.AddOrGetComponent<TComponent>(this).get();
+		}
+		template<class TComponent>
 		TComponent* const GetComponent() {
 			return m_EntityManager.GetComponent<TComponent>().get();
 		}
@@ -31,6 +35,7 @@ namespace dae
 			return m_EntityManager.RemoveComponent<TComponent>();
 		}
 		void SetPosition(float x, float y);
+		void SetPosition(glm::vec2 pos);
 
 		GameObject() = default;
 		virtual ~GameObject();
@@ -47,6 +52,8 @@ namespace dae
 		void AddChild(std::shared_ptr<GameObject>& go);
 		void ChangeRootPos(int newRootPos);
 		int GetPosFromRoot();
+
+		inline Transform GetTransform() { return m_Transform; }
 
 
 	private:

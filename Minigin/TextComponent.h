@@ -17,16 +17,15 @@ namespace dae {
 		~TextComponent();
 
 		void SetText(const std::string& text);
-		void SetPosition(const glm::vec2& pos);
 
 		void Render() const override;
 		void Update() override;
 		void LateUpdate() override;
-		virtual void Start() override {};
+		virtual void Start() override;
 
 
 	private:
-		RenderComponent m_RenderComponent;
+		std::shared_ptr<RenderComponent> m_pRenderComponent;
 
 		std::shared_ptr<Font> m_Font;
 		std::shared_ptr<Texture2D> m_TextTexture;

@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "RenderComponent.h"
 #include "Renderer.h"
+#include "GameObject.h"
 namespace dae {
 
 	RenderComponent::RenderComponent()
@@ -15,7 +16,8 @@ namespace dae {
 
 	void RenderComponent::Render() const
 	{
-		Renderer::GetInstance().RenderTexture(*std::reinterpret_pointer_cast<Texture2D>(m_DataToRender), m_Position.x, m_Position.y);
+		Transform trans = m_pParent->GetTransform();
+		Renderer::GetInstance().RenderTexture(*std::reinterpret_pointer_cast<Texture2D>(m_DataToRender), trans.GetPosition().x, trans.GetPosition().y);
 	}
 
 	void RenderComponent::Update()
@@ -27,12 +29,6 @@ namespace dae {
 	{
 
 	}
-
-	void RenderComponent::SetPos(const glm::vec2 pos)
-	{
-		m_Position = pos;
-	}
-
 	void RenderComponent::SetData(std::shared_ptr<void> newData)
 	{
 		m_DataToRender = newData;

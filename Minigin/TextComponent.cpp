@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "TextComponent.h"
 #include "Renderer.h"
+#include "GameObject.h"
 #include <SDL_ttf.h>
 
 namespace dae {
@@ -22,16 +23,11 @@ namespace dae {
 		m_NeedsUpdate = true;
 	}
 
-	void TextComponent::SetPosition(const glm::vec2& pos)
-	{
-		m_RenderComponent.SetPos(pos);
-	}
-
 	void TextComponent::Render() const
 	{
 		if (m_TextTexture != nullptr)
 		{
-			m_RenderComponent.Render();
+			m_pRenderComponent->Render();
 		}
 	}
 
@@ -53,7 +49,7 @@ namespace dae {
 			SDL_FreeSurface(surf);
 			m_TextTexture = std::make_shared<Texture2D>(texture);
 			m_NeedsUpdate = false;
-			m_RenderComponent.SetData(m_TextTexture);
+			m_pRenderComponent->SetData(m_TextTexture);
 		}
 	}
 
@@ -62,5 +58,11 @@ namespace dae {
 
 	}
 
+
+	void TextComponent::Start()
+	{
+		m_pRenderComponent.reset(m_pParent->AddOrGetComponent<dae::RenderComponent>());
+		m_pRenderComponent->SetData(m_TextTexture);
+	}
 
 }

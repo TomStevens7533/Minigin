@@ -2,7 +2,9 @@
 #include "TextureComponent.h"
 #include <limits.h>
 #include "ResourceManager.h"
+#include "RenderComponent.h"
 #include "Renderer.h"
+#include "GameObject.h"
 
 namespace dae {
 
@@ -10,11 +12,12 @@ namespace dae {
 
 	TextureComponent::TextureComponent()
 	{
-	
-
-		m_RenderComponent = std::make_unique<RenderComponent>();
 	}
-
+	void TextureComponent::Start()
+	{
+		m_RenderComponent.reset(m_pParent->AddOrGetComponent<dae::RenderComponent>());
+		m_RenderComponent->SetData(m_Texture);
+	}
 	TextureComponent::~TextureComponent()
 	{
 		m_Texture.reset();
@@ -25,12 +28,6 @@ namespace dae {
 	void TextureComponent::SetTexture(const std::string& filename)
 	{
 		m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
-		m_RenderComponent->SetData(m_Texture);
-	}
-
-	void TextureComponent::SetPosition(const glm::vec2& pos)
-	{
-		m_RenderComponent->SetPos(pos);
 	}
 
 	void TextureComponent::Render() const

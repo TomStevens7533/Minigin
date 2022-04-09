@@ -121,7 +121,7 @@ static void CreatePlayer(int amount = 1) {
 		auto scoreDisplayGo = std::make_shared<GameObject>();
 		auto textComp = std::make_shared<TextComponent>("0", font, color);
 		auto scoreDisplayComponent = std::make_shared<ScoreDisplayComponent>("Score: ");
-		textComp->SetPosition(uiPos);
+		scoreDisplayGo->SetPosition(uiPos);
 		scoreDisplayGo->AddComponent<TextComponent>(textComp);
 		scoreDisplayGo->AddComponent<ScoreDisplayComponent>(scoreDisplayComponent);
 
@@ -131,7 +131,7 @@ static void CreatePlayer(int amount = 1) {
 
 		auto liveDisplayGO = std::make_shared<GameObject>();
 		textComp = std::make_shared<TextComponent>(" ", font, color);
-		textComp->SetPosition(uiPos);
+		liveDisplayGO->SetPosition(uiPos);
 		auto liveDisplaycomp = std::make_shared<LivesDisplayComponent>("Player " + std::to_string(i + 1) + ": ");
 
 		liveDisplayGO->AddComponent<TextComponent>(textComp);
@@ -176,14 +176,14 @@ void dae::Minigin::LoadGame() const
 	auto go = std::make_shared<dae::GameObject>();
 	auto texComp = std::make_shared<TextureComponent>();
 	texComp->SetTexture("background.jpg");
-	texComp->SetPosition({ 0,0 });
+	go->SetPosition({ 0,0 });
 	go->AddComponent<TextureComponent>(texComp);
 	scene.Add(go);
 
 	auto goChild = std::make_shared<dae::GameObject>();
 	texComp = std::make_shared<TextureComponent>();
 	texComp->SetTexture("logo.png");
-	texComp->SetPosition(glm::vec2{ 216, 180 });
+	goChild->SetPosition(glm::vec2{ 216, 180 });
 	goChild->AddComponent<TextureComponent>(texComp);
 
 	//player creation

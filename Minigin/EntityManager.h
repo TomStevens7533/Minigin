@@ -52,7 +52,7 @@ namespace dae
 		{
 			//TODO Make use of buckets to not have to iterate over entire container
 			//size_t bucket = m_ComponentMap.bucket(typeid(TComponent).hash_code());
-			auto it = std::find_if(m_ComponentSet.begin(), m_ComponentSet.end(), [](std::shared_ptr<BaseComponent> element)
+			auto it = std::find_if(m_ComponentSet.cbegin(), m_ComponentSet.cend(), [](std::shared_ptr<BaseComponent> element)
 			{
 					if (typeid(*element.get()).hash_code() == typeid(TComponent).hash_code())
 						return true;
@@ -66,7 +66,17 @@ namespace dae
 			}
 			return nullptr;
 		}
-
+		template<class TComponent>
+		std::shared_ptr<TComponent> AddOrGetComponent(GameObject* parent) {
+			std::shared_ptr<TComponent> comp = GetComponent<TComponent>();
+			if (!comp) {
+				comp = std::make_shared<TComponent>();
+				auto insertPair = m_ComponentSet.insert(comp);
+				comp->SetAttachedGo(parent);
+				return comp;
+			}
+			return comp;
+		}
 		void Start();
 		void Update();
 		void LateUpdate();

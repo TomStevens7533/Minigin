@@ -131,4 +131,10 @@ namespace dae {
 		m_Transform.SetPosition(x, y, 0.0f);
 	}
 
+	void GameObject::SetPosition(glm::vec2 pos)
+	{
+		m_Transform.SetPosition(pos.x, pos.y, 0.0f);
+
+	}
+
 }
