@@ -253,6 +253,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClCompile Include="Achievment.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />

@@ -91,12 +91,16 @@ InputManager::~InputManager() {
 		}
 	}
 }
-void InputManager::HandleCommands(int playerIdx)
+bool InputManager::HandleCommands(int playerIdx)
 {
+	bool isTriggered = false;
 	for (auto& mapElement : m_CommandContainer[playerIdx])
 	{
-		HandleCommand(mapElement.first.first, mapElement.first.second, mapElement.second.get(), playerIdx);
+		if (HandleCommand(mapElement.first.first, mapElement.first.second, mapElement.second.get(), playerIdx)) {
+			isTriggered = true;
+		}
 	}
+	return isTriggered;
 }
 
 void dae::InputManager::SetNewPlayerAmount(int playerAmount)

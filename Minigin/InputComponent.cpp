@@ -14,6 +14,6 @@ namespace dae {
 	}
 	void InputComponent::Update()
 	{
-		InputManager::GetInstance().HandleCommands(m_deviceIdx);
+		m_IsTriggered = InputManager::GetInstance().HandleCommands(m_deviceIdx);
 	}
 }

@@ -1,7 +1,13 @@
 #pragma once
 #include "BaseComponent.h"
 #include "Subject.h"
+
+
+
 namespace dae {
+	class InputComponent;
+	class SpriteComponent;
+
 	class PetterPepperComponent : public BaseComponent, public Subject
 	{
 	public:
@@ -12,6 +18,8 @@ namespace dae {
 	protected:
 
 	private:
+		InputComponent* m_InputComponent;
+		SpriteComponent* m_SpriteComponent;
 	};
 
 }
