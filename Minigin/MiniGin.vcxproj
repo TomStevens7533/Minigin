@@ -216,6 +216,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="Achievment.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Font.h" />
@@ -229,6 +230,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="MiniginPCH.h" />
     <ClInclude Include="EventType.h" />
     <ClInclude Include="Observer.h" />
+    <ClInclude Include="PetterPepperComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RigidbodyComponent.h" />
     <ClInclude Include="SceneObject.h" />
@@ -239,6 +241,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="ScoreDisplayComponent.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SpriteComponent.h" />
+    <ClInclude Include="structs.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
@@ -249,6 +252,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
   <ItemGroup>
     <ClCompile Include="Achievment.cpp" />
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
@@ -266,6 +270,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MiniginPCH.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="PetterPepperComponent.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

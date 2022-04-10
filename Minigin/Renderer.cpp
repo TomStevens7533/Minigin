@@ -60,16 +60,13 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, const SDL_Rect dstRect, const SDL_Rect src, bool isFlipped /*= false*/) const
 {
-	src;
-	dstRect;
 	SDL_RendererFlip flip;
 	if (isFlipped)
 		flip = SDL_FLIP_HORIZONTAL;
 	else
 		flip = SDL_FLIP_NONE;
 
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(),&src, &dstRect);
-	//SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dstRect, 0.f, NULL, flip);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dstRect, 0.f, NULL, flip);
 }
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const

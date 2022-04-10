@@ -103,39 +103,55 @@ static void CreatePlayer(int amount = 1) {
 	};
 	class MoveLeftCommand : public Command {
 	public:
-		MoveLeftCommand(std::shared_ptr<RigidbodyComponent> componentToDamage) : m_Component{ componentToDamage } {};
+		MoveLeftCommand(std::shared_ptr<RigidbodyComponent> componentToDamage, std::shared_ptr<SpriteComponent> spriteComp)
+			: m_Component{ componentToDamage }, m_SpriteComp{ spriteComp } {};
 		virtual void Excecute() {
 			m_Component->SetVelocityX(-500.f);
+			m_SpriteComp->SetActiveAnimation("Move");
+			m_SpriteComp->SetFlipState(false);
 		}
 	private:
+		std::shared_ptr<SpriteComponent> m_SpriteComp;
 		std::shared_ptr<RigidbodyComponent> m_Component;
 	};
 	class MoveRightCommand : public Command {
 	public:
-		MoveRightCommand(std::shared_ptr<RigidbodyComponent> componentToDamage) : m_Component{ componentToDamage } {};
+		MoveRightCommand(std::shared_ptr<RigidbodyComponent> componentToDamage, std::shared_ptr<SpriteComponent> spriteComp) 
+			: m_Component{ componentToDamage }, m_SpriteComp{spriteComp} {};
 		virtual void Excecute() {
 			m_Component->SetVelocityX(500.f);
+			m_SpriteComp->SetActiveAnimation("Move");
+			m_SpriteComp->SetFlipState(true);
 		}
 	private:
+		std::shared_ptr<SpriteComponent> m_SpriteComp;
 		std::shared_ptr<RigidbodyComponent> m_Component;
 	};
 	class MoveUpCommand : public Command {
 	public:
-		MoveUpCommand(std::shared_ptr<RigidbodyComponent> componentToDamage) : m_Component{ componentToDamage } {};
+		MoveUpCommand(std::shared_ptr<RigidbodyComponent> componentToDamage, std::shared_ptr<SpriteComponent> spriteComp) 
+			: m_Component{ componentToDamage }, m_SpriteComp{spriteComp}{};
 		virtual void Excecute() {
 			m_Component->SetVelocityY(-500.f);
+			m_SpriteComp->SetActiveAnimation("MoveForward");
+
 		}
 	private:
+		std::shared_ptr<SpriteComponent> m_SpriteComp;
 		std::shared_ptr<RigidbodyComponent> m_Component;
 	};
 	class MoveDownCommand : public Command {
 	public:
-		MoveDownCommand(std::shared_ptr<RigidbodyComponent> componentToDamage) : m_Component{ componentToDamage } {};
+		MoveDownCommand(std::shared_ptr<RigidbodyComponent> componentToDamage, std::shared_ptr<SpriteComponent> spriteComp)
+			: m_Component{ componentToDamage }, m_SpriteComp{spriteComp}{};
 		virtual void Excecute() {
 			m_Component->SetVelocityY(500.f);
+			m_SpriteComp->SetActiveAnimation("MoveBackwards");
+
 		}
 	private:
 		std::shared_ptr<RigidbodyComponent> m_Component;
+		std::shared_ptr<SpriteComponent> m_SpriteComp;
 	};
 	//Increase Score simulation 
 	class IncreaseScoreCommand : public Command, public Subject {
@@ -187,9 +203,9 @@ static void CreatePlayer(int amount = 1) {
 
 
 		//Anims
-		spriteComponent->AddAnimation("MoveForward", 0, 0, 3, 1);
+		spriteComponent->AddAnimation("MoveBackwards", 0, 0, 3, 1);
 		spriteComponent->AddAnimation("Move", 3, 0, 6, 1);
-		spriteComponent->AddAnimation("MoveBackwards", 6, 0, 9, 1);
+		spriteComponent->AddAnimation("MoveForward", 6, 0, 9, 1);
 
 		PeterPepper->AddComponent<HealthComponent>(healthComponent);
 		PeterPepper->AddComponent<InputComponent>(inputComponent);
@@ -199,10 +215,10 @@ static void CreatePlayer(int amount = 1) {
 
 
 		inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_EAST, new DamageCommand(healthComponent, 10), KeyState::PRESSED);
-		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT, new MoveLeftCommand(rigidBodyComp), KeyState::PRESSED);
-		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, new MoveRightCommand(rigidBodyComp), KeyState::PRESSED);
-		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP, new MoveUpCommand(rigidBodyComp), KeyState::PRESSED);
-		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN, new MoveDownCommand(rigidBodyComp), KeyState::PRESSED);
+		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT, new MoveLeftCommand(rigidBodyComp, spriteComponent), KeyState::DOWN);
+		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, new MoveRightCommand(rigidBodyComp, spriteComponent), KeyState::DOWN);
+		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP, new MoveUpCommand(rigidBodyComp, spriteComponent), KeyState::DOWN);
+		inputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN, new MoveDownCommand(rigidBodyComp, spriteComponent), KeyState::DOWN);
 
 
 

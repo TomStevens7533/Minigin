@@ -67,7 +67,7 @@ void dae::SpriteComponent::SetActiveAnimation(std::string key)
 
 void dae::SpriteComponent::Render() const
 {
-	m_ActiveAnimation->Render(m_pParent->GetTransform());
+	m_ActiveAnimation->Render(m_pParent->GetTransform(), m_IsFlipped);
 }
 
 void dae::SpriteComponent::Update()

@@ -41,7 +41,6 @@ namespace dae {
 
 	Animation::~Animation()
 	{
-		std::cout << "desturctt\n";
 	}
 
 	void Animation::Update()
@@ -64,11 +63,11 @@ namespace dae {
 		m_RectToDraw.y = m_RectToDraw.height * (float)row;
 	}
 
-	void Animation::Render(Transform tr) const
+	void Animation::Render(Transform tr, bool isFlip) const
 	{
 		SDL_Rect dstRect{};
-		dstRect.x = static_cast<int>(tr.GetPosition().x);
-		dstRect.y = static_cast<int>(tr.GetPosition().y);
+		dstRect.x = static_cast<int>(std::round(tr.GetPosition().x));
+		dstRect.y = static_cast<int>(std::round(tr.GetPosition().y));
 		dstRect.w = static_cast<int>(m_RectToDraw.width);
 		dstRect.h = static_cast<int>(m_RectToDraw.height);
 
@@ -78,7 +77,7 @@ namespace dae {
 		srcRect.w = static_cast<int>(m_RectToDraw.width);
 		srcRect.h = static_cast<int>(m_RectToDraw.height);
 
-		dae::Renderer::GetInstance().RenderTexture(*m_AnimationSprite, dstRect, srcRect);
+		dae::Renderer::GetInstance().RenderTexture(*m_AnimationSprite, dstRect, srcRect, isFlip);
 	}
 
 

@@ -40,6 +40,7 @@ namespace dae
 		void AddCommand(ControllerButton button, Command* command, KeyState state, int playerIdx);
 		bool RemoveCommand(ControllerButton button, KeyState state, int playerIdx);
 		void HandleCommands(int playerIdx);
+		
 
 		void SetNewPlayerAmount(int playerAmount);
 		int GetDeviceAmount();

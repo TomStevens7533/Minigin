@@ -16,6 +16,7 @@ namespace dae {
 
 		bool AddAnimation(const std::string key,int starCol, int startRow, int endCol, int endRow);
 		void SetActiveAnimation(std::string key);
+		void SetFlipState(bool isFlip = true) { m_IsFlipped = isFlip; };
 
 		void Render() const override;
 		void Update() override;
@@ -36,7 +37,7 @@ namespace dae {
 		int m_widthPerCell{};
 		int m_HeightPerCell{};
 		float m_TimeFrame{};
-
+		bool m_IsFlipped{false};
 		int m_TotalCol{0};
 		int m_TotalRow{ 0 };
 

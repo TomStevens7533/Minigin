@@ -11,7 +11,8 @@ void dae::RigidbodyComponent::LateUpdate()
 	newPos.x += m_Velocity.x * dae::Time::GetInstance().GetDeltaTime();
 	newPos.y += m_Velocity.y * dae::Time::GetInstance().GetDeltaTime();
 	tr.SetPosition(newPos.x, newPos.y, 0.f);
-	std::cout << m_pParent->GetTransform().GetPosition().x << std::endl;
+
+	m_Velocity = glm::vec2{ 0,0 };
 }
 
 void dae::RigidbodyComponent::AddVelocity(float x, float y)

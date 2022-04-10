@@ -1,14 +1,8 @@
 #pragma once
 #include <memory>
 #include "Transform.h"
+#include "structs.h"
 struct SDL_Texture;
-struct Rectf
-{
-	float x;
-	float y;
-	float width;
-	float height;
-};
 namespace dae {
 	class Texture2D;
 	class Animation
@@ -22,7 +16,7 @@ namespace dae {
 
 
 		void Update();
-		void Render(Transform tr) const;
+		void Render(Transform tr, bool isFlip) const;
 
 	private:
 		std::shared_ptr<Texture2D> m_AnimationSprite;
