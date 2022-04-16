@@ -157,7 +157,7 @@ static void CreatePlayer(int amount = 1) {
 
 		auto* scoreCommand = new IncreaseScoreCommand(100, textComp);
 		scoreCommand->addObserver(scoreDisplayComponent);
-		inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_NORTH, scoreCommand, KeyState::PRESSED);
+		inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_NORTH, 'Z', scoreCommand, KeyState::PRESSED);
 		healthComponent->addObserver(liveDisplaycomp);
 		healthComponent->SetHealth(10);
 		healthComponent->SetLives(5);
@@ -225,7 +225,6 @@ void dae::Minigin::Run()
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
 		auto& time = Time::GetInstance();
-
 
 		// todo: this update loop could use some work.
 		bool doContinue = true;

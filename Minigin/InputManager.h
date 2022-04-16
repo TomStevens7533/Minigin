@@ -37,10 +37,9 @@ namespace dae
 		~InputManager();
 
 		void ProcessInput();
-		void AddCommand(ControllerButton button, Command* command, KeyState state, int playerIdx);
-		bool RemoveCommand(ControllerButton button, KeyState state, int playerIdx);
+		void AddCommand(ControllerButton button, unsigned char key, Command* command, KeyState state, int playerIdx);
+		bool RemoveCommand(ControllerButton button, unsigned char key, KeyState state, int playerIdx);
 		bool HandleCommands(int playerIdx);
-		
 
 		void SetNewPlayerAmount(int playerAmount);
 		int GetDeviceAmount();
@@ -51,9 +50,15 @@ namespace dae
 	public:
 		friend class Singleton<InputManager>;
 		bool IsKeyDown(ControllerButton button, int deviceIdx) const;
+		bool IsKeyDown(Uint8 key) const;
+
 		bool IsKeyPressed(ControllerButton button, int deviceIdx) const;
+		bool IsKeyPressed(Uint8 key) const;
+
 		bool IsKeyReleased(ControllerButton button, int deviceIdx) const;
-		bool HandleCommand(ControllerButton button, KeyState state, Command* command, int playerIdx);
+		bool IsKeyReleased(Uint8 key) const;
+
+		bool HandleCommand(ControllerButton button, unsigned char key, KeyState state, Command* command, int playerIdx);
 
 
 
@@ -61,7 +66,8 @@ namespace dae
 		class InputManagerImpl;
 		std::unique_ptr<InputManagerImpl> m_pPimpl;
 	private:
+		bool m_KeyBoardKeys[322];
 		//TODO: find way to make value(command) unique pointer while stil being able to dynamically add players
-		std::vector<std::map<std::pair<ControllerButton, KeyState>, std::shared_ptr<Command>>> m_CommandContainer;
+		std::vector<std::map<std::pair<std::pair<ControllerButton, unsigned char>, KeyState>, std::shared_ptr<Command>>> m_CommandContainer;
 	};
 }

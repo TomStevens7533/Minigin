@@ -17,11 +17,14 @@ namespace dae {
 		m_SpriteComponent->AddAnimation("Move", 3, 0, 6, 1);
 		m_SpriteComponent->AddAnimation("MoveForward", 6, 0, 9, 1);
 
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_EAST, new DamageCommand(healthCom, 10), KeyState::PRESSED);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT, new MoveLeftCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, new MoveRightCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP, new MoveUpCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN, new MoveDownCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_EAST, 'A', new DamageCommand(healthCom, 10), KeyState::PRESSED);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT,37, new MoveLeftCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP,38, new MoveUpCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN,40, new MoveDownCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
+
+
+
 
 	}
 

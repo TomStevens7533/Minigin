@@ -13,8 +13,6 @@ namespace dae {
 
 		~Animation();
 
-
-
 		void Update();
 		void Render(Transform tr, bool isFlip) const;
 

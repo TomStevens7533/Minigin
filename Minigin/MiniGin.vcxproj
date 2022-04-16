@@ -233,6 +233,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="PetterPepperComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RigidbodyComponent.h" />
+    <ClInclude Include="ScaneCodes.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
