@@ -23,6 +23,7 @@
 #include "SpriteComponent.h"
 #include "RigidbodyComponent.h"
 #include "PetterPepperComponent.h"
+#include "LadderComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -152,9 +153,6 @@ static void CreatePlayer(int amount = 1) {
 
 
 
-
-
-
 		auto* scoreCommand = new IncreaseScoreCommand(100, textComp);
 		scoreCommand->addObserver(scoreDisplayComponent);
 		inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_NORTH, 'Z', scoreCommand, KeyState::PRESSED);
@@ -194,6 +192,19 @@ void dae::Minigin::LoadGame() const
 	//player creation
 	CreatePlayer(1);
 
+	//lader test
+	auto goLadder = std::make_shared<dae::GameObject>();
+	auto ladderComp = std::make_shared<LadderComponent>(5, 5);
+	texComp = std::make_shared<TextureComponent>();
+	texComp->SetTexture("ladder.png");
+
+
+	goLadder->AddComponent<LadderComponent>(ladderComp);
+	goLadder->AddComponent<TextureComponent>(texComp);
+
+	goLadder->SetPosition(10, 50);
+
+	scene.Add(goLadder);
 	//Call start after everything is initialized
 	scene.Start();
 

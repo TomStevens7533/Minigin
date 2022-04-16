@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneManager.h"
+#include "Grid.h"
 
 namespace dae
 {
@@ -31,6 +32,8 @@ namespace dae
 
 		std::string m_Name;
 		std::vector < std::shared_ptr<SceneObject>> m_Objects{};
+		Grid m_SceneGrid;
+
 
 		static unsigned int m_IdCounter; 
 	};

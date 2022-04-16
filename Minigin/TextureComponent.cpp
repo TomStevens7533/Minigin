@@ -13,6 +13,13 @@ namespace dae {
 	TextureComponent::TextureComponent()
 	{
 	}
+	void TextureComponent::SetTexture(std::shared_ptr<Texture2D> newTexture)
+	{
+		m_Texture.reset();
+		m_Texture = newTexture;
+		m_pRenderComponent->SetData(m_Texture.get());
+
+	}
 	void TextureComponent::Start()
 	{
 		m_pRenderComponent = (m_pParent->AddOrGetComponent<dae::RenderComponent>());
