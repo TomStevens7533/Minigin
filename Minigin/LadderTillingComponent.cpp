@@ -1,20 +1,20 @@
 #include "MiniginPCH.h"
-#include "LadderComponent.h"
+#include "LadderTillingComponent.h"
 #include "GameObject.h"
 #include "TextureComponent.h"
 #include "Renderer.h"
 
-dae::LadderComponent::LadderComponent(int steps, int whiteSpace) : m_heightSteps{steps}, m_WhiteSpace{whiteSpace}
+dae::LadderTillingComponent::LadderTillingComponent(int steps, int whiteSpace) : m_heightSteps{steps}, m_WhiteSpace{whiteSpace}
 {
 
 }
 
-void dae::LadderComponent::LateUpdate()
+void dae::LadderTillingComponent::LateUpdate()
 {
 
 }
 
-void dae::LadderComponent::Start()
+void dae::LadderTillingComponent::Start()
 {
 	TextureComponent* texComp = m_pParent->GetComponent<TextureComponent>();
 	SDL_Renderer* renderer = dae::Renderer::GetInstance().GetSDLRenderer();
@@ -25,7 +25,7 @@ void dae::LadderComponent::Start()
 	SDL_Texture* bigTexture = SDL_CreateTexture(renderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, (height + m_WhiteSpace) * m_heightSteps, width);
 	SDL_SetRenderTarget(renderer, bigTexture);
 	//Go over steps to increase texture
-	for (size_t i = 1; i < m_heightSteps + 1; i++)
+	for (size_t i = 0; i < m_heightSteps; i++)
 	{
 		SDL_Rect dstRect;
 		dstRect.x = 0;

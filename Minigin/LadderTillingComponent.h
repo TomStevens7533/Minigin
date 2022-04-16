@@ -2,10 +2,10 @@
 #include "BaseComponent.h"
 
 namespace dae {
-	class LadderComponent : public BaseComponent
+	class LadderTillingComponent : public BaseComponent
 	{
 	public:
-		LadderComponent(int steps, int whiteSpace);
+		LadderTillingComponent(int steps, int whiteSpace);
 		void Render() const override {};
 		void Update() override {};
 		void LateUpdate() override;
