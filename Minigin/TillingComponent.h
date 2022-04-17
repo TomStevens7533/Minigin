@@ -2,17 +2,18 @@
 #include "BaseComponent.h"
 
 namespace dae {
-	class LadderTillingComponent : public BaseComponent
+	class TillingComponent : public BaseComponent
 	{
 	public:
-		LadderTillingComponent(int steps, int whiteSpace);
+		TillingComponent(int steps, int whiteSpace, bool isVertical = true);
 		void Render() const override {};
 		void Update() override {};
 		void LateUpdate() override;
 		virtual void Start() override;
 	private:
-		std::string m_Path;
-		int m_heightSteps;
+		int m_Steps;
 		int m_WhiteSpace;
+		bool m_IsVertical;
+
 	};
 }

@@ -132,7 +132,7 @@
     <ClInclude Include="Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LadderTillingComponent.h">
+    <ClInclude Include="TillingComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -230,7 +230,7 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LadderTillingComponent.cpp">
+    <ClCompile Include="TillingComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

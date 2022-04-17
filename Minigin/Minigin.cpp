@@ -23,7 +23,7 @@
 #include "SpriteComponent.h"
 #include "RigidbodyComponent.h"
 #include "PetterPepperComponent.h"
-#include "LadderTillingComponent.h"
+#include "TillingComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -194,12 +194,12 @@ void dae::Minigin::LoadGame() const
 
 	//lader test
 	auto goLadder = std::make_shared<dae::GameObject>();
-	auto ladderComp = std::make_shared<LadderTillingComponent>(5, 5);
+	auto ladderComp = std::make_shared<TillingComponent>(5, 5);
 	texComp = std::make_shared<TextureComponent>();
 	texComp->SetTexture("ladder.png");
 
 
-	goLadder->AddComponent<LadderTillingComponent>(ladderComp);
+	goLadder->AddComponent<TillingComponent>(ladderComp);
 	goLadder->AddComponent<TextureComponent>(texComp);
 
 	goLadder->SetPosition(10, 50);
