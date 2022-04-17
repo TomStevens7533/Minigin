@@ -12,6 +12,8 @@ namespace dae
 		explicit Texture2D(SDL_Texture* texture);
 		~Texture2D();
 
+		glm::vec2 GetDimensions();
+
 		Texture2D(const Texture2D &) = delete;
 		Texture2D(Texture2D &&) = delete;
 		Texture2D & operator= (const Texture2D &) = delete;

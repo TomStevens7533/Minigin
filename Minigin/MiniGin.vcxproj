@@ -216,7 +216,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="Achievment.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="BaseComponent.h" />
-    <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Font.h" />
@@ -255,7 +255,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
   <ItemGroup>
     <ClCompile Include="Achievment.cpp" />
     <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="BoxCollider.cpp" />
+    <ClCompile Include="BoxColliderComponent.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Font.cpp" />

@@ -66,8 +66,8 @@ namespace dae {
 	void Animation::Render(Transform tr, bool isFlip) const
 	{
 		SDL_Rect dstRect{};
-		dstRect.x = static_cast<int>(std::round(tr.GetPosition().x));
-		dstRect.y = static_cast<int>(std::round(tr.GetPosition().y));
+		dstRect.x = static_cast<int>(std::round(tr.GetPosition().x) - m_RectToDraw.width);
+		dstRect.y = static_cast<int>(std::round(tr.GetPosition().y) - m_RectToDraw.height);
 		dstRect.w = static_cast<int>(m_RectToDraw.width);
 		dstRect.h = static_cast<int>(m_RectToDraw.height);
 

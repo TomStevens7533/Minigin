@@ -10,6 +10,11 @@ namespace dae {
 		void Update() override {};
 		void LateUpdate() override;
 		virtual void Start() override;
+		
+		int GetTileAmount() { return m_Steps; };
+		int GetWhiteSpace() { return m_WhiteSpace; };
+		bool IsVertical() { return m_IsVertical; }
+
 	private:
 		int m_Steps;
 		int m_WhiteSpace;

@@ -17,13 +17,21 @@ namespace dae {
 	{
 		m_Texture.reset();
 		m_Texture = newTexture;
-		m_pRenderComponent->SetData(m_Texture.get());
+		RenderComponent* renderComponent = (m_pParent->AddOrGetComponent<dae::RenderComponent>());
+
+		renderComponent->SetData(m_Texture.get());
 
 	}
+
+	glm::vec2 TextureComponent::GetDimensions()
+	{
+		return m_Texture->GetDimensions();
+	}
+
 	void TextureComponent::Start()
 	{
-		m_pRenderComponent = (m_pParent->AddOrGetComponent<dae::RenderComponent>());
-		m_pRenderComponent->SetData(m_Texture.get());
+		RenderComponent* renderComponent = (m_pParent->AddOrGetComponent<dae::RenderComponent>());
+		renderComponent->SetData(m_Texture.get());
 	}
 	TextureComponent::~TextureComponent()
 	{
@@ -32,21 +40,6 @@ namespace dae {
 	void TextureComponent::SetTexture(const std::string& filename)
 	{
 		m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
-	}
-
-	void TextureComponent::Render() const
-	{
-		m_pRenderComponent->Render();
-	}
-
-	void TextureComponent::Update()
-	{
-
-	}
-
-	void TextureComponent::LateUpdate()
-	{
-
 	}
 
 };

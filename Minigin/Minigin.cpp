@@ -24,6 +24,7 @@
 #include "RigidbodyComponent.h"
 #include "PetterPepperComponent.h"
 #include "TillingComponent.h"
+#include "BoxColliderComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -160,6 +161,8 @@ static void CreatePlayer(int amount = 1) {
 		healthComponent->SetHealth(10);
 		healthComponent->SetLives(5);
 
+		PeterPepper->SetPosition(10, 50);
+
 
 		scene->Add(PeterPepper);
 
@@ -189,22 +192,37 @@ void dae::Minigin::LoadGame() const
 	goChild->SetPosition(glm::vec2{ 216, 180 });
 	goChild->AddComponent<TextureComponent>(texComp);
 
-	//player creation
-	CreatePlayer(1);
-
 	//lader test
 	auto goLadder = std::make_shared<dae::GameObject>();
 	auto ladderComp = std::make_shared<TillingComponent>(5, 5);
 	texComp = std::make_shared<TextureComponent>();
 	texComp->SetTexture("ladder.png");
-
-
 	goLadder->AddComponent<TillingComponent>(ladderComp);
 	goLadder->AddComponent<TextureComponent>(texComp);
 
-	goLadder->SetPosition(10, 50);
-
+	goLadder->SetPosition(10, 10);
 	scene.Add(goLadder);
+
+
+	auto goFloor = std::make_shared<dae::GameObject>();
+	auto tillComp = std::make_shared<TillingComponent>(5, 0, false);
+	texComp = std::make_shared<TextureComponent>();
+	texComp->SetTexture("Walkable.png");
+	auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions());
+
+	goFloor->AddComponent<TillingComponent>(tillComp);
+	goFloor->AddComponent<TextureComponent>(texComp);
+	goFloor->AddComponent<BoxColliderComponent>(goBoxColl);
+
+
+	goFloor->SetPosition(10, 50);
+	scene.Add(goFloor);
+
+
+
+	//player creation
+	CreatePlayer(1);
+
 	//Call start after everything is initialized
 	scene.Start();
 

@@ -21,6 +21,8 @@ namespace dae
 
 		inline std::string GetSceneName() { return m_Name; }
 
+		Grid* GetSceneGrid() { return &m_SceneGrid; };
+
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
@@ -33,8 +35,6 @@ namespace dae
 		std::string m_Name;
 		std::vector < std::shared_ptr<SceneObject>> m_Objects{};
 		Grid m_SceneGrid;
-
-
 		static unsigned int m_IdCounter; 
 	};
 

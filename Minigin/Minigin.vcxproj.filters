@@ -120,7 +120,7 @@
     <ClInclude Include="PetterPepperComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BoxCollider.h">
+    <ClInclude Include="BoxColliderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="structs.h">
@@ -218,7 +218,7 @@
     <ClCompile Include="Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BoxCollider.cpp">
+    <ClCompile Include="BoxColliderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="PetterPepperComponent.cpp">
