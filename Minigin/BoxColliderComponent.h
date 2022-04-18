@@ -5,8 +5,8 @@ namespace dae {
 	class BoxColliderComponent : public BaseComponent
 	{
 	public:
-		BoxColliderComponent(int width, int height);
-		BoxColliderComponent(glm::vec2 dimensions);
+		BoxColliderComponent(int width, int height, std::string tag, int precision = 0);
+		BoxColliderComponent(glm::vec2 dimensions, std::string tag, int precision = 0);
 
 		void Render() const override {};
 		void Update() override {};
@@ -22,5 +22,7 @@ namespace dae {
 
 	private:
 		glm::vec2 m_Dimensions;
+		std::string m_ColliderTag;
+		int m_Precision{};
 	};
 }

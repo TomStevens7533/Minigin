@@ -161,7 +161,7 @@ static void CreatePlayer(int amount = 1) {
 		healthComponent->SetHealth(10);
 		healthComponent->SetLives(5);
 
-		PeterPepper->SetPosition(10, 50);
+		PeterPepper->SetPosition(20, 100);
 
 
 		scene->Add(PeterPepper);
@@ -194,13 +194,17 @@ void dae::Minigin::LoadGame() const
 
 	//lader test
 	auto goLadder = std::make_shared<dae::GameObject>();
-	auto ladderComp = std::make_shared<TillingComponent>(5, 5);
+	auto ladderComp = std::make_shared<TillingComponent>(6, 5);
 	texComp = std::make_shared<TextureComponent>();
 	texComp->SetTexture("ladder.png");
+	auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Ladder");
+
 	goLadder->AddComponent<TillingComponent>(ladderComp);
 	goLadder->AddComponent<TextureComponent>(texComp);
+	goLadder->AddComponent<BoxColliderComponent>(goBoxColl);
 
-	goLadder->SetPosition(10, 10);
+
+	goLadder->SetPosition(10, 60);
 	scene.Add(goLadder);
 
 
@@ -208,16 +212,29 @@ void dae::Minigin::LoadGame() const
 	auto tillComp = std::make_shared<TillingComponent>(5, 0, false);
 	texComp = std::make_shared<TextureComponent>();
 	texComp->SetTexture("Walkable.png");
-	auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions());
+	goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Floor", 5);
 
 	goFloor->AddComponent<TillingComponent>(tillComp);
 	goFloor->AddComponent<TextureComponent>(texComp);
 	goFloor->AddComponent<BoxColliderComponent>(goBoxColl);
 
 
-	goFloor->SetPosition(10, 50);
+	goFloor->SetPosition(10, 100);
 	scene.Add(goFloor);
 
+	goFloor = std::make_shared<dae::GameObject>();
+	tillComp = std::make_shared<TillingComponent>(5, 0, false);
+	texComp = std::make_shared<TextureComponent>();
+	texComp->SetTexture("Walkable.png");
+	goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Floor", 5);
+
+	goFloor->AddComponent<TillingComponent>(tillComp);
+	goFloor->AddComponent<TextureComponent>(texComp);
+	goFloor->AddComponent<BoxColliderComponent>(goBoxColl);
+
+
+	goFloor->SetPosition(10, 60);
+	scene.Add(goFloor);
 
 
 	//player creation

@@ -17,6 +17,7 @@ namespace dae {
 		bool AddAnimation(const std::string key,int starCol, int startRow, int endCol, int endRow);
 		void SetActiveAnimation(std::string key);
 		void SetFlipState(bool isFlip = true) { m_IsFlipped = isFlip; };
+		glm::vec2 GetCurrentAnimDimensions();
 
 		void Render() const override;
 		void Update() override;

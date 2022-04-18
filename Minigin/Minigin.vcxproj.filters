@@ -129,7 +129,7 @@
     <ClInclude Include="KeyCodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
+    <ClInclude Include="SceneColliders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TillingComponent.h">
@@ -227,7 +227,7 @@
     <ClCompile Include="Command.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
+    <ClCompile Include="SceneColliders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TillingComponent.cpp">

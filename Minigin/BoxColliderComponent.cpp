@@ -24,17 +24,21 @@ void dae::BoxColliderComponent::Start()
 			m_Dimensions.x = (whiteSpace + m_Dimensions.x) * tileAmount;
 	}
 	//Set grid to impassable
-	Grid* currGrid = m_pParent->GetScene()->GetSceneGrid();
+	ColliderInfo info;
 	glm::vec3 goPos = m_pParent->GetTransform().GetPosition();
-	currGrid->SetTerrain(glm::vec2{ goPos.x, goPos.y }, m_Dimensions);
+	info.m_ColliderRect = Rectf{ goPos.x - m_Precision, goPos.y - m_Precision, m_Dimensions.x + m_Precision, m_Dimensions.y + m_Precision };
+	info.tag = m_ColliderTag;
+	m_pParent->GetScene()->AddColliderToScene(info);
 }
 
-dae::BoxColliderComponent::BoxColliderComponent(int width, int height) : m_Dimensions{width, height}
+dae::BoxColliderComponent::BoxColliderComponent(int width, int height, std::string tag, int precision)
+	: m_Dimensions{width, height}, m_ColliderTag{ tag }, m_Precision{precision}
 {
 
 }
 
-dae::BoxColliderComponent::BoxColliderComponent(glm::vec2 dimensions) : m_Dimensions{dimensions}
+dae::BoxColliderComponent::BoxColliderComponent(glm::vec2 dimensions, std::string tag, int precision)
+	: m_Dimensions{dimensions}, m_ColliderTag{tag}, m_Precision{ precision }
 {
 
 }

@@ -1,8 +1,12 @@
 #include "MiniginPCH.h"
 #include "PetterPepperComponent.h"
+#include "SpriteComponent.h"
+#include "RigidbodyComponent.h"
 #include "InputComponent.h"
 #include "GameObject.h"
 #include "Command.cpp"
+#include "SceneObject.h"
+#include "Scene.h"
 
 namespace dae {
 	void PetterPepperComponent::Start()
@@ -10,7 +14,8 @@ namespace dae {
 		m_InputComponent = GetAttachedGameObject()->GetComponent<InputComponent>();
 		auto healthCom = GetAttachedGameObject()->GetComponent<HealthComponent>();
 		m_SpriteComponent = GetAttachedGameObject()->GetComponent<SpriteComponent>();
-		auto rigidCom = GetAttachedGameObject()->GetComponent<RigidbodyComponent>();
+		m_RigidBodyComp = GetAttachedGameObject()->GetComponent<RigidbodyComponent>();
+
 
 		//Anims
 		m_SpriteComponent->AddAnimation("MoveBackwards", 0, 0, 3, 1);
@@ -18,10 +23,10 @@ namespace dae {
 		m_SpriteComponent->AddAnimation("MoveForward", 6, 0, 9, 1);
 
 		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_EAST, 'A', new DamageCommand(healthCom, 10), KeyState::PRESSED);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT,37, new MoveLeftCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP,38, new MoveUpCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN,40, new MoveDownCommand(rigidCom, m_SpriteComponent), KeyState::DOWN);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT,37, new MoveLeftCommand(this), KeyState::DOWN);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightCommand(this), KeyState::DOWN);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP,38, new MoveUpCommand(this), KeyState::DOWN);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN,40, new MoveDownCommand(this), KeyState::DOWN);
 
 
 
@@ -43,6 +48,60 @@ namespace dae {
 	void PetterPepperComponent::Render() const
 	{
 
+	}
+
+	//Movement
+	void PetterPepperComponent::MoveLeft()
+	{
+		glm::vec2 getCurrDimensions = m_SpriteComponent->GetCurrentAnimDimensions();
+		glm::vec3 newPos = GetAttachedGameObject()->GetTransform().GetPosition();
+		ColliderInfo* info = m_pParent->GetScene()->IsPointInCollider(glm::vec2{ newPos.x - getCurrDimensions.x, newPos.y }, "Floor");
+
+		if (info != nullptr) {
+			m_SpriteComponent->SetFlipState(false);
+			m_SpriteComponent->SetActiveAnimation("Move");
+			m_RigidBodyComp->SetVelocityX(-500.f);
+		}
+
+	}
+
+	void PetterPepperComponent::MoveUp()
+	{
+		glm::vec2 getCurrDimensions = m_SpriteComponent->GetCurrentAnimDimensions();
+		glm::vec3 newPos = GetAttachedGameObject()->GetTransform().GetPosition();
+		
+		//Get bottom center of petter pepper
+		ColliderInfo* info = m_pParent->GetScene()->IsPointInCollider(glm::vec2{ newPos.x - (getCurrDimensions.x / 2.f), newPos.y }, "Ladder");
+		if (info != nullptr) {
+			m_SpriteComponent->SetActiveAnimation("MoveForward");
+			m_RigidBodyComp->SetVelocityY(-500.f);
+		}
+
+
+	}
+
+	void PetterPepperComponent::MoveRight()
+	{
+		glm::vec3 newPos = GetAttachedGameObject()->GetTransform().GetPosition();
+		ColliderInfo* info = m_pParent->GetScene()->IsPointInCollider(glm::vec2{ newPos.x, newPos.y }, "Floor");
+		
+		if (info != nullptr) {
+			m_SpriteComponent->SetActiveAnimation("Move");
+			m_SpriteComponent->SetFlipState(true);
+			m_RigidBodyComp->SetVelocityX(500.f);
+		}
+	}
+
+	void PetterPepperComponent::MoveDown()
+	{
+		glm::vec2 getCurrDimensions = m_SpriteComponent->GetCurrentAnimDimensions();
+		glm::vec3 newPos = GetAttachedGameObject()->GetTransform().GetPosition();
+
+		ColliderInfo* info = m_pParent->GetScene()->IsPointInCollider(glm::vec2{ newPos.x - (getCurrDimensions.x / 2.f), newPos.y + (getCurrDimensions.y / 2.f) }, "Ladder");
+		if (info != nullptr) {
+			m_SpriteComponent->SetActiveAnimation("MoveBackwards");
+			m_RigidBodyComp->SetVelocityY(500.f);
+		}
 	}
 
 }

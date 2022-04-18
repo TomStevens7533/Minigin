@@ -65,6 +65,11 @@ void dae::SpriteComponent::SetActiveAnimation(std::string key)
 	m_ActiveAnimation = &m_AnimationMap.at(key);
 }
 
+glm::vec2 dae::SpriteComponent::GetCurrentAnimDimensions()
+{
+	return m_ActiveAnimation->GetCurrentDimensions();
+}
+
 void dae::SpriteComponent::Render() const
 {
 	m_ActiveAnimation->Render(m_pParent->GetTransform(), m_IsFlipped);

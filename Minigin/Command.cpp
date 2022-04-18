@@ -1,46 +1,36 @@
 #include "MiniginPCH.h"
 #include "Command.h"
-#include "RigidbodyComponent.h"
-#include "SpriteComponent.h"
+#include "PetterPepperComponent.h"
 #include "HealthComponent.h"
 class MoveRightCommand : public Command {
 public:
-	MoveRightCommand(dae::RigidbodyComponent* componentToDamage, dae::SpriteComponent* spriteComp)
-		: m_Component{ componentToDamage }, m_SpriteComp{ spriteComp } {};
+	MoveRightCommand(dae::PetterPepperComponent* peterComp)
+		: m_PeterComp{ peterComp } {};
 	virtual void Excecute() {
-		m_Component->SetVelocityX(500.f);
-		m_SpriteComp->SetActiveAnimation("Move");
-		m_SpriteComp->SetFlipState(true);
+		m_PeterComp->MoveRight();
 	}
 private:
-	dae::SpriteComponent* m_SpriteComp;
-	dae::RigidbodyComponent* m_Component;
+	dae::PetterPepperComponent* m_PeterComp;
 };
 class MoveUpCommand : public Command {
 public:
-	MoveUpCommand(dae::RigidbodyComponent* componentToDamage, dae::SpriteComponent* spriteComp)
-		: m_Component{ componentToDamage }, m_SpriteComp{ spriteComp }{};
+	MoveUpCommand(dae::PetterPepperComponent* peterComp)
+		: m_PeterComp{ peterComp } {};
 	virtual void Excecute() {
-		m_Component->SetVelocityY(-500.f);
-		m_SpriteComp->SetActiveAnimation("MoveForward");
-
+		m_PeterComp->MoveUp();
 	}
 private:
-	dae::SpriteComponent* m_SpriteComp;
-	dae::RigidbodyComponent* m_Component;
+	dae::PetterPepperComponent* m_PeterComp;
 };
 class MoveDownCommand : public Command {
 public:
-	MoveDownCommand(dae::RigidbodyComponent* componentToDamage, dae::SpriteComponent* spriteComp)
-		: m_Component{ componentToDamage }, m_SpriteComp{ spriteComp }{};
+	MoveDownCommand(dae::PetterPepperComponent* peterComp)
+	: m_PeterComp{ peterComp } {};
 	virtual void Excecute() {
-		m_Component->SetVelocityY(500.f);
-		m_SpriteComp->SetActiveAnimation("MoveBackwards");
-
+		m_PeterComp->MoveDown();
 	}
 private:
-	dae::RigidbodyComponent* m_Component;
-	dae::SpriteComponent* m_SpriteComp;
+	dae::PetterPepperComponent* m_PeterComp;
 };
 class DamageCommand : public Command {
 public:
@@ -54,14 +44,11 @@ private:
 };
 class MoveLeftCommand : public Command {
 public:
-	MoveLeftCommand(dae::RigidbodyComponent* componentToDamage, dae::SpriteComponent* spriteComp)
-		: m_Component{ componentToDamage }, m_SpriteComp{ spriteComp } {};
+	MoveLeftCommand(dae::PetterPepperComponent* peterComp)
+		: m_PeterComp{ peterComp } {};
 	virtual void Excecute() {
-		m_Component->SetVelocityX(-500.f);
-		m_SpriteComp->SetActiveAnimation("Move");
-		m_SpriteComp->SetFlipState(false);
+		m_PeterComp->MoveLeft();
 	}
 private:
-	dae::SpriteComponent* m_SpriteComp;
-	dae::RigidbodyComponent* m_Component;
+	dae::PetterPepperComponent* m_PeterComp;
 };

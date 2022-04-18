@@ -81,4 +81,13 @@ namespace dae {
 	}
 
 
+	glm::vec2 Animation::GetCurrentDimensions()
+	{
+		glm::vec2 totalDim = m_AnimationSprite->GetDimensions();
+		totalDim.x /= m_Cols;
+		totalDim.y /= m_Rows;
+
+		return totalDim;
+	}
+
 }

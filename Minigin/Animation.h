@@ -15,6 +15,7 @@ namespace dae {
 
 		void Update();
 		void Render(Transform tr, bool isFlip) const;
+		glm::vec2 GetCurrentDimensions();
 
 	private:
 		std::shared_ptr<Texture2D> m_AnimationSprite;

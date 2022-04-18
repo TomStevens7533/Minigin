@@ -7,16 +7,13 @@
 void dae::RigidbodyComponent::LateUpdate()
 {
 	Transform& tr = m_pParent->GetTransform();
-	Grid* currGrid = m_pParent->GetScene()->GetSceneGrid();
 	glm::vec2 newPos;
 	newPos = tr.GetPosition();
 
-	//If is on ground move
-	if (currGrid->IsHittingTerrain(glm::vec2{ tr.GetPosition().x, tr.GetPosition().y }, glm::vec2(0, -1))) {
-		newPos.x += m_Velocity.x * dae::Time::GetInstance().GetDeltaTime();
-		newPos.y += m_Velocity.y * dae::Time::GetInstance().GetDeltaTime();
-		tr.SetPosition(newPos.x, newPos.y, 0.f);
-	}
+	newPos.x += m_Velocity.x * dae::Time::GetInstance().GetDeltaTime();
+	newPos.y += m_Velocity.y * dae::Time::GetInstance().GetDeltaTime();
+	tr.SetPosition(newPos.x, newPos.y, 0.f);
+	
 	m_Velocity = glm::vec2{ 0,0 };
 }
 
