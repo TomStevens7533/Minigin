@@ -222,7 +222,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="JsonParser.h" />
+    <ClInclude Include="Parser.h" />
     <ClInclude Include="SceneColliders.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="InputComponent.h" />
@@ -262,7 +262,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="JsonParser.cpp" />
+    <ClCompile Include="Parser.cpp" />
     <ClCompile Include="SceneColliders.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="InputComponent.cpp" />

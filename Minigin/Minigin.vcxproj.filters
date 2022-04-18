@@ -135,7 +135,7 @@
     <ClInclude Include="TillingComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="JsonParser.h">
+    <ClInclude Include="Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -236,7 +236,7 @@
     <ClCompile Include="TillingComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="JsonParser.cpp">
+    <ClCompile Include="Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

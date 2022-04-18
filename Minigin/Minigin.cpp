@@ -25,8 +25,7 @@
 #include "PetterPepperComponent.h"
 #include "TillingComponent.h"
 #include "BoxColliderComponent.h"
-#include "JsonParser.h"
-
+#include "Parser.h"
 
 using namespace std;
 using namespace dae;
@@ -239,9 +238,9 @@ void dae::Minigin::LoadGame() const
 	goFloor->SetPosition(10, 60);
 	scene.Add(goFloor);
 
-	JsonParser pr("../Data/Level_1.json");
+	Parser pr("../Data/Level_1.json");
 
-	for (auto& mapElement : pr.GetObjectMap()) {
+	for (auto& mapElement : pr.GeLevelObject()) {
 		//Player Creation
 		if (mapElement.first == "PeterPepperPrefab") {
 			CreatePlayer(mapElement.second);

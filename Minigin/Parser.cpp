@@ -1,5 +1,5 @@
 #include "MiniginPCH.h"
-#include "JsonParser.h"
+#include "Parser.h"
 #include "document.h"
 #include <iostream>
 #include <fstream>
@@ -8,16 +8,26 @@
 using namespace dae;
 using namespace rapidjson;
 
-JsonParser::JsonParser(std::string jsonPath) 
+class Parser::ParserImpl
 {
-	ParseLevelFile(jsonPath);
-}
+public:
+	ParserImpl(std::string path);
+	std::map<std::string, std::vector<glm::vec2>>& GetObjectMapImpl()  { return m_ObjectMap; };
+private:
+	void ParseLevelFileImpl(std::string path);
+private:
+	std::map<std::string, std::vector<glm::vec2>> m_ObjectMap;
+};
 
-void dae::JsonParser::ParseLevelFile(std::string jsonPath)
+Parser::ParserImpl::ParserImpl(std::string path)
 {
-	std::ifstream file{ jsonPath };
+	ParseLevelFileImpl(path);
+}
+void Parser::ParserImpl::ParseLevelFileImpl(std::string path)
+{
+	std::ifstream file{ path };
 	if (!file.is_open())
-		throw JsonParserException("Unable to open file " + jsonPath);
+		throw ParserException("Unable to open file " + path);
 
 	// read the file contents
 	std::stringstream contents;
@@ -43,7 +53,7 @@ void dae::JsonParser::ParseLevelFile(std::string jsonPath)
 				for (SizeType x = 0; x < posArray.Size(); x++)
 				{
 					if (posArray[x].Size() != 2)
-						throw JsonParserException("Not correct format for needed positions: size of pos array needs to be 2");
+						throw ParserException("Not correct format for needed positions: size of pos array needs to be 2");
 					glm::vec2 newPos;
 					newPos.x = posArray[x][0].GetFloat();
 					newPos.y = posArray[x][1].GetFloat();
@@ -54,10 +64,20 @@ void dae::JsonParser::ParseLevelFile(std::string jsonPath)
 				objName = memIt->value.GetString();
 			}
 			else {
-				throw JsonParserException("Unsupported type");
+				throw ParserException("Unsupported type");
 			}
 		}
 		m_ObjectMap.insert(std::make_pair(objName, posVec));
 	}
+}
+
+Parser::Parser(std::string path) : m_pPimpl { new ParserImpl(path)}
+{
+
+}
+
+std::map<std::string, std::vector<glm::vec2>>& Parser::GeLevelObject()
+{
+	return m_pPimpl->GetObjectMapImpl();
 }
 
