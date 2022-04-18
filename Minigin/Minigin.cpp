@@ -85,7 +85,50 @@ void dae::Minigin::Initialize()
 
 
 }
+static void CreateLadder(std::vector<glm::vec2>& posVec, int tilling) {
+	auto scene = SceneManager::GetInstance().GetScene("Demo");
+	//lader creation
 
+	for (size_t i = 0; i < posVec.size(); i++)
+	{
+		auto goLadder = std::make_shared<dae::GameObject>();
+		auto ladderComp = std::make_shared<TillingComponent>(tilling, 5);
+		auto texComp = std::make_shared<TextureComponent>();
+		texComp->SetTexture("ladder.png");
+		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Ladder");
+
+		goLadder->AddComponent<TillingComponent>(ladderComp);
+		goLadder->AddComponent<TextureComponent>(texComp);
+		goLadder->AddComponent<BoxColliderComponent>(goBoxColl);
+
+
+		goLadder->SetPosition(posVec[i]);
+		scene->Add(goLadder);
+	}
+	
+}
+
+static void CreatePlatform(std::vector<glm::vec2>& posVec, int tilling) {
+
+	auto scene = SceneManager::GetInstance().GetScene("Demo");
+	for (size_t i = 0; i < posVec.size(); i++)
+	{
+		auto goFloor = std::make_shared<dae::GameObject>();
+		auto tillComp = std::make_shared<TillingComponent>(tilling, 0, false);
+		auto texComp = std::make_shared<TextureComponent>();
+		texComp->SetTexture("Walkable.png");
+		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Floor", 5);
+
+		goFloor->AddComponent<TillingComponent>(tillComp);
+		goFloor->AddComponent<TextureComponent>(texComp);
+		goFloor->AddComponent<BoxColliderComponent>(goBoxColl);
+
+
+		goFloor->SetPosition(posVec[i]);
+		scene->Add(goFloor);
+	}
+
+}
 /**
  * Code constructing the scene world starts here
  */
@@ -194,49 +237,8 @@ void dae::Minigin::LoadGame() const
 	goChild->SetPosition(glm::vec2{ 216, 180 });
 	goChild->AddComponent<TextureComponent>(texComp);
 
-	//lader test
-	auto goLadder = std::make_shared<dae::GameObject>();
-	auto ladderComp = std::make_shared<TillingComponent>(6, 5);
-	texComp = std::make_shared<TextureComponent>();
-	texComp->SetTexture("ladder.png");
-	auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Ladder");
+	
 
-	goLadder->AddComponent<TillingComponent>(ladderComp);
-	goLadder->AddComponent<TextureComponent>(texComp);
-	goLadder->AddComponent<BoxColliderComponent>(goBoxColl);
-
-
-	goLadder->SetPosition(10, 60);
-	scene.Add(goLadder);
-
-
-	auto goFloor = std::make_shared<dae::GameObject>();
-	auto tillComp = std::make_shared<TillingComponent>(5, 0, false);
-	texComp = std::make_shared<TextureComponent>();
-	texComp->SetTexture("Walkable.png");
-	goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Floor", 5);
-
-	goFloor->AddComponent<TillingComponent>(tillComp);
-	goFloor->AddComponent<TextureComponent>(texComp);
-	goFloor->AddComponent<BoxColliderComponent>(goBoxColl);
-
-
-	goFloor->SetPosition(10, 100);
-	scene.Add(goFloor);
-
-	goFloor = std::make_shared<dae::GameObject>();
-	tillComp = std::make_shared<TillingComponent>(5, 0, false);
-	texComp = std::make_shared<TextureComponent>();
-	texComp->SetTexture("Walkable.png");
-	goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Floor", 5);
-
-	goFloor->AddComponent<TillingComponent>(tillComp);
-	goFloor->AddComponent<TextureComponent>(texComp);
-	goFloor->AddComponent<BoxColliderComponent>(goBoxColl);
-
-
-	goFloor->SetPosition(10, 60);
-	scene.Add(goFloor);
 
 	Parser pr("../Data/Level_1.json");
 
@@ -244,6 +246,18 @@ void dae::Minigin::LoadGame() const
 		//Player Creation
 		if (mapElement.first == "PeterPepperPrefab") {
 			CreatePlayer(mapElement.second);
+		}
+		else if (mapElement.first == "PlatformSoloPrefab") {
+			CreatePlatform(mapElement.second, 2);
+		}
+		else if (mapElement.first == "PlatformLongPrefab") {
+			CreatePlatform(mapElement.second, 10);
+		}
+		else if (mapElement.first == "LadderLongPrefab") {
+			CreateLadder(mapElement.second, 12);
+		}
+		else if (mapElement.first == "LadderShortPrefab") {
+			CreateLadder(mapElement.second, 10);
 		}
 	}
 

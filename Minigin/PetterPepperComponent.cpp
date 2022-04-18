@@ -60,7 +60,7 @@ namespace dae {
 		if (info != nullptr) {
 			m_SpriteComponent->SetFlipState(false);
 			m_SpriteComponent->SetActiveAnimation("Move");
-			m_RigidBodyComp->SetVelocityX(-500.f);
+			m_RigidBodyComp->SetVelocityX(-5.f);
 		}
 
 	}
@@ -74,7 +74,7 @@ namespace dae {
 		ColliderInfo* info = m_pParent->GetScene()->IsPointInCollider(glm::vec2{ newPos.x - (getCurrDimensions.x / 2.f), newPos.y }, "Ladder");
 		if (info != nullptr) {
 			m_SpriteComponent->SetActiveAnimation("MoveForward");
-			m_RigidBodyComp->SetVelocityY(-500.f);
+			m_RigidBodyComp->SetVelocityY(-5.f);
 		}
 
 
@@ -88,7 +88,7 @@ namespace dae {
 		if (info != nullptr) {
 			m_SpriteComponent->SetActiveAnimation("Move");
 			m_SpriteComponent->SetFlipState(true);
-			m_RigidBodyComp->SetVelocityX(500.f);
+			m_RigidBodyComp->SetVelocityX(5.f);
 		}
 	}
 
@@ -100,7 +100,7 @@ namespace dae {
 		ColliderInfo* info = m_pParent->GetScene()->IsPointInCollider(glm::vec2{ newPos.x - (getCurrDimensions.x / 2.f), newPos.y + (getCurrDimensions.y / 2.f) }, "Ladder");
 		if (info != nullptr) {
 			m_SpriteComponent->SetActiveAnimation("MoveBackwards");
-			m_RigidBodyComp->SetVelocityY(500.f);
+			m_RigidBodyComp->SetVelocityY(5.f);
 		}
 	}
 

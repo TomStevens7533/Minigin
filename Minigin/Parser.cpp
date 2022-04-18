@@ -81,3 +81,8 @@ std::map<std::string, std::vector<glm::vec2>>& Parser::GeLevelObject()
 	return m_pPimpl->GetObjectMapImpl();
 }
 
+Parser::~Parser()
+{
+	delete m_pPimpl;
+}
+

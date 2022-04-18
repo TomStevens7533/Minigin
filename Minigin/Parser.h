@@ -16,7 +16,7 @@ namespace dae {
 	{
 	public:
 		Parser(std::string path);
-		~Parser() { delete m_pPimpl; }
+		~Parser();
 		std::map<std::string, std::vector<glm::vec2>>& GeLevelObject();
 	public:
 		Parser(const Parser& other) = delete;
