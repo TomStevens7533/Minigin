@@ -25,6 +25,7 @@
 #include "PetterPepperComponent.h"
 #include "TillingComponent.h"
 #include "BoxColliderComponent.h"
+#include "JsonParser.h"
 
 
 using namespace std;
@@ -89,7 +90,7 @@ void dae::Minigin::Initialize()
 /**
  * Code constructing the scene world starts here
  */
-static void CreatePlayer(int amount = 1) {
+static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 	auto scene = SceneManager::GetInstance().GetScene("Demo");
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 22);
 
@@ -109,7 +110,7 @@ static void CreatePlayer(int amount = 1) {
 	};
 
 	glm::vec2 uiPos = glm::vec2{ 60.f, 20.f };
-	for (size_t i = 0; i < amount; i++)
+	for (size_t i = 0; i < posVec.size(); i++)
 	{
 		glm::vec3 color = { static_cast<float>(rand() % 255), static_cast<float>(rand() % 255), static_cast<float>(rand() % 255) };
 		//UI Creation
@@ -162,7 +163,8 @@ static void CreatePlayer(int amount = 1) {
 		healthComponent->SetHealth(10);
 		healthComponent->SetLives(5);
 
-		PeterPepper->SetPosition(20, 100);
+		glm::vec2 pos = posVec[i];
+		PeterPepper->SetPosition(pos.x, pos.y);
 
 
 		scene->Add(PeterPepper);
@@ -237,9 +239,15 @@ void dae::Minigin::LoadGame() const
 	goFloor->SetPosition(10, 60);
 	scene.Add(goFloor);
 
+	JsonParser pr("../Data/Level_1.json");
 
-	//player creation
-	CreatePlayer(1);
+	for (auto& mapElement : pr.GetObjectMap()) {
+		//Player Creation
+		if (mapElement.first == "PeterPepperPrefab") {
+			CreatePlayer(mapElement.second);
+		}
+	}
+
 
 	//Call start after everything is initialized
 	scene.Start();

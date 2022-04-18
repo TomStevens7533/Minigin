@@ -135,6 +135,9 @@
     <ClInclude Include="TillingComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="JsonParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -232,6 +235,9 @@
     </ClCompile>
     <ClCompile Include="TillingComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonParser.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

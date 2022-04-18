@@ -1,11 +1,7 @@
-{
-    "name" : "PeterPepperPrefab",
-    "Components": [
-        {"PetterPepperComponent" : []},
-        {"SpriteComponent" : ["SpiteSheet.png", 15, 11, 1]},
-        {"InputComponent" : []},
-        {"HealthComponent" : []},
-        {"RigidbodyComponent" : []}
-    ],
-    "Positions" : [[20,100]]
-}
+[
+    {
+        "name" : "PeterPepperPrefab",
+        "Positions" : [[20,100]]
+    }
+    
+]
