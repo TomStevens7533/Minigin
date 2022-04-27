@@ -3,9 +3,9 @@
 #include <thread>
 #include <chrono>
 #include <steam_api.h>
-
 #include "InputManager.h"
 #include "SceneManager.h"
+#include <SDL_mixer.h>
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
@@ -26,6 +26,7 @@
 #include "TillingComponent.h"
 #include "BoxColliderComponent.h"
 #include "Parser.h"
+#include "SDL_mixer.h"
 
 using namespace std;
 using namespace dae;
@@ -81,8 +82,23 @@ void dae::Minigin::Initialize()
 	}
 
 	Renderer::GetInstance().Init(m_Window);
-
-
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
+		printf("Mix_OpenAudio: %s\n", Mix_GetError());
+		exit(2);
+	}
+	losPollos = Mix_LoadWAV_RW(SDL_RWFromFile("../Data/gustavo.wav", "rb"), 1);
+	if (losPollos == nullptr) {
+		std::cerr << Mix_GetError() << std::endl;
+	}
+}
+static void CreateBurger() {
+	auto scene = SceneManager::GetInstance().GetScene("Demo");
+	auto goBurgerPiece = std::make_shared<dae::GameObject>();
+	goBurgerPiece->GetTransform().SetPosition(50, 50,0);
+	auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png", 15, 11, 1.f);
+	goBurgerPiece->AddComponent<SpriteComponent>(spriteComponent);
+	spriteComponent->AddAnimation("Move", 3, 0, 6, 1);
+	scene->Add(goBurgerPiece);
 
 }
 static void CreateLadder(std::vector<glm::vec2>& posVec, int tilling) {
@@ -105,7 +121,7 @@ static void CreateLadder(std::vector<glm::vec2>& posVec, int tilling) {
 		goLadder->SetPosition(posVec[i]);
 		scene->Add(goLadder);
 	}
-	
+
 }
 
 static void CreatePlatform(std::vector<glm::vec2>& posVec, int tilling) {
@@ -261,10 +277,9 @@ void dae::Minigin::LoadGame() const
 		}
 	}
 
-
+	CreateBurger();
 	//Call start after everything is initialized
 	scene.Start();
-
 }
 
 void dae::Minigin::Cleanup()
@@ -288,7 +303,7 @@ void dae::Minigin::Run()
 
 	{
 
-
+		Mix_PlayChannel(-1, losPollos, 0);
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
