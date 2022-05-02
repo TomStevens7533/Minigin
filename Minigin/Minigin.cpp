@@ -2,7 +2,6 @@
 #include "Minigin.h"
 #include <thread>
 #include <chrono>
-#include <steam_api.h>
 #include "InputManager.h"
 #include "SceneManager.h"
 #include <SDL_mixer.h>
@@ -56,17 +55,6 @@ void dae::Minigin::Initialize()
 	PrintSDLVersion();
 
 
-	if (!SteamAPI_Init())
-	{
-		std::cerr << "Fatal Error - Steam must be running to play this game (SteamAPI_Init() failed)." << std::endl;
-	}
-	else
-		std::cout << "Successfully initialized steam." << std::endl;
-
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
-	{
-		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
-	}
 
 	m_Window = SDL_CreateWindow(
 		"Programming 4 assignment",
@@ -284,7 +272,6 @@ void dae::Minigin::LoadGame() const
 
 void dae::Minigin::Cleanup()
 {
-	SteamAPI_Shutdown();
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(m_Window);
 	m_Window = nullptr;
@@ -321,7 +308,6 @@ void dae::Minigin::Run()
 		{
 			//TODO add proper event system to catch user events
 			SDL_PollEvent(&e);
-			SteamAPI_RunCallbacks();
 			if (e.type == SDL_QUIT) {
 				doContinue = false;
 			}

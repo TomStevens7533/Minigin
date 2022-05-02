@@ -43,7 +43,7 @@ private:
 
 InputManager::InputManagerImpl::InputManagerImpl()
 {
-	for (size_t i = 0; i < m_PlayerAmount; i++)
+	for (int i = 0; i < m_PlayerAmount; i++)
 	{
 		ZeroMemory(&m_PreviousStateVec[i], sizeof(XINPUT_STATE));
 		ZeroMemory(&m_CurrentStateVec[i], sizeof(XINPUT_STATE));
@@ -159,7 +159,7 @@ bool InputManager::HandleCommands(int playerIdx)
 
 void dae::InputManager::SetNewPlayerAmount(int playerAmount)
 {
-	for (size_t i = 0; i < (playerAmount - GetDeviceAmount()); i++)
+	for (int i = 0; i < (playerAmount - GetDeviceAmount()); i++)
 	{
 		//TODO: change if uniqueptr
 		m_CommandContainer.emplace_back();

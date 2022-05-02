@@ -93,9 +93,6 @@
     <ClInclude Include="Command.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Achievment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Observer.h">
       <Filter>Observer/Subject</Filter>
     </ClInclude>
@@ -199,9 +196,6 @@
     </ClCompile>
     <ClCompile Include="HealthComponent.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Achievment.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Subject.cpp">
       <Filter>Observer/Subject</Filter>

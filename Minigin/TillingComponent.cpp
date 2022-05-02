@@ -34,7 +34,7 @@ void dae::TillingComponent::Start()
 
 		SDL_SetRenderTarget(renderer, bigTexture);
 		//Go over steps to increase texture
-		for (size_t i = 0; i < (m_Steps); i++)
+		for (int i = 0; i < (m_Steps); i++)
 		{
 			SDL_Rect dstRect;
 
