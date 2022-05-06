@@ -222,17 +222,20 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="PetterPepperComponent.h" />
     <ClInclude Include="SceneColliders.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="ServiceLocator.h" />
+    <ClInclude Include="SoundEffect.h" />
+    <ClInclude Include="Sound_System.h" />
     <ClInclude Include="TillingComponent.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
     <ClInclude Include="EventType.h" />
     <ClInclude Include="Observer.h" />
-    <ClInclude Include="PetterPepperComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RigidbodyComponent.h" />
     <ClInclude Include="KeyCodes.h" />
@@ -261,10 +264,14 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="PetterPepperComponent.cpp" />
     <ClCompile Include="SceneColliders.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="ServiceLocator.cpp" />
+    <ClCompile Include="SoundEffect.cpp" />
+    <ClCompile Include="Sound_System.cpp" />
     <ClCompile Include="TillingComponent.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -276,7 +283,6 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MiniginPCH.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="PetterPepperComponent.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

@@ -4,7 +4,6 @@
 #include <chrono>
 #include "InputManager.h"
 #include "SceneManager.h"
-#include <SDL_mixer.h>
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
@@ -26,6 +25,8 @@
 #include "BoxColliderComponent.h"
 #include "Parser.h"
 #include "SDL_mixer.h"
+#include "ServiceLocator.h"
+#include "Sound_System.h"
 
 using namespace std;
 using namespace dae;
@@ -46,9 +47,7 @@ void PrintSDLVersion()
 void dae::Minigin::Initialize()
 {
 	std::cout << "---USER INFO----\n";
-	std::cout << "FACEBUTTON NORTH: INCREASE SCORE \n";
-	std::cout << "FACEBUTTON EAST: DECREASE LIVES  \n";
-	std::cout << "ACHIEVMENT: ACH_WIN_ONE_GAME ONLY GETS CALLED FOR PLAYER 2\n";
+	std::cout << "WASD to move and play sounds :D \n";
 
 	std::cout << std::endl;
 
@@ -70,14 +69,7 @@ void dae::Minigin::Initialize()
 	}
 
 	Renderer::GetInstance().Init(m_Window);
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
-		printf("Mix_OpenAudio: %s\n", Mix_GetError());
-		exit(2);
-	}
-	losPollos = Mix_LoadWAV_RW(SDL_RWFromFile("../Data/gustavo.wav", "rb"), 1);
-	if (losPollos == nullptr) {
-		std::cerr << Mix_GetError() << std::endl;
-	}
+
 }
 static void CreateBurger() {
 	auto scene = SceneManager::GetInstance().GetScene("Demo");
@@ -240,8 +232,8 @@ void dae::Minigin::LoadGame() const
 	texComp->SetTexture("logo.png");
 	goChild->SetPosition(glm::vec2{ 216, 180 });
 	goChild->AddComponent<TextureComponent>(texComp);
+	ServiceLocator::RegisterSoundSystem(new LogginSoundSystem(new SDL_Sound_System()));
 
-	
 
 
 	Parser pr("../Data/Level_1.json");
@@ -264,7 +256,6 @@ void dae::Minigin::LoadGame() const
 			CreateLadder(mapElement.second, 10);
 		}
 	}
-
 	CreateBurger();
 	//Call start after everything is initialized
 	scene.Start();
@@ -274,6 +265,7 @@ void dae::Minigin::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(m_Window);
+	ServiceLocator::Delete();
 	m_Window = nullptr;
 	SDL_Quit();
 }
@@ -290,7 +282,6 @@ void dae::Minigin::Run()
 
 	{
 
-		Mix_PlayChannel(-1, losPollos, 0);
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
@@ -303,9 +294,11 @@ void dae::Minigin::Run()
 
 		float lag = 0.f;
 
+		ServiceLocator::GetSoundSystem().play(0, 50.f);
 		SDL_Event e;
 		while (doContinue)
 		{
+
 			//TODO add proper event system to catch user events
 			SDL_PollEvent(&e);
 			if (e.type == SDL_QUIT) {
