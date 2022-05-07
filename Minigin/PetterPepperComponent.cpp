@@ -15,18 +15,22 @@ namespace dae {
 		auto healthCom = GetAttachedGameObject()->GetComponent<HealthComponent>();
 		m_SpriteComponent = GetAttachedGameObject()->GetComponent<SpriteComponent>();
 		m_RigidBodyComp = GetAttachedGameObject()->GetComponent<RigidbodyComponent>();
+		auto movementComp = GetAttachedGameObject()->GetComponent<MovementComponent>();
 
 
-		//Anims
-		m_SpriteComponent->AddAnimation("MoveBackwards", 0, 0, 3, 1);
-		m_SpriteComponent->AddAnimation("Move", 3, 0, 6, 1);
-		m_SpriteComponent->AddAnimation("MoveForward", 6, 0, 9, 1);
 
+	
 		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_EAST, 'A', new DamageCommand(healthCom, 10), KeyState::PRESSED);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT,37, new MoveLeftCommand(this), KeyState::DOWN);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightCommand(this), KeyState::DOWN);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP,38, new MoveUpCommand(this), KeyState::DOWN);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN,40, new MoveDownCommand(this), KeyState::DOWN);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT,37, new MoveLeftEnterCommand(movementComp), KeyState::PRESSED);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightEnterCommand(movementComp), KeyState::PRESSED);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP,38, new MoveUpEnterCommand(movementComp), KeyState::PRESSED);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN,40, new MoveDownEnterCommand(movementComp), KeyState::PRESSED);
+
+
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveExitCommand(movementComp), KeyState::RELEASED);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveExitCommand(movementComp), KeyState::RELEASED);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveExitCommand(movementComp), KeyState::RELEASED);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveExitCommand(movementComp), KeyState::RELEASED);
 
 		ServiceLocator::GetSoundSystem().load(0, "../Data/footstep.mp3");
 

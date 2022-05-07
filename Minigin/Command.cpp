@@ -1,37 +1,63 @@
 #include "MiniginPCH.h"
 #include "Command.h"
-#include "PetterPepperComponent.h"
 #include "HealthComponent.h"
-class MoveRightCommand : public Command {
+#include "MovementComponent.h"
+class MoveRightEnterCommand : public Command {
 public:
-	MoveRightCommand(dae::PetterPepperComponent* peterComp)
+	MoveRightEnterCommand(dae::MovementComponent* peterComp)
 		: m_PeterComp{ peterComp } {};
 	virtual void Excecute() {
-		m_PeterComp->MoveRight();
+		m_PeterComp->SetNewDirection(dae::Direction::RIGHT);
 	}
 private:
-	dae::PetterPepperComponent* m_PeterComp;
+	dae::MovementComponent* m_PeterComp;
 };
-class MoveUpCommand : public Command {
+class MoveUpEnterCommand : public Command {
 public:
-	MoveUpCommand(dae::PetterPepperComponent* peterComp)
+	MoveUpEnterCommand(dae::MovementComponent* peterComp)
 		: m_PeterComp{ peterComp } {};
 	virtual void Excecute() {
-		m_PeterComp->MoveUp();
+		m_PeterComp->SetNewDirection(dae::Direction::UP);
 	}
 private:
-	dae::PetterPepperComponent* m_PeterComp;
+	dae::MovementComponent* m_PeterComp;
 };
-class MoveDownCommand : public Command {
+class MoveDownEnterCommand : public Command {
 public:
-	MoveDownCommand(dae::PetterPepperComponent* peterComp)
+	MoveDownEnterCommand(dae::MovementComponent* peterComp)
 	: m_PeterComp{ peterComp } {};
 	virtual void Excecute() {
-		m_PeterComp->MoveDown();
+		
+		m_PeterComp->SetNewDirection(dae::Direction::DOWN);
+		
 	}
 private:
-	dae::PetterPepperComponent* m_PeterComp;
+	dae::MovementComponent* m_PeterComp;
 };
+class MoveLeftEnterCommand : public Command {
+public:
+	MoveLeftEnterCommand(dae::MovementComponent* peterComp)
+		: m_PeterComp{ peterComp } {};
+	virtual void Excecute() {
+		m_PeterComp->SetNewDirection(dae::Direction::LEFT);
+
+	}
+private:
+	dae::MovementComponent* m_PeterComp;
+};
+
+//----------EXIT
+class MoveExitCommand : public Command {
+public:
+	MoveExitCommand(dae::MovementComponent* peterComp)
+		: m_PeterComp{ peterComp } {};
+	virtual void Excecute() {
+		m_PeterComp->SetNewDirection(dae::Direction::NONE);
+	}
+private:
+	dae::MovementComponent* m_PeterComp;
+};
+
 class DamageCommand : public Command {
 public:
 	DamageCommand(dae::HealthComponent* componentToDamage, int damage) : m_ComponentToDamage{ componentToDamage }, m_Damage{ damage } {};
@@ -40,15 +66,6 @@ public:
 	}
 private:
 	dae::HealthComponent* m_ComponentToDamage;
+
 	int m_Damage;
-};
-class MoveLeftCommand : public Command {
-public:
-	MoveLeftCommand(dae::PetterPepperComponent* peterComp)
-		: m_PeterComp{ peterComp } {};
-	virtual void Excecute() {
-		m_PeterComp->MoveLeft();
-	}
-private:
-	dae::PetterPepperComponent* m_PeterComp;
 };

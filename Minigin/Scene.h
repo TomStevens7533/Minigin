@@ -26,7 +26,7 @@ namespace dae
 		ColliderInfo* IsRectColliding(Rectf lookupRect, std::string tag) { return m_SceneGrid.IsRectColliding(lookupRect, tag); };
 		ColliderInfo* IsPointInCollider(glm::vec2 point, std::string tag) { return m_SceneGrid.IsPointInCollider(point, tag); };
 
-		void AddColliderToScene(ColliderInfo colInfo) { m_SceneGrid.AddCollider(colInfo); };
+		ColliderInfo * const AddColliderToScene(ColliderInfo colInfo) { return m_SceneGrid.AddCollider(colInfo); };
 
 		~Scene();
 		Scene(const Scene& other) = delete;

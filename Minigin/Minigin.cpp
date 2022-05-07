@@ -27,6 +27,7 @@
 #include "SDL_mixer.h"
 #include "ServiceLocator.h"
 #include "Sound_System.h"
+#include "MovementComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -113,7 +114,7 @@ static void CreatePlatform(std::vector<glm::vec2>& posVec, int tilling) {
 		auto tillComp = std::make_shared<TillingComponent>(tilling, 0, false);
 		auto texComp = std::make_shared<TextureComponent>();
 		texComp->SetTexture("Walkable.png");
-		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Floor", 5);
+		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Floor", 0);
 
 		goFloor->AddComponent<TillingComponent>(tillComp);
 		goFloor->AddComponent<TextureComponent>(texComp);
@@ -148,7 +149,9 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 	};
 
 	glm::vec2 uiPos = glm::vec2{ 60.f, 20.f };
-	for (size_t i = 0; i < posVec.size(); i++)
+	//for (size_t i = 0; i < posVec.size(); i++)
+	for (size_t i = 0; i < 1; i++)
+
 	{
 		glm::vec3 color = { static_cast<float>(rand() % 255), static_cast<float>(rand() % 255), static_cast<float>(rand() % 255) };
 		//UI Creation
@@ -179,19 +182,23 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		auto healthComponent = std::make_shared<HealthComponent>();
 		auto inputComponent = std::make_shared<InputComponent>(static_cast<int>(i));
 		auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png",15, 11, 1.f);
-		auto rigidBodyComp = std::make_shared<RigidbodyComponent>();
 		auto peterPepperComp = std::make_shared<PetterPepperComponent>();
+		auto movementComp = std::make_shared<MovementComponent>(5.f);
+		auto boxCollider = std::make_shared<BoxColliderComponent>("Pepper", 1);
 
 
-
+		//Anims
+		spriteComponent->AddAnimation("MoveBackwards", 0, 0, 3, 1);
+		spriteComponent->AddAnimation("Move", 3, 0, 6, 1);
+		spriteComponent->AddAnimation("MoveForward", 6, 0, 9, 1);
 
 
 		PeterPepper->AddComponent<HealthComponent>(healthComponent);
 		PeterPepper->AddComponent<InputComponent>(inputComponent);
 		PeterPepper->AddComponent<SpriteComponent>(spriteComponent);
-		PeterPepper->AddComponent<RigidbodyComponent>(rigidBodyComp);
 		PeterPepper->AddComponent<PetterPepperComponent>(peterPepperComp);
-
+		PeterPepper->AddComponent<MovementComponent>(movementComp);
+		PeterPepper->AddComponent<BoxColliderComponent>(boxCollider);
 
 
 		auto* scoreCommand = new IncreaseScoreCommand(100, textComp);

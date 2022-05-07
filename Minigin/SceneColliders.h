@@ -14,7 +14,7 @@ namespace dae {
 	public:
 		SceneColliders() = default;
 		~SceneColliders() = default;
-		void AddCollider(ColliderInfo info);
+		ColliderInfo * const AddCollider(ColliderInfo info);
 		void RemoveCollider(std::string tag, bool deleteAll = false);
 		ColliderInfo* IsRectColliding(Rectf lookupRect);
 		ColliderInfo* IsPointInCollider(glm::vec2 point);

@@ -3,6 +3,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include  <windows.h>
 #include <Xinput.h>
+#include <algorithm>
 #pragma comment(lib, "xinput.lib")
 
 using namespace dae;
@@ -146,8 +147,8 @@ InputManager::~InputManager() {
 }
 bool InputManager::HandleCommands(int playerIdx)
 {
-	
 	bool isTriggered = false;
+
 	for (auto& mapElement : m_CommandContainer[playerIdx])
 	{
 		if (HandleCommand(mapElement.first.first.first, mapElement.first.first.second, mapElement.first.second, mapElement.second.get(), playerIdx)) {
@@ -232,7 +233,7 @@ bool InputManager::IsKeyReleased(ControllerButton button, int deviceIdx) const
 
 bool InputManager::IsKeyReleased(unsigned char key) const
 {
-	return m_pPimpl->IsKeyDownImpl(key);
+	return m_pPimpl->IsKeyReleasedImpl(key);
 }
 
 bool InputManager::IsKeyPressed(unsigned char key) const

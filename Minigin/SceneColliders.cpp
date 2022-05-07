@@ -4,9 +4,10 @@
 
 
 using namespace dae;
-void SceneColliders::AddCollider(ColliderInfo info)
+ColliderInfo * const SceneColliders::AddCollider(ColliderInfo info)
 {
 	m_SceneColliderVec.push_back(info);
+	return &m_SceneColliderVec.back();
 }
 
 void SceneColliders::RemoveCollider(std::string tag, bool deleteAll /*= false*/)

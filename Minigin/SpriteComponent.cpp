@@ -67,7 +67,12 @@ void dae::SpriteComponent::SetActiveAnimation(std::string key)
 
 glm::vec2 dae::SpriteComponent::GetCurrentAnimDimensions()
 {
-	return m_ActiveAnimation->GetCurrentDimensions();
+	assert(m_ActiveAnimation);
+	if (m_ActiveAnimation != nullptr) {
+		return m_ActiveAnimation->GetCurrentDimensions();
+	}
+	else 
+		return glm::vec2(0.f, 0.f);
 }
 
 void dae::SpriteComponent::Render() const
