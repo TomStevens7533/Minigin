@@ -1,7 +1,6 @@
 #include "MiniginPCH.h"
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
-#include "TillingComponent.h"
 #include "SpriteComponent.h"
 #include "Scene.h"
 #include "TextureComponent.h"

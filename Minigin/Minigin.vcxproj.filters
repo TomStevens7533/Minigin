@@ -126,9 +126,6 @@
     <ClInclude Include="SceneColliders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TillingComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -235,9 +232,6 @@
     </ClCompile>
     <ClCompile Include="SceneColliders.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TillingComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Parser.cpp">
       <Filter>Source Files</Filter>
