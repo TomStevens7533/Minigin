@@ -27,12 +27,12 @@ void dae::MovementComponent::LateUpdate()
 	Rectf colliderRect;
 	colliderRect = Rectf{ newPos.x, newPos.y, colliderDimensions.x, colliderDimensions.y };
 
-	ColliderInfo* info;
+	std::shared_ptr<ColliderInfo> info;
 
 		switch (m_CurrentDirection) {
 		case Direction::DOWN:
 			info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Ladder");
-			if (info != nullptr) {
+			if (info) {
 
 				newPos.y += m_Velocity;
 				tr.SetPosition(newPos.x, newPos.y, 0.f);
@@ -40,7 +40,7 @@ void dae::MovementComponent::LateUpdate()
 			break;
 		case Direction::UP:
 			info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Ladder");
-			if (info != nullptr) {
+			if (info) {
 
 				newPos.y -= m_Velocity;
 				tr.SetPosition(newPos.x, newPos.y, 0.f);
@@ -48,7 +48,7 @@ void dae::MovementComponent::LateUpdate()
 			break;
 		case Direction::LEFT:
 			info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Floor");
-			if (info != nullptr) {
+			if (info) {
 				newPos.x -= m_Velocity;
 
 				tr.SetPosition(newPos.x, newPos.y, 0.f);
@@ -56,7 +56,7 @@ void dae::MovementComponent::LateUpdate()
 			break;
 		case Direction::RIGHT:
 			info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Floor");
-			if (info != nullptr) {
+			if (info) {
 				newPos.x += m_Velocity;
 				tr.SetPosition(newPos.x, newPos.y, 0.f);
 			}

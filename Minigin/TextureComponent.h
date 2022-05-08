@@ -7,13 +7,14 @@ namespace dae {
 	class TextureComponent final : public BaseComponent
 	{
 	public:
-		TextureComponent();
+		TextureComponent(const std::string& filename);
 		~TextureComponent();
 
 	
 		void SetTexture(const std::string& filename);
 		std::shared_ptr<Texture2D> GetTexture() { return m_Texture; }
 		void SetTexture(std::shared_ptr<Texture2D> newTexture);
+		void TileTexture(int steps, int whiteSpace, bool isVertical = true);
 		glm::vec2 GetDimensions();
 
 

@@ -21,7 +21,6 @@
 #include "SpriteComponent.h"
 #include "RigidbodyComponent.h"
 #include "PetterPepperComponent.h"
-#include "TillingComponent.h"
 #include "BoxColliderComponent.h"
 #include "Parser.h"
 #include "SDL_mixer.h"
@@ -89,15 +88,13 @@ static void CreateLadder(std::vector<glm::vec2>& posVec, int tilling) {
 	for (size_t i = 0; i < posVec.size(); i++)
 	{
 		auto goLadder = std::make_shared<dae::GameObject>();
-		auto ladderComp = std::make_shared<TillingComponent>(tilling, 5);
-		auto texComp = std::make_shared<TextureComponent>();
-		texComp->SetTexture("ladder.png");
+		auto texComp = std::make_shared<TextureComponent>("ladder.png");
 		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Ladder");
 
-		goLadder->AddComponent<TillingComponent>(ladderComp);
+
 		goLadder->AddComponent<TextureComponent>(texComp);
 		goLadder->AddComponent<BoxColliderComponent>(goBoxColl);
-
+		texComp->TileTexture(tilling, 5);
 
 		goLadder->SetPosition(posVec[i]);
 		scene->Add(goLadder);
@@ -111,15 +108,12 @@ static void CreatePlatform(std::vector<glm::vec2>& posVec, int tilling) {
 	for (size_t i = 0; i < posVec.size(); i++)
 	{
 		auto goFloor = std::make_shared<dae::GameObject>();
-		auto tillComp = std::make_shared<TillingComponent>(tilling, 0, false);
-		auto texComp = std::make_shared<TextureComponent>();
-		texComp->SetTexture("Walkable.png");
+		auto texComp = std::make_shared<TextureComponent>("Walkable.png");
 		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Floor", 0);
 
-		goFloor->AddComponent<TillingComponent>(tillComp);
 		goFloor->AddComponent<TextureComponent>(texComp);
 		goFloor->AddComponent<BoxColliderComponent>(goBoxColl);
-
+		texComp->TileTexture(tilling, 0, false);
 
 		goFloor->SetPosition(posVec[i]);
 		scene->Add(goFloor);
@@ -184,7 +178,7 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png",15, 11, 1.f);
 		auto peterPepperComp = std::make_shared<PetterPepperComponent>();
 		auto movementComp = std::make_shared<MovementComponent>(5.f);
-		auto boxCollider = std::make_shared<BoxColliderComponent>("Pepper", 1);
+		auto boxCollider = std::make_shared<BoxColliderComponent>("Pepper", 5);
 
 
 		//Anims
@@ -228,15 +222,13 @@ void dae::Minigin::LoadGame() const
 	//-------------------------------------------------------------
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 	auto go = std::make_shared<dae::GameObject>();
-	auto texComp = std::make_shared<TextureComponent>();
-	texComp->SetTexture("background.jpg");
+	auto texComp = std::make_shared<TextureComponent>("background.jpg");
 	go->SetPosition({ 0,0 });
 	go->AddComponent<TextureComponent>(texComp);
 	scene.Add(go);
 
 	auto goChild = std::make_shared<dae::GameObject>();
-	texComp = std::make_shared<TextureComponent>();
-	texComp->SetTexture("logo.png");
+	texComp = std::make_shared<TextureComponent>("logo.png");
 	goChild->SetPosition(glm::vec2{ 216, 180 });
 	goChild->AddComponent<TextureComponent>(texComp);
 	ServiceLocator::RegisterSoundSystem(new LogginSoundSystem(new SDL_Sound_System()));

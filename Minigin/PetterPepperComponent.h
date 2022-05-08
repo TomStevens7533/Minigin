@@ -18,10 +18,6 @@ namespace dae {
 		virtual void LateUpdate() override;
 		virtual void Render() const override;
 
-		void MoveLeft();
-		void MoveUp();
-		void MoveRight();
-		void MoveDown();
 	protected:
 
 	private:

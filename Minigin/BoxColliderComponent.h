@@ -11,7 +11,7 @@ namespace dae {
 		BoxColliderComponent(std::string tag, int precision = 0);
 
 
-		void Render() const override {};
+		void Render() const override;
 		void Update() override {};
 		void LateUpdate() override;
 		virtual void Start() override;
@@ -28,6 +28,6 @@ namespace dae {
 		glm::vec2 m_Dimensions;
 		std::string m_ColliderTag;
 		int m_Precision{};
-		ColliderInfo*  m_Collider;
+		std::shared_ptr<ColliderInfo> m_pColliderInfo{nullptr};
 	};
 }

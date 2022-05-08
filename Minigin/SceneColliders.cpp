@@ -4,68 +4,68 @@
 
 
 using namespace dae;
-ColliderInfo * const SceneColliders::AddCollider(ColliderInfo info)
+std::shared_ptr<ColliderInfo> SceneColliders::AddCollider(ColliderInfo info)
 {
-	m_SceneColliderVec.push_back(info);
-	return &m_SceneColliderVec.back();
+	m_SceneColliderVec.push_back(std::make_shared<ColliderInfo>(info));
+	return m_SceneColliderVec.back();
 }
 
 void SceneColliders::RemoveCollider(std::string tag, bool deleteAll /*= false*/)
 {
 	if (deleteAll == true) {
-		m_SceneColliderVec.erase(std::remove_if(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), [&tag](ColliderInfo& currInfo) {
-			return (currInfo.tag == tag);
+		m_SceneColliderVec.erase(std::remove_if(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), [&tag](std::shared_ptr<ColliderInfo> currInfo) {
+			return (currInfo->tag == tag);
 		})
 		, m_SceneColliderVec.end());
 	}
 	else {
-		auto it = std::remove_if(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), [&tag](ColliderInfo& currInfo) {
-			return (currInfo.tag == tag);
+		auto it = std::remove_if(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), [&tag](std::shared_ptr<ColliderInfo> currInfo) {
+			return (currInfo->tag == tag);
 			});
 		m_SceneColliderVec.erase(it);
 	}
 
 }
 
-ColliderInfo* SceneColliders::IsRectColliding(Rectf lookupRect)
+std::shared_ptr<ColliderInfo> SceneColliders::IsRectColliding(Rectf lookupRect)
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
-		if (AreRectsOverlapping(lookupRect, m_SceneColliderVec[i].m_ColliderRect)) {
-			return &m_SceneColliderVec[i];
+		if (AreRectsOverlapping(lookupRect, m_SceneColliderVec[i]->m_ColliderRect)) {
+			return m_SceneColliderVec[i];
 		}
 	}
 	return nullptr;
 }
 
-dae::ColliderInfo* SceneColliders::IsRectColliding(Rectf lookupRect, std::string tag)
+std::shared_ptr<ColliderInfo> SceneColliders::IsRectColliding(Rectf lookupRect, std::string tag)
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
-		if (m_SceneColliderVec[i].tag == tag && AreRectsOverlapping(lookupRect, m_SceneColliderVec[i].m_ColliderRect)) {
-			return &m_SceneColliderVec[i];
+		if (m_SceneColliderVec[i]->tag == tag && AreRectsOverlapping(lookupRect, m_SceneColliderVec[i]->m_ColliderRect)) {
+			return m_SceneColliderVec[i];
 		}
 	}
 	return nullptr;
 }
 
-ColliderInfo* SceneColliders::IsPointInCollider(glm::vec2 point)
+std::shared_ptr<ColliderInfo> SceneColliders::IsPointInCollider(glm::vec2 point)
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
-		if (IsPointInRect(m_SceneColliderVec[i].m_ColliderRect, point)) {
-			return &m_SceneColliderVec[i];
+		if (IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
+			return m_SceneColliderVec[i];
 		}
 	}
 	return nullptr;
 }
 
-dae::ColliderInfo* SceneColliders::IsPointInCollider(glm::vec2 point, std::string tag)
+std::shared_ptr<ColliderInfo> SceneColliders::IsPointInCollider(glm::vec2 point, std::string tag)
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
-		if (m_SceneColliderVec[i].tag == tag && IsPointInRect(m_SceneColliderVec[i].m_ColliderRect, point)) {
-			return &m_SceneColliderVec[i];
+		if (m_SceneColliderVec[i]->tag == tag && IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
+			return m_SceneColliderVec[i];
 		}
 	}
 	return nullptr;

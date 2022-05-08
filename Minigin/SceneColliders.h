@@ -14,13 +14,13 @@ namespace dae {
 	public:
 		SceneColliders() = default;
 		~SceneColliders() = default;
-		ColliderInfo * const AddCollider(ColliderInfo info);
+		std::shared_ptr<ColliderInfo> AddCollider(ColliderInfo info);
 		void RemoveCollider(std::string tag, bool deleteAll = false);
-		ColliderInfo* IsRectColliding(Rectf lookupRect);
-		ColliderInfo* IsPointInCollider(glm::vec2 point);
+		std::shared_ptr<ColliderInfo> IsRectColliding(Rectf lookupRect);
+		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point);
 
-		ColliderInfo* IsRectColliding(Rectf lookupRect, std::string tag);
-		ColliderInfo* IsPointInCollider(glm::vec2 point, std::string tag);
+		std::shared_ptr<ColliderInfo> IsRectColliding(Rectf lookupRect, std::string tag);
+		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point, std::string tag);
 	public:
 		SceneColliders(const SceneColliders& other) = delete;
 		SceneColliders(SceneColliders&& other) = delete;
@@ -30,7 +30,7 @@ namespace dae {
 		bool AreRectsOverlapping(Rectf lhs, Rectf rhs);
 		bool IsPointInRect(Rectf lhs, glm::vec2 point);
 	private:
-		std::vector<ColliderInfo> m_SceneColliderVec;
+		std::vector<std::shared_ptr<ColliderInfo>> m_SceneColliderVec;
 	};
 
 }
