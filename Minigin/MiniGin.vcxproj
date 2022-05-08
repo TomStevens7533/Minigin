@@ -216,11 +216,13 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BoxColliderComponent.h" />
+    <ClInclude Include="BunBehaviour.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="PetterPepperComponent.h" />
@@ -258,6 +260,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BoxColliderComponent.cpp" />
+    <ClCompile Include="BunBehaviour.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Font.cpp" />
@@ -291,6 +294,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScoreDisplayComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
+    <ClCompile Include="Structs.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />

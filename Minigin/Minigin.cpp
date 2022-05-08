@@ -27,6 +27,7 @@
 #include "ServiceLocator.h"
 #include "Sound_System.h"
 #include "MovementComponent.h"
+#include "BunBehaviour.h"
 
 using namespace std;
 using namespace dae;
@@ -71,20 +72,47 @@ void dae::Minigin::Initialize()
 	Renderer::GetInstance().Init(m_Window);
 
 }
-static void CreateBurger() {
-	auto scene = SceneManager::GetInstance().GetScene("Demo");
-	auto goBurgerPiece = std::make_shared<dae::GameObject>();
-	goBurgerPiece->GetTransform().SetPosition(50, 50,0);
-	auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png", 15, 11, 1.f);
-	goBurgerPiece->AddComponent<SpriteComponent>(spriteComponent);
-	spriteComponent->AddAnimation("Move", 3, 0, 6, 1);
-	scene->Add(goBurgerPiece);
+static void CreateTopBurger(std::vector<glm::vec2>& posVec) {
+
+	for (size_t i = 0; i < posVec.size(); i++)
+	{
+		glm::vec2 bunPos = posVec[i];
+		auto scene = SceneManager::GetInstance().GetScene("Demo");
+		auto goBurgerPiece = std::make_shared<dae::GameObject>();
+		goBurgerPiece->GetTransform().SetPosition(bunPos.x, bunPos.y, 0);
+		auto TexComp = std::make_shared<TextureComponent>("TopBun.png");
+		auto boxComp = std::make_shared<BoxColliderComponent>("Bun");
+		auto bunComp = std::make_shared<BunBehaviour>();
+		goBurgerPiece->AddComponent<BoxColliderComponent>(boxComp);
+		goBurgerPiece->AddComponent<TextureComponent>(TexComp);
+		goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
+
+		scene->Add(goBurgerPiece);
+	}
+
+}
+static void CreateLettuce(std::vector<glm::vec2>& posVec) {
+
+	for (size_t i = 0; i < posVec.size(); i++)
+	{
+		glm::vec2 bunPos = posVec[i];
+		auto scene = SceneManager::GetInstance().GetScene("Demo");
+		auto goBurgerPiece = std::make_shared<dae::GameObject>();
+		goBurgerPiece->GetTransform().SetPosition(bunPos.x, bunPos.y, 0);
+		auto TexComp = std::make_shared<TextureComponent>("Lettuce.png");
+		auto boxComp = std::make_shared<BoxColliderComponent>("Bun");
+		auto bunComp = std::make_shared<BunBehaviour>();
+		goBurgerPiece->AddComponent<BoxColliderComponent>(boxComp);
+		goBurgerPiece->AddComponent<TextureComponent>(TexComp);
+		goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
+
+		scene->Add(goBurgerPiece);
+	}
 
 }
 static void CreateLadder(std::vector<glm::vec2>& posVec, int tilling) {
 	auto scene = SceneManager::GetInstance().GetScene("Demo");
 	//lader creation
-
 	for (size_t i = 0; i < posVec.size(); i++)
 	{
 		auto goLadder = std::make_shared<dae::GameObject>();
@@ -177,7 +205,7 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		auto inputComponent = std::make_shared<InputComponent>(static_cast<int>(i));
 		auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png",15, 11, 1.f);
 		auto peterPepperComp = std::make_shared<PetterPepperComponent>();
-		auto movementComp = std::make_shared<MovementComponent>(5.f);
+		auto movementComp = std::make_shared<MovementComponent>(15.f);
 		auto boxCollider = std::make_shared<BoxColliderComponent>("Pepper", 5);
 
 
@@ -254,8 +282,14 @@ void dae::Minigin::LoadGame() const
 		else if (mapElement.first == "LadderShortPrefab") {
 			CreateLadder(mapElement.second, 10);
 		}
+		else if (mapElement.first == "TopBun") {
+			CreateTopBurger(mapElement.second);
+		}
+		else if (mapElement.first == "Lettuce") {
+			CreateLettuce(mapElement.second);
+
+		}
 	}
-	CreateBurger();
 	//Call start after everything is initialized
 	scene.Start();
 }

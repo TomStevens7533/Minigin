@@ -144,6 +144,12 @@
     <ClInclude Include="MovementComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BunBehaviour.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -249,6 +255,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MovementComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BunBehaviour.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Structs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

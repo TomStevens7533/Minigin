@@ -5,4 +5,6 @@ struct Rectf
 	float y;
 	float width;
 	float height;
+
+	bool operator==(const Rectf& rhs);
 };

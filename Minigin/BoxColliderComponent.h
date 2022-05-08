@@ -17,6 +17,7 @@ namespace dae {
 		virtual void Start() override;
 
 		inline glm::vec2 GetDimension() const { return m_Dimensions; };
+		const std::shared_ptr<ColliderInfo> GetColliderInfo() const;
 
 		BoxColliderComponent(const BoxColliderComponent& other) = delete;
 		BoxColliderComponent(BoxColliderComponent&& other) = delete;

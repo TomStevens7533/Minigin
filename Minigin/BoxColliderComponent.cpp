@@ -39,7 +39,13 @@ void dae::BoxColliderComponent::Start()
 	glm::vec3 goPos = m_pParent->GetTransform().GetPosition();
 	info.m_ColliderRect = Rectf{ goPos.x - m_Precision, goPos.y - m_Precision, m_Dimensions.x, m_Dimensions.y };
 	info.tag = m_ColliderTag;
+	info.m_pAttachedGameObject = m_pParent;
 	m_pColliderInfo =  m_pParent->GetScene()->AddColliderToScene(info);
+}
+
+const std::shared_ptr<dae::ColliderInfo> dae::BoxColliderComponent::GetColliderInfo() const
+{
+	return m_pColliderInfo;
 }
 
 dae::BoxColliderComponent::BoxColliderComponent(int width, int height, std::string tag, int precision)
@@ -57,6 +63,8 @@ void dae::BoxColliderComponent::Render() const
 		glm::vec3 goPos = m_pParent->GetTransform().GetPosition();
 		rect.x = (int)m_pColliderInfo->m_ColliderRect.x;
 		rect.y = (int)m_pColliderInfo->m_ColliderRect.y;
+		SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 0, 0, 255);
+
 		SDL_RenderDrawRect(Renderer::GetInstance().GetSDLRenderer(),
 			&rect);
 	}

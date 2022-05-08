@@ -42,9 +42,12 @@ std::shared_ptr<ColliderInfo> SceneColliders::IsRectColliding(Rectf lookupRect, 
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
-		if (m_SceneColliderVec[i]->tag == tag && AreRectsOverlapping(lookupRect, m_SceneColliderVec[i]->m_ColliderRect)) {
-			return m_SceneColliderVec[i];
+		if (!(lookupRect == m_SceneColliderVec[i]->m_ColliderRect)) {
+			if (m_SceneColliderVec[i]->tag == tag && AreRectsOverlapping(lookupRect, m_SceneColliderVec[i]->m_ColliderRect)) {
+				return m_SceneColliderVec[i];
+			}
 		}
+		
 	}
 	return nullptr;
 }
@@ -65,6 +68,17 @@ std::shared_ptr<ColliderInfo> SceneColliders::IsPointInCollider(glm::vec2 point,
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
 		if (m_SceneColliderVec[i]->tag == tag && IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
+			return m_SceneColliderVec[i];
+		}
+	}
+	return nullptr;
+}
+
+std::shared_ptr<dae::ColliderInfo> SceneColliders::IsPointInCollider(glm::vec2 point, const std::shared_ptr<ColliderInfo> colliderToIgnore)
+{
+	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
+	{
+		if (colliderToIgnore != m_SceneColliderVec[i] && IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
 			return m_SceneColliderVec[i];
 		}
 	}
@@ -97,6 +111,24 @@ bool SceneColliders::IsPointInRect(Rectf lhs, glm::vec2 point)
 	return false;
 }
 
+std::shared_ptr<dae::ColliderInfo> SceneColliders::SceneRaycast(glm::vec2 pos, glm::vec2 dir,
+	float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, int steps)
+{
+	assert(steps > 0);
+	float stepPercentage = length / steps;
+	for (size_t i = 0; i < steps; i++)
+	{
+
+		glm::vec2 newPos = pos + glm::vec2(dir.x + (stepPercentage * i), dir.y + (stepPercentage * i));
+		auto collInfo = IsPointInCollider(newPos, colliderToIgnore);
+
+		if (collInfo)
+			return collInfo;
+
+	}
+	return nullptr;
+
+}
 
 
 
