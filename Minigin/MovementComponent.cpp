@@ -32,7 +32,7 @@ void dae::MovementComponent::Update()
 	switch (m_CurrentDirection) {
 	case Direction::DOWN:
 
-		colliderRect.x = newPos.x + (colliderRect.width / 2.f);
+		colliderRect.x = newPos.x;
 		colliderRect.y = newPos.y + (colliderRect.height);
 
 		info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Ladder");
@@ -45,7 +45,7 @@ void dae::MovementComponent::Update()
 	case Direction::UP:
 
 		colliderRect.height /= 1.5f;
-		colliderRect.x = newPos.x + (colliderRect.width / 2.f);
+		colliderRect.x = newPos.x;
 		colliderRect.y = newPos.y;
 
 
@@ -57,7 +57,8 @@ void dae::MovementComponent::Update()
 		}
 		break;
 	case Direction::LEFT:
-		colliderRect.width /= 4.f;
+		colliderRect.x = newPos.x -(colliderRect.width);
+		colliderRect.y += colliderRect.height / 1.2f;
 		info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Floor");
 		if (info) {
 			newPos.x -= m_Velocity * Time::GetInstance().GetDeltaTime();
@@ -66,8 +67,8 @@ void dae::MovementComponent::Update()
 		}
 		break;
 	case Direction::RIGHT:
-		colliderRect.x = newPos.x + (colliderRect.width / 4.f);
-		colliderRect.width /= 4.f;
+		colliderRect.x = newPos.x + (colliderRect.width);
+		colliderRect.y += colliderRect.height / 1.2f;
 		info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Floor");
 		if (info) {
 			newPos.x += m_Velocity * Time::GetInstance().GetDeltaTime();
