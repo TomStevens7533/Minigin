@@ -59,6 +59,8 @@ void dae::MovementComponent::Update()
 	case Direction::LEFT:
 		colliderRect.x = newPos.x -(colliderRect.width);
 		colliderRect.y += colliderRect.height / 1.2f;
+		colliderRect.height /= 8.f;
+
 		info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Floor");
 		if (info) {
 			newPos.x -= m_Velocity * Time::GetInstance().GetDeltaTime();
@@ -69,6 +71,7 @@ void dae::MovementComponent::Update()
 	case Direction::RIGHT:
 		colliderRect.x = newPos.x + (colliderRect.width);
 		colliderRect.y += colliderRect.height / 1.2f;
+		colliderRect.height /= 8.f;
 		info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Floor");
 		if (info) {
 			newPos.x += m_Velocity * Time::GetInstance().GetDeltaTime();

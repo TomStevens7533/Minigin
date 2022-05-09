@@ -18,7 +18,7 @@ void dae::BunBehaviour::Update()
 
 		//Check if other bun is in the way if true move other bun
 		std::shared_ptr<ColliderInfo> info = (m_pParent->GetScene()
-			->SceneRaycast(pos, glm::vec2{0, 1}, 15.f, m_pBoxColliderComponent->GetColliderInfo(),"Bun"));
+			->SceneRaycast(pos, glm::vec2{0, 1}, 9.f, m_pBoxColliderComponent->GetColliderInfo(),"Bun"));
 
 		if (info && m_IsFalling) {
 			//Has hit other burgerpiece
@@ -64,20 +64,45 @@ void dae::BunBehaviour::LateUpdate()
 		auto peterCollision = m_pParent->GetScene()->IsRectColliding(m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect, "Pepper");
 		if (peterCollision) {
 
-			m_pPeterCollision = peterCollision;
+			if (m_IsPeterInCollFirst == false) {
+				m_BunEnterPosX = peterCollision->m_ColliderRect.x;
+				m_IsPeterInCollFirst = true;
+				std::cout << "entered bun\n";
+			}
+
+			m_pExitPeterCollision = peterCollision;
 		}
-		else if(m_pPeterCollision) {
+		else if(m_IsPeterInCollFirst == true) {
 			//Check if peter pepper has walked the bun
-			float pepperXsPos = m_pPeterCollision->m_ColliderRect.x;
+
+			std::cout << "exit bun\n";
 			float currentBunXPos = m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect.x;
 			float currentBunWith = m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect.width;
-			if (pepperXsPos < currentBunXPos || pepperXsPos >(currentBunXPos + currentBunWith)) {
-				m_IsFalling = true;
-				m_IsFalling = true;
-				std::cout << "start fall\n";
-				m_pPeterCollision = nullptr;
+
+			if (m_BunEnterPosX < (currentBunXPos + (currentBunWith / 2.f))) {
+				//entered left side check
+				if (m_pExitPeterCollision->m_ColliderRect.x > (currentBunXPos + (currentBunWith / 2.f)))
+				{
+					//Pepper has wallked the entirty of the bun
+					m_IsFalling = true;
+					m_IsPeterInCollFirst = false;
+					std::cout << "start fall\n";
+				}
 			}
+			else
+			{//entered right side check
+				if (m_pExitPeterCollision->m_ColliderRect.x < (currentBunXPos + (currentBunWith / 2.f)))
+				{
+					//Pepper has wallked the entirty of the bun
+					m_IsFalling = true;
+					std::cout << "start fall\n";
+				}
+			}
+			m_pExitPeterCollision = nullptr;
+			m_IsPeterInCollFirst = false;
 		}
+	
+
 	}
 }
 
