@@ -24,6 +24,14 @@
     {
         "name" : "Lettuce",
         "Positions" : [[250,150] ]
+    },
+    {
+        "name" : "Tomato",
+        "Positions" : [[250,220] ]
+    },
+    {
+        "name" : "LowerBun",
+        "Positions" : [[250,360] ]
     }
     
 ]

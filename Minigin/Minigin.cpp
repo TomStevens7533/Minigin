@@ -110,6 +110,44 @@ static void CreateLettuce(std::vector<glm::vec2>& posVec) {
 	}
 
 }
+static void CreateLowerBun(std::vector<glm::vec2>& posVec) {
+
+	for (size_t i = 0; i < posVec.size(); i++)
+	{
+		glm::vec2 bunPos = posVec[i];
+		auto scene = SceneManager::GetInstance().GetScene("Demo");
+		auto goBurgerPiece = std::make_shared<dae::GameObject>();
+		goBurgerPiece->GetTransform().SetPosition(bunPos.x, bunPos.y, 0);
+		auto TexComp = std::make_shared<TextureComponent>("LowerBun.png");
+		auto boxComp = std::make_shared<BoxColliderComponent>("Bun");
+		auto bunComp = std::make_shared<BunBehaviour>();
+		goBurgerPiece->AddComponent<BoxColliderComponent>(boxComp);
+		goBurgerPiece->AddComponent<TextureComponent>(TexComp);
+		goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
+
+		scene->Add(goBurgerPiece);
+	}
+
+}
+static void CreateTomato(std::vector<glm::vec2>& posVec) {
+
+	for (size_t i = 0; i < posVec.size(); i++)
+	{
+		glm::vec2 bunPos = posVec[i];
+		auto scene = SceneManager::GetInstance().GetScene("Demo");
+		auto goBurgerPiece = std::make_shared<dae::GameObject>();
+		goBurgerPiece->GetTransform().SetPosition(bunPos.x, bunPos.y, 0);
+		auto TexComp = std::make_shared<TextureComponent>("Tomato.png");
+		auto boxComp = std::make_shared<BoxColliderComponent>("Bun", 2);
+		auto bunComp = std::make_shared<BunBehaviour>();
+		goBurgerPiece->AddComponent<BoxColliderComponent>(boxComp);
+		goBurgerPiece->AddComponent<TextureComponent>(TexComp);
+		goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
+
+		scene->Add(goBurgerPiece);
+	}
+
+}
 static void CreateLadder(std::vector<glm::vec2>& posVec, int tilling) {
 	auto scene = SceneManager::GetInstance().GetScene("Demo");
 	//lader creation
@@ -289,6 +327,15 @@ void dae::Minigin::LoadGame() const
 			CreateLettuce(mapElement.second);
 
 		}
+		else if (mapElement.first == "Tomato") {
+			CreateTomato(mapElement.second);
+
+		}
+		else if (mapElement.first == "LowerBun") {
+			CreateLowerBun(mapElement.second);
+
+		}
+		
 	}
 	//Call start after everything is initialized
 	scene.Start();

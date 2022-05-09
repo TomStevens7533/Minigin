@@ -74,12 +74,13 @@ std::shared_ptr<ColliderInfo> SceneColliders::IsPointInCollider(glm::vec2 point,
 	return nullptr;
 }
 
-std::shared_ptr<dae::ColliderInfo> SceneColliders::IsPointInCollider(glm::vec2 point, const std::shared_ptr<ColliderInfo> colliderToIgnore)
+std::shared_ptr<dae::ColliderInfo> SceneColliders::IsPointInCollider(glm::vec2 point, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag)
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
-		if (colliderToIgnore != m_SceneColliderVec[i] && IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
-			return m_SceneColliderVec[i];
+		if (colliderToIgnore != m_SceneColliderVec[i]  && IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
+			if(tag == m_SceneColliderVec[i]->tag)
+				return m_SceneColliderVec[i];
 		}
 	}
 	return nullptr;
@@ -112,15 +113,14 @@ bool SceneColliders::IsPointInRect(Rectf lhs, glm::vec2 point)
 }
 
 std::shared_ptr<dae::ColliderInfo> SceneColliders::SceneRaycast(glm::vec2 pos, glm::vec2 dir,
-	float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, int steps)
+	float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag, int steps)
 {
 	assert(steps > 0);
-	float stepPercentage = length / steps;
+	float stepPercentage = (length / steps);
 	for (size_t i = 0; i < steps; i++)
 	{
-
-		glm::vec2 newPos = pos + glm::vec2(dir.x + (stepPercentage * i), dir.y + (stepPercentage * i));
-		auto collInfo = IsPointInCollider(newPos, colliderToIgnore);
+		glm::vec2 newPos = pos + glm::vec2(dir.x * ((stepPercentage) * i), dir.y * ((stepPercentage) * i));
+		auto collInfo = IsPointInCollider(newPos, colliderToIgnore, tag);
 
 		if (collInfo)
 			return collInfo;

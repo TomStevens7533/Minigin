@@ -27,7 +27,7 @@ namespace dae
 		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point, std::string tag) { return m_SceneGrid.IsPointInCollider(point, tag); };
 		std::shared_ptr<ColliderInfo> AddColliderToScene(ColliderInfo colInfo) { return m_SceneGrid.AddCollider(colInfo); };
 		//Raycasts
-		std::shared_ptr<ColliderInfo> SceneRaycast(glm::vec2 pos, glm::vec2 dir, float length, const std::shared_ptr<ColliderInfo> colliderToIgnore);
+		std::shared_ptr<ColliderInfo> SceneRaycast(glm::vec2 pos, glm::vec2 dir, float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag);
 
 
 		~Scene();

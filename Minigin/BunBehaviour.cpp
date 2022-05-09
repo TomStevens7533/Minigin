@@ -15,11 +15,10 @@ void dae::BunBehaviour::Update()
 	if (m_IsFalling) {
 		//stop falling if hitting ground
 		glm::vec2 pos = m_pParent->GetTransform().GetPosition();
-		pos += m_pBoxColliderComponent->GetDimension();
 
 		//Check if other bun is in the way if true move other bun
 		std::shared_ptr<ColliderInfo> info = (m_pParent->GetScene()
-			->SceneRaycast(pos, glm::vec2{0, -1}, 5.f, m_pBoxColliderComponent->GetColliderInfo()));
+			->SceneRaycast(pos, glm::vec2{0, 1}, 15.f, m_pBoxColliderComponent->GetColliderInfo(),"Bun"));
 
 		if (info && m_IsFalling) {
 			//Has hit other burgerpiece
@@ -31,6 +30,7 @@ void dae::BunBehaviour::Update()
 			}
 		}
 
+		pos += m_pBoxColliderComponent->GetDimension();
 		std::shared_ptr<ColliderInfo> infoGroud = (m_pParent->GetScene()->IsPointInCollider(pos, "Floor"));
 		//stop if hitting floor
 		if (infoGroud) {
@@ -41,6 +41,9 @@ void dae::BunBehaviour::Update()
 			//if hitting different collider
 			else if (m_pInfoGround != infoGroud->m_pAttachedGameObject) {
 				std::cout << "stop fall floor\n";
+				//Throw ScoreEvent
+				//Check enemies
+
 				m_IsFalling = false;
 				m_pInfoGround = nullptr;
 			}
@@ -58,9 +61,22 @@ void dae::BunBehaviour::LateUpdate()
 {
 	if (!m_IsFalling) {
 		//Check if player is colliding
-		if (m_pParent->GetScene()->IsRectColliding(m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect, "Pepper")) {
-			m_IsFalling = true;
-			std::cout << "start fall\n";
+		auto peterCollision = m_pParent->GetScene()->IsRectColliding(m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect, "Pepper");
+		if (peterCollision) {
+
+			m_pPeterCollision = peterCollision;
+		}
+		else if(m_pPeterCollision) {
+			//Check if peter pepper has walked the bun
+			float pepperXsPos = m_pPeterCollision->m_ColliderRect.x;
+			float currentBunXPos = m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect.x;
+			float currentBunWith = m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect.width;
+			if (pepperXsPos < currentBunXPos || pepperXsPos >(currentBunXPos + currentBunWith)) {
+				m_IsFalling = true;
+				m_IsFalling = true;
+				std::cout << "start fall\n";
+				m_pPeterCollision = nullptr;
+			}
 		}
 	}
 	else

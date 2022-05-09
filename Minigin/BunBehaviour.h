@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 namespace dae {
+	struct ColliderInfo;
 	class BoxColliderComponent;
 	class BunBehaviour : public BaseComponent
 	{
@@ -18,6 +19,7 @@ namespace dae {
 		BunBehaviour& operator=(BunBehaviour&& other) = delete;
 	private:
 		BoxColliderComponent* m_pBoxColliderComponent;
+		std::shared_ptr<ColliderInfo> m_pPeterCollision;
 		bool m_IsFalling = false;
 		float m_Velocity = 10.f;
 		GameObject* m_pInfoGround{};

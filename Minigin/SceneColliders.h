@@ -20,13 +20,13 @@ namespace dae {
 		void RemoveCollider(std::string tag, bool deleteAll = false);
 		std::shared_ptr<ColliderInfo> IsRectColliding(Rectf lookupRect);
 		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point);
-		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point, const std::shared_ptr<ColliderInfo> colliderToIgnore);
+		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag);
 
 
 		std::shared_ptr<ColliderInfo> IsRectColliding(Rectf lookupRect, std::string tag);
 		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point, std::string tag);
 
-		std::shared_ptr<ColliderInfo> SceneRaycast(glm::vec2 pos, glm::vec2 dir, float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, int steps = 5);
+		std::shared_ptr<ColliderInfo> SceneRaycast(glm::vec2 pos, glm::vec2 dir, float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag, int steps = 10);
 
 	public:
 		SceneColliders(const SceneColliders& other) = delete;

@@ -72,8 +72,11 @@ namespace dae {
 
 	void TextureComponent::Start()
 	{
-		RenderComponent* renderComponent = (m_pParent->AddOrGetComponent<dae::RenderComponent>());
-		renderComponent->SetData(m_Texture.get());
+		if (m_pParent->GetComponent<dae::RenderComponent>() == nullptr) {
+			auto comp = std::make_shared<dae::RenderComponent>();
+			m_pParent->AddComponent<dae::RenderComponent>(comp);
+			comp->SetData(m_Texture.get());
+		}
 	}
 	TextureComponent::~TextureComponent()
 	{
