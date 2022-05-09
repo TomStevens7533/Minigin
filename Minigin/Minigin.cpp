@@ -243,7 +243,7 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		auto inputComponent = std::make_shared<InputComponent>(static_cast<int>(i));
 		auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png",15, 11, 1.f);
 		auto peterPepperComp = std::make_shared<PetterPepperComponent>();
-		auto movementComp = std::make_shared<MovementComponent>(15.f);
+		auto movementComp = std::make_shared<MovementComponent>(70.f);
 		auto boxCollider = std::make_shared<BoxColliderComponent>("Pepper", 5);
 
 

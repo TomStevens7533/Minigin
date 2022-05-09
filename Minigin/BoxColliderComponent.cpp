@@ -8,12 +8,7 @@
 
 void dae::BoxColliderComponent::LateUpdate()
 {
-	if (m_pColliderInfo != nullptr) {
-		//Update position of BoxCollider
-		glm::vec3 goPos = m_pParent->GetTransform().GetPosition();
-		m_pColliderInfo->m_ColliderRect.x = goPos.x - m_Precision;
-		m_pColliderInfo->m_ColliderRect.y = goPos.y - m_Precision;
-	}
+
 }
 
 void dae::BoxColliderComponent::Start()
@@ -70,6 +65,16 @@ void dae::BoxColliderComponent::Render() const
 	}
 	
 
+}
+
+void dae::BoxColliderComponent::Update()
+{
+	if (m_pColliderInfo != nullptr) {
+		//Update position of BoxCollider
+		glm::vec3 goPos = m_pParent->GetTransform().GetPosition();
+		m_pColliderInfo->m_ColliderRect.x = goPos.x - m_Precision;
+		m_pColliderInfo->m_ColliderRect.y = goPos.y - m_Precision;
+	}
 }
 
 dae::BoxColliderComponent::BoxColliderComponent(std::string tag, int precision /*= 0*/) : 

@@ -14,7 +14,7 @@ namespace dae {
 	public:
 		MovementComponent(float movementVelocity);
 		virtual void Start() override;
-		virtual void Update() override {};
+		virtual void Update() override;
 		virtual void LateUpdate() override;
 		virtual void Render() const override { };
 

@@ -79,10 +79,6 @@ void dae::BunBehaviour::LateUpdate()
 			}
 		}
 	}
-	else
-	{
-	
-	}
 }
 
 void dae::BunBehaviour::Start()
