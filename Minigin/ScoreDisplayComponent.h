@@ -21,6 +21,9 @@ namespace dae {
 		virtual void Render() const override {};
 		virtual void onNotify(const BaseComponent* entity, EventType event, EventArgs* args) override;
 
+
+		void ScoreScore(int score);
+
 	private:
 		int m_Score{0};
 		std::string m_BaseString{};

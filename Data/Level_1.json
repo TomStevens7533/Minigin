@@ -30,8 +30,12 @@
         "Positions" : [[250,220] ]
     },
     {
-        "name" : "LowerBun",
-        "Positions" : [[250,360] ]
+      "name": "LowerBun",
+      "Positions": [ [ 250, 360 ] ]
+    },
+    {
+      "name": "BurgerCatcher",
+      "Positions": [ [ 250, 460 ] ]
     }
     
 ]

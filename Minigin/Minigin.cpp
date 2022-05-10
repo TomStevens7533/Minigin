@@ -186,6 +186,24 @@ static void CreatePlatform(std::vector<glm::vec2>& posVec, int tilling) {
 	}
 
 }
+static void CreateBurgerCatcher(std::vector<glm::vec2>& posVec) {
+
+	for (size_t i = 0; i < posVec.size(); i++)
+	{
+		glm::vec2 bunPos = posVec[i];
+		auto scene = SceneManager::GetInstance().GetScene("Demo");
+		auto goBurgerPiece = std::make_shared<dae::GameObject>();
+		goBurgerPiece->GetTransform().SetPosition(bunPos.x, bunPos.y, 0);
+		auto TexComp = std::make_shared<TextureComponent>("BurgerCatcher.png");
+		auto boxComp = std::make_shared<BoxColliderComponent>("BunEnd");
+
+		goBurgerPiece->AddComponent<BoxColliderComponent>(boxComp);
+		goBurgerPiece->AddComponent<TextureComponent>(TexComp);
+
+		scene->Add(goBurgerPiece);
+	}
+	
+}
 /**
  * Code constructing the scene world starts here
  */
@@ -333,6 +351,10 @@ void dae::Minigin::LoadGame() const
 		}
 		else if (mapElement.first == "LowerBun") {
 			CreateLowerBun(mapElement.second);
+
+		}
+		else if (mapElement.first == "BurgerCatcher") {
+			CreateBurgerCatcher(mapElement.second);
 
 		}
 		

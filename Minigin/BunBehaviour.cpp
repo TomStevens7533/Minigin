@@ -4,6 +4,7 @@
 #include "BoxColliderComponent.h"
 #include "Scene.h"
 #include "Time.h"
+#include "ScoreDisplayComponent.h"
 
 void dae::BunBehaviour::Render() const
 {
@@ -12,48 +13,13 @@ void dae::BunBehaviour::Render() const
 
 void dae::BunBehaviour::Update()
 {
-	if (m_IsFalling) {
-		//stop falling if hitting ground
-		glm::vec2 pos = m_pParent->GetTransform().GetPosition();
-
-		//Check if other bun is in the way if true move other bun
-		std::shared_ptr<ColliderInfo> info = (m_pParent->GetScene()
-			->SceneRaycast(pos, glm::vec2{0, 1}, 9.f, m_pBoxColliderComponent->GetColliderInfo(),"Bun"));
-
-		if (info && m_IsFalling) {
-			//Has hit other burgerpiece
-			auto pBun = info->m_pAttachedGameObject->GetComponent<BunBehaviour>();
-			if (pBun != nullptr ) {
-				//Collided buger piece falling
-				pBun->SetFalling();
-
-			}
-		}
-
-		pos += m_pBoxColliderComponent->GetDimension();
-		std::shared_ptr<ColliderInfo> infoGroud = (m_pParent->GetScene()->IsPointInCollider(pos, "Floor"));
-		//stop if hitting floor
-		if (infoGroud) {
-			if (m_pInfoGround == nullptr) {
-				m_pInfoGround = infoGroud->m_pAttachedGameObject;
-				return;
-			}
-			//if hitting different collider
-			else if (m_pInfoGround != infoGroud->m_pAttachedGameObject) {
-				std::cout << "stop fall floor\n";
-				//Throw ScoreEvent
-				//Check enemies
-
-				m_IsFalling = false;
-				m_pInfoGround = nullptr;
-			}
-
-
-		}
+	//Set burger falling
+	if (m_IsFalling && m_IsInFinalPos == false) {
 		glm::vec3 newPos = m_pParent->GetTransform().GetPosition();
 		newPos.y += m_Velocity * Time::GetInstance().GetDeltaTime();
 		m_pParent->GetTransform().SetPosition(newPos.x, newPos.y, newPos.z);
 	}
+
 
 }
 
@@ -87,6 +53,8 @@ void dae::BunBehaviour::LateUpdate()
 					m_IsFalling = true;
 					m_IsPeterInCollFirst = false;
 					std::cout << "start fall\n";
+					m_pPepperGameobject = m_pExitPeterCollision->m_pAttachedGameObject;
+
 				}
 			}
 			else
@@ -96,6 +64,7 @@ void dae::BunBehaviour::LateUpdate()
 					//Pepper has wallked the entirty of the bun
 					m_IsFalling = true;
 					std::cout << "start fall\n";
+					m_pPepperGameobject = m_pExitPeterCollision->m_pAttachedGameObject;
 				}
 			}
 			m_pExitPeterCollision = nullptr;
@@ -103,6 +72,53 @@ void dae::BunBehaviour::LateUpdate()
 		}
 	
 
+	}
+	else {
+		//stop falling if hitting ground
+		glm::vec2 pos = m_pParent->GetTransform().GetPosition();
+
+		//Check if other bun is in the way if true move other bun
+		std::shared_ptr<ColliderInfo> info = (m_pParent->GetScene()
+			->SceneRaycast(pos, glm::vec2{ 0, 1 }, 9.f, m_pBoxColliderComponent->GetColliderInfo(), "Bun"));
+
+		if (info && m_IsFalling) {
+			//Has hit other burgerpiece
+			auto pBun = info->m_pAttachedGameObject->GetComponent<BunBehaviour>();
+			if (pBun != nullptr) {
+				//Collided buger piece falling
+				pBun->SetFalling();
+
+				//If falled on bun is in on top stop other bun piece
+				m_IsInFinalPos = pBun->GetFinalPos();
+			}
+		}
+
+		pos += m_pBoxColliderComponent->GetDimension();
+		std::shared_ptr<ColliderInfo> infoGroud = (m_pParent->GetScene()->IsPointInCollider(pos, "Floor"));
+		//stop if hitting floor
+		if (infoGroud) {
+			if (m_pInfoGround == nullptr) {
+				m_pInfoGround = infoGroud->m_pAttachedGameObject;
+				return;
+			}
+			//if hitting different collider
+			else if (m_pInfoGround != infoGroud->m_pAttachedGameObject) {
+				std::cout << "stop fall floor\n";
+				//Throw ScoreEvent
+				//Check enemies
+				ScoreArgs args;
+				args.scoreIncrease = m_IncreaseScore;
+				notify(this, EventType::SCORE_INCREASE, &args);
+
+				m_IsFalling = false;
+				m_pInfoGround = nullptr;
+			}
+		}
+		infoGroud = (m_pParent->GetScene()->IsRectColliding(m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect, "BunEnd"));
+		if (infoGroud) {
+			//if hitting end of screen turn off all velocity
+			m_IsInFinalPos = true;
+		}
 	}
 }
 
