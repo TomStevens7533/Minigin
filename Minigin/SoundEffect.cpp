@@ -4,7 +4,7 @@
 
 SoundEffect::SoundEffect(std::string path, float volume) : m_path{path}, m_Volume{volume}
 {
-
+	m_Channel = Mix_ReserveChannels(1);
 }
 
 SoundEffect::~SoundEffect()

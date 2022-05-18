@@ -33,5 +33,6 @@ namespace dae {
 		bool m_IsInFinalPos = false;
 		GameObject* m_pInfoGround{};
 		GameObject* m_pPepperGameobject{ nullptr };
+		unsigned int m_BurgerPassSoundIdx;
 	};
 }

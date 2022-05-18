@@ -7,7 +7,6 @@
 #include "Command.cpp"
 #include "SceneObject.h"
 #include "Scene.h"
-#include "ServiceLocator.h"
 namespace dae {
 	void PetterPepperComponent::Start()
 	{
@@ -27,14 +26,10 @@ namespace dae {
 		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN,40, new MoveDownEnterCommand(movementComp), KeyState::PRESSED);
 
 
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveExitCommand(movementComp), KeyState::RELEASED);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveExitCommand(movementComp), KeyState::RELEASED);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveExitCommand(movementComp), KeyState::RELEASED);
-		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveExitCommand(movementComp), KeyState::RELEASED);
-
-		ServiceLocator::GetSoundSystem().load(0, "../Data/footstep.mp3");
-
-		ServiceLocator::GetSoundSystem().load(1, "../Data/wandel.mp3");
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveHorizontalExitCommand(movementComp), KeyState::RELEASED);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveHorizontalExitCommand(movementComp), KeyState::RELEASED);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveVerticalExitCommand(movementComp), KeyState::RELEASED);
+		m_InputComponent->AddCommand(ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveVerticalExitCommand(movementComp), KeyState::RELEASED);
 
 
 
@@ -42,9 +37,7 @@ namespace dae {
 
 	void PetterPepperComponent::Update()
 	{
-		if (!m_InputComponent->IsTriggered()) {
-			m_SpriteComponent->SetActiveAnimation("MoveBackwards");
-		}
+	
 	}
 
 	void PetterPepperComponent::LateUpdate()

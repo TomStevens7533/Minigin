@@ -5,6 +5,8 @@
 #include "Scene.h"
 #include "Time.h"
 #include "ScoreDisplayComponent.h"
+#include "ServiceLocator.h"
+
 
 void dae::BunBehaviour::Render() const
 {
@@ -35,7 +37,8 @@ void dae::BunBehaviour::LateUpdate()
 				m_IsPeterInCollFirst = true;
 				std::cout << "entered bun\n";
 			}
-
+			//Play burger pass sound effect
+			ServiceLocator::GetSoundSystem().play(m_BurgerPassSoundIdx, 10.f);
 			m_pExitPeterCollision = peterCollision;
 		}
 		else if(m_IsPeterInCollFirst == true) {
@@ -65,6 +68,7 @@ void dae::BunBehaviour::LateUpdate()
 					m_IsFalling = true;
 					std::cout << "start fall\n";
 					m_pPepperGameobject = m_pExitPeterCollision->m_pAttachedGameObject;
+
 				}
 			}
 			m_pExitPeterCollision = nullptr;
@@ -79,7 +83,7 @@ void dae::BunBehaviour::LateUpdate()
 
 		//Check if other bun is in the way if true move other bun
 		std::shared_ptr<ColliderInfo> info = (m_pParent->GetScene()
-			->SceneRaycast(pos, glm::vec2{ 0, 1 }, 9.f, m_pBoxColliderComponent->GetColliderInfo(), "Bun"));
+			->SceneRaycast(pos, glm::vec2{ 0, 1 }, 11.f, m_pBoxColliderComponent->GetColliderInfo(), "Bun"));
 
 		if (info && m_IsFalling) {
 			//Has hit other burgerpiece
@@ -93,7 +97,9 @@ void dae::BunBehaviour::LateUpdate()
 			}
 		}
 
-		pos += m_pBoxColliderComponent->GetDimension();
+		pos.x += m_pBoxColliderComponent->GetDimension().x / 2.f;
+		pos.y += m_pBoxColliderComponent->GetDimension().y / 2.f;
+
 		std::shared_ptr<ColliderInfo> infoGroud = (m_pParent->GetScene()->IsPointInCollider(pos, "Floor"));
 		//stop if hitting floor
 		if (infoGroud) {
@@ -126,6 +132,9 @@ void dae::BunBehaviour::Start()
 {
 	m_pBoxColliderComponent = m_pParent->GetComponent<BoxColliderComponent>();
 	assert(m_pBoxColliderComponent);
+
+	//Sounds
+	m_BurgerPassSoundIdx = ServiceLocator::GetSoundSystem().load("../Data/BurgerTime/BurgerPass.mp3");
 
 }
 

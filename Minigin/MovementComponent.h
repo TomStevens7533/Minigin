@@ -1,12 +1,15 @@
 #pragma once
 #include "BaseComponent.h"
 namespace dae {
-	enum class Direction {
+	enum class HorizontalDirection {
 		NONE,
-		UP,
-		DOWN,
 		LEFT,
 		RIGHT
+	};
+	enum class VerticalDirection {
+		NONE,
+		UP,
+		DOWN
 	};
 	class BoxColliderComponent;
 	class MovementComponent : public BaseComponent
@@ -18,9 +21,13 @@ namespace dae {
 		virtual void LateUpdate() override;
 		virtual void Render() const override { };
 
-		void SetNewDirection(Direction newDir);
+		void SetNewHorizontalDirection(HorizontalDirection newDir);
+		void SetNewVerticalDirection(VerticalDirection newDir);
+
 	private:
-		Direction m_CurrentDirection = Direction::NONE;
+		HorizontalDirection m_CurrentHorizonDirection = HorizontalDirection::NONE;
+		VerticalDirection m_CurrentVertoicalDirection = VerticalDirection::NONE;
+
 		BoxColliderComponent* m_ColliderComponent;
 		float m_Velocity{};
 		

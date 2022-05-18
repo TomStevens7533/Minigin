@@ -32,6 +32,11 @@ void dae::Scene::Start()
 	}
 }
 
+std::vector < std::shared_ptr<dae::ColliderInfo> > Scene::GetAllCollidersWithTag(std::string tag)
+{
+	return m_SceneGrid.GetAllCollidersWithTag(tag);
+}
+
 std::shared_ptr<dae::ColliderInfo> Scene::SceneRaycast(glm::vec2 pos, glm::vec2 dir, float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag)
 {
 	return m_SceneGrid.SceneRaycast(pos, dir, length, colliderToIgnore,tag);

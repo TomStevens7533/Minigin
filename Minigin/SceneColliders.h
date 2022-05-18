@@ -2,14 +2,9 @@
 #include <vector>
 #include <iostream>
 #include "structs.h"
+#include "glm/mat4x4.hpp"
 namespace dae {
 	class GameObject;
-	struct ColliderInfo
-	{
-		Rectf m_ColliderRect;
-		std::string tag = "None";
-		GameObject* m_pAttachedGameObject = nullptr;
-	};
 
 	class SceneColliders
 	{
@@ -26,6 +21,7 @@ namespace dae {
 		std::shared_ptr<ColliderInfo> IsRectColliding(Rectf lookupRect, std::string tag);
 		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point, std::string tag);
 
+		std::vector < std::shared_ptr<ColliderInfo> > GetAllCollidersWithTag(std::string tag);
 		std::shared_ptr<ColliderInfo> SceneRaycast(glm::vec2 pos, glm::vec2 dir, float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag, int steps = 10);
 
 	public:

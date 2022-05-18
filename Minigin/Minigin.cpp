@@ -28,6 +28,7 @@
 #include "Sound_System.h"
 #include "MovementComponent.h"
 #include "BunBehaviour.h"
+#include "HotDoggBehaviourComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -155,7 +156,7 @@ static void CreateLadder(std::vector<glm::vec2>& posVec, int tilling) {
 	{
 		auto goLadder = std::make_shared<dae::GameObject>();
 		auto texComp = std::make_shared<TextureComponent>("ladder.png");
-		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Ladder");
+		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Ladder", 2);
 
 
 		goLadder->AddComponent<TextureComponent>(texComp);
@@ -175,7 +176,7 @@ static void CreatePlatform(std::vector<glm::vec2>& posVec, int tilling) {
 	{
 		auto goFloor = std::make_shared<dae::GameObject>();
 		auto texComp = std::make_shared<TextureComponent>("Walkable.png");
-		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Floor", 0);
+		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Floor", 2);
 
 		goFloor->AddComponent<TextureComponent>(texComp);
 		goFloor->AddComponent<BoxColliderComponent>(goBoxColl);
@@ -259,18 +260,18 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		auto PeterPepper = std::make_shared<GameObject>();
 		auto healthComponent = std::make_shared<HealthComponent>();
 		auto inputComponent = std::make_shared<InputComponent>(static_cast<int>(i));
-		auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png",15, 11, 1.f);
+		auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png",15, 11, 0.3f);
 		auto peterPepperComp = std::make_shared<PetterPepperComponent>();
 		auto movementComp = std::make_shared<MovementComponent>(70.f);
 		auto boxCollider = std::make_shared<BoxColliderComponent>("Pepper", 5);
 
 
 		//Anims
-		spriteComponent->AddAnimation("MoveBackwards", 0, 0, 3, 1);
-		spriteComponent->AddAnimation("Move", 3, 0, 6, 1);
 		spriteComponent->AddAnimation("MoveForward", 6, 0, 9, 1);
+		spriteComponent->AddAnimation("Move", 3, 0, 6, 1);
+		spriteComponent->AddAnimation("MoveBackwards", 0, 0, 3, 1);
 
-
+		
 		PeterPepper->AddComponent<HealthComponent>(healthComponent);
 		PeterPepper->AddComponent<InputComponent>(inputComponent);
 		PeterPepper->AddComponent<SpriteComponent>(spriteComponent);
@@ -299,7 +300,33 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 
 
 }
+static void CreateMrHotDogg() {
+	auto scene = SceneManager::GetInstance().GetScene("Demo");
 
+	auto hotdoggGo = std::make_shared<GameObject>();
+	auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png", 15, 11, 0.2f);
+	auto boxCollider = std::make_shared<BoxColliderComponent>("HotDog", 5);
+	auto movementComp = std::make_shared<MovementComponent>(55.f);
+	auto hotdogg = std::make_shared<HotDoggBehaviourComponent>("Pepper");
+
+
+	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);
+	spriteComponent->AddAnimation("MoveForward", 0, 2, 2, 3);
+	spriteComponent->AddAnimation("MoveBackwards", 4, 2, 6, 3);
+
+
+	hotdoggGo->AddComponent<SpriteComponent>(spriteComponent);
+	hotdoggGo->AddComponent<BoxColliderComponent>(boxCollider);
+	hotdoggGo->AddComponent<MovementComponent>(movementComp);
+	hotdoggGo->AddComponent<HotDoggBehaviourComponent>(hotdogg);
+
+
+
+
+	hotdoggGo->GetTransform().SetPosition(290, 277, 0);
+	scene->Add(hotdoggGo);
+
+}
 void dae::Minigin::LoadGame() const
 {
 	//Background + SceneLoading
@@ -359,6 +386,9 @@ void dae::Minigin::LoadGame() const
 		}
 		
 	}
+
+	CreateMrHotDogg();
+
 	//Call start after everything is initialized
 	scene.Start();
 }
@@ -396,7 +426,6 @@ void dae::Minigin::Run()
 
 		float lag = 0.f;
 
-		ServiceLocator::GetSoundSystem().play(0, 50.f);
 		SDL_Event e;
 		while (doContinue)
 		{
