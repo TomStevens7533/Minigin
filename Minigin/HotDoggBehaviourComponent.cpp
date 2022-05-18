@@ -98,6 +98,30 @@ void dae::HotDoggBehaviourComponent::Update()
 				m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::DOWN);
 		}
 	}
+	else if ((m_HotDogMovement->GetIsMovingHorizontally() == false) && (m_HotDogMovement->GetIsMovingVertically() == false)) {
+		//if stuck failsafe
+		switch (m_HotDogMovement->GetVerticalDir())
+		{
+		case VerticalDirection::DOWN:
+			m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::UP);
+			break;
+		case VerticalDirection::UP:
+			m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::DOWN);
+			break;
+		default:
+			break;
+		}	switch (m_HotDogMovement->GetHorizonDir())
+		{
+		case HorizontalDirection::RIGHT:
+			m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::LEFT);
+			break;
+		case HorizontalDirection::LEFT:
+			m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::RIGHT);
+			break;
+		default:
+			break;
+		}
+	}
 	
 
 }

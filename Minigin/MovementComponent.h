@@ -24,6 +24,10 @@ namespace dae {
 		void SetNewHorizontalDirection(HorizontalDirection newDir);
 		void SetNewVerticalDirection(VerticalDirection newDir);
 
+		HorizontalDirection GetHorizonDir() { return m_CurrentHorizonDirection; }
+		VerticalDirection GetVerticalDir() { return m_CurrentVertoicalDirection; }
+
+
 		inline bool GetIsMovingVertically() { return m_IsMovingVertically; }
 		inline bool GetIsMovingHorizontally() { return m_IsMovingHorizontally; }
 
