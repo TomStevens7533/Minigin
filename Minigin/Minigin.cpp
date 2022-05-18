@@ -156,7 +156,7 @@ static void CreateLadder(std::vector<glm::vec2>& posVec, int tilling) {
 	{
 		auto goLadder = std::make_shared<dae::GameObject>();
 		auto texComp = std::make_shared<TextureComponent>("ladder.png");
-		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Ladder", 2);
+		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Ladder", 1);
 
 
 		goLadder->AddComponent<TextureComponent>(texComp);

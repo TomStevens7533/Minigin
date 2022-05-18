@@ -44,7 +44,10 @@ void dae::MovementComponent::Update()
 			newPos.x -= m_Velocity * Time::GetInstance().GetDeltaTime();
 
 			tr.SetPosition(newPos.x, newPos.y, 0.f);
+			m_IsMovingHorizontally = true;
+			break;
 		}
+		m_IsMovingHorizontally = false;
 		break;
 	case HorizontalDirection::RIGHT:
 		colliderRect.x = newPos.x + (colliderRect.width);
@@ -55,9 +58,13 @@ void dae::MovementComponent::Update()
 		if (info) {
 			newPos.x += m_Velocity * Time::GetInstance().GetDeltaTime();
 			tr.SetPosition(newPos.x, newPos.y, 0.f);
+			m_IsMovingHorizontally = true;
+			break;
 		}
+		m_IsMovingHorizontally = false;
 		break;
-
+	default:
+		break;
 	}
 	//vertical
 	switch (m_CurrentVertoicalDirection)
@@ -71,21 +78,27 @@ void dae::MovementComponent::Update()
 
 			newPos.y += m_Velocity * Time::GetInstance().GetDeltaTime();
 			tr.SetPosition(newPos.x, newPos.y, 0.f);
+			m_IsMovingVertically = true;
+			break;
 		}
+		m_IsMovingVertically = false;
 		break;
 	case VerticalDirection::UP:
 
 		lookUpPos.x += colliderRect.width / 2.f;
-		lookUpPos.y += colliderRect.height /1.f;
+		lookUpPos.y += colliderRect.height  / 1.5f;
 
 		info = m_pParent->GetScene()->IsPointInCollider(lookUpPos, "Ladder");
 		if (info) {
 
 			newPos.y -= m_Velocity * Time::GetInstance().GetDeltaTime();
 			tr.SetPosition(newPos.x, newPos.y, 0.f);
-		}
-		break;
+			m_IsMovingVertically = true;
+			break;
 
+		}
+		m_IsMovingVertically = false;
+		break;
 	default:
 		break;
 	}

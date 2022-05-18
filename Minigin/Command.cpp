@@ -55,8 +55,8 @@ public:
 	
 	};
 	virtual void Excecute() {
-		
-		m_PeterComp->SetNewVerticalDirection(dae::VerticalDirection::DOWN);
+		dae::VerticalDirection dir = dae::VerticalDirection::DOWN;
+		m_PeterComp->SetNewVerticalDirection(dir);
 
 		//Sprite
 		if (m_PeterSprite != nullptr) {

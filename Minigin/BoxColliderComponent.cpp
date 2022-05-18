@@ -18,15 +18,15 @@ void dae::BoxColliderComponent::Start()
 
 	if (spriteComp != nullptr) {
 		m_Dimensions = spriteComp->GetCurrentAnimDimensions();
-		m_Dimensions.x += m_Precision;
-		m_Dimensions.y += m_Precision;
+		m_Dimensions.x += m_Precision * 2.f;
+		m_Dimensions.y += m_Precision *2.f;
 
 	}
 	else if (texComp != nullptr) {
 
 		m_Dimensions =  texComp->GetDimensions();
-		m_Dimensions.y += m_Precision;
-		m_Dimensions.x += m_Precision;
+		m_Dimensions.y += m_Precision * 2.f;
+		m_Dimensions.x += m_Precision * 2.f;
 
 
 	}

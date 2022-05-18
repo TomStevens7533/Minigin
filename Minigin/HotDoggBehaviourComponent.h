@@ -23,6 +23,8 @@ namespace dae {
 		virtual void Update() override;
 		virtual void LateUpdate() override {};
 	private:
+		int GetPlayerQuadrant();
+	private:
 		std::vector<std::shared_ptr<dae::ColliderInfo>> m_PlayerVec;
 		std::string m_TagToFollow;
 		dae::MovementComponent* m_HotDogMovement = nullptr;
