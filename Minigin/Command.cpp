@@ -4,6 +4,7 @@
 #include "MovementComponent.h"
 #include "SpriteComponent.h"
 #include "GameObject.h"
+#include "ServiceLocator.h"
 class MoveRightEnterCommand : public Command {
 public:
 	MoveRightEnterCommand(dae::MovementComponent* peterComp)

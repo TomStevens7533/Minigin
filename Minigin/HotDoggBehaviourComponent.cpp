@@ -77,13 +77,12 @@ void dae::HotDoggBehaviourComponent::Update()
 		else if (closestPos.x >= HotDoggPos.x && closestPos.y < HotDoggPos.y)
 			m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::RIGHT);
 	}
-	if (m_HotDogMovement->GetIsMovingHorizontally() && (m_HotDogMovement->GetIsMovingVertically() == false))
+	else if (m_HotDogMovement->GetIsMovingHorizontally() && (m_HotDogMovement->GetIsMovingVertically() == false))
 	{
 		//Set Ladder state
 		glm::vec2 vecToPlayer{ xDiff, yDiff };
 		vecToPlayer = normalize(vecToPlayer);
 
-		std::cout << vecToPlayer.y << std::endl;
 		if (vecToPlayer.y > 0.5f)
 			m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::UP);
 		else if (vecToPlayer.y < -0.5f)

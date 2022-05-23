@@ -2,7 +2,7 @@
 #include "SoundEffect.h"
 #include <iostream>
 
-SoundEffect::SoundEffect(std::string path, float volume) : m_path{path}, m_Volume{volume}
+SoundEffect::SoundEffect(std::string path, float volume, int channel) : m_path{path}, m_Volume{volume}, m_Channel{ channel }
 {
 	m_Channel = Mix_ReserveChannels(1);
 }
@@ -10,19 +10,14 @@ SoundEffect::SoundEffect(std::string path, float volume) : m_path{path}, m_Volum
 SoundEffect::~SoundEffect()
 {
 
-	if (!Mix_Playing(m_Channel)) {
-		ReleaseSound();
-	}
+	
 }
 
-bool SoundEffect::Play()
+void SoundEffect::Play()
 {
-	if (!Mix_Playing(m_Channel)) {
-		m_SoundEffect->volume = static_cast<uint8_t>(m_Volume);
-		m_Channel = Mix_PlayChannel(-1, m_SoundEffect, 0);
-		return true;
-	}
-	return false;
+	m_SoundEffect->volume = static_cast<uint8_t>(m_Volume);
+	m_Channel = Mix_PlayChannel(m_Channel, m_SoundEffect, 0);
+	m_IsPlaying = true;
 }
 
 bool SoundEffect::IsLoaded()
@@ -33,6 +28,11 @@ bool SoundEffect::IsLoaded()
 void SoundEffect::set_volume(float volume)
 {
 	m_Volume = volume;
+}
+
+bool SoundEffect::GetIsPlaying() const
+{
+	return Mix_Playing(m_Channel);
 }
 
 void SoundEffect::load()
@@ -52,6 +52,7 @@ void SoundEffect::ReleaseSound()
 	Mix_FreeChunk(m_SoundEffect);
 	m_SoundEffect = NULL;
 	m_IsReleased = true;
+	m_IsPlaying = false;
 }
 
 

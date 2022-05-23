@@ -22,6 +22,7 @@ private:
 	std::deque<SoundEffect> m_DeletionQueue;
 	std::mutex m_Mutex;
 	std::condition_variable m_Cv;
+	int m_Channels = 4;
 
 	std::atomic<bool> m_IsRunning;
 	std::vector<std::string> m_PathMap;
@@ -32,7 +33,7 @@ SDL_Sound_System::SDL_SoundSystemImpl::SDL_SoundSystemImpl() {
 		exit(2);
 	}
 	m_IsRunning = true;
-	if (Mix_AllocateChannels(4) < 0)
+	if (Mix_AllocateChannels(m_Channels) < 0)
 	{
 		fprintf(stderr, "Unable to allocate mixing channels: %s\n", SDL_GetError());
 		exit(-1);
@@ -41,37 +42,40 @@ SDL_Sound_System::SDL_SoundSystemImpl::SDL_SoundSystemImpl() {
 }
 SDL_Sound_System::SDL_SoundSystemImpl::~SDL_SoundSystemImpl()
 {
+	std::unique_lock lock(m_Mutex);
 	m_IsRunning = false;
-	m_Cv.notify_one();
-
-	for (size_t i = 0; i < m_DeletionQueue.size(); i++)
-	{
-		m_DeletionQueue[i].ReleaseSound();
-	}
-
 }
 void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 {
+
 	std::unique_lock lock(m_Mutex);
-
 	while (m_IsRunning) {
-
 		m_Cv.wait(lock);
 		while (!m_SoundQueue.empty())
 		{
-			SoundEffect currChunk = m_SoundQueue.front();
-			if (!currChunk.IsLoaded())
+			lock.unlock();
+			SoundEffect& currChunk = m_SoundQueue.front();
+			if (!currChunk.IsLoaded() && !currChunk.GetIsPlaying()) {
 				currChunk.load();
-
-			if (!currChunk.Play()) {
-				lock.unlock();
-				m_SoundQueue.pop_front();
-				lock.lock();
+				currChunk.Play();
 			}
+
+			lock.lock();
+			if (!currChunk.GetIsPlaying()) {
+				currChunk.ReleaseSound();
+				m_SoundQueue.pop_front();
+			}
+			else
+				std::swap(m_SoundQueue.front(), m_SoundQueue.back());
+
+
 		}
-		
-			
-	}	
+
+
+	}
+	
+
+
 }
 unsigned int SDL_Sound_System::SDL_SoundSystemImpl::RegisterSoundImpl(const std::string& path)
 {
@@ -95,13 +99,16 @@ void SDL_Sound_System::SDL_SoundSystemImpl::AddToQueue(const unsigned int id, fl
 {
 	if (id < m_PathMap.size()) {
 		//Contains ID
-		SoundEffect curr(m_PathMap[id], volume);
-		
 		std::unique_lock lock(m_Mutex);
-		m_SoundQueue.push_back(curr);
-		lock.unlock();
+		int channel = id % m_PathMap.size();
+		if (!Mix_Playing(channel)) {
+			SoundEffect curr(m_PathMap[id], volume, channel);
+			m_SoundQueue.push_back(curr);
+			m_Cv.notify_one();
+			std::cout << "aq\n";
 
-		m_Cv.notify_one();
+		}
+
 	}
 	
 }
