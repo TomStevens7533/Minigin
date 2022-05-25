@@ -3,136 +3,59 @@
 #include "GameObject.h"
 #include "Scene.h"
 #include "MovementComponent.h"
+#include "Time.h"
 
-dae::HotDoggBehaviourComponent::HotDoggBehaviourComponent(std::string tagToFollow) : m_TagToFollow{tagToFollow}
+dae::HorizontalState dae::AIState::m_HorizontalState;
+
+dae::VerticalState dae::AIState::m_VerticalState;
+
+
+dae::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow) : m_TagToFollow{tagToFollow}
 {
 }
 
-void dae::HotDoggBehaviourComponent::Start()
+void dae::AIBehaviourComponent::Start()
 {
 	m_PlayerVec = GetAttachedGameObject()->GetScene()->GetAllCollidersWithTag(m_TagToFollow);
 	m_HotDogMovement = GetAttachedGameObject()->GetComponent<MovementComponent>();
+	m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::DOWN);
 
-
-	int quad = GetPlayerQuadrant();
-	switch (quad)
-	{
-	case 1:
-		m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::RIGHT);
-		break;
-	case 2:
-		m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::LEFT);
-		break;
-	case 3:
-		m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::LEFT);
-		break;
-	case 4:
-		m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::RIGHT);
-		break;
-	default:
-		break;
-	}
-
+	m_CurrState = &dae::AIState::m_HorizontalState;
+	m_CurrState->Entry(*this);
 
 }
 
-void dae::HotDoggBehaviourComponent::Update()
+void dae::AIBehaviourComponent::Update()
 {
-	glm::vec2 closestPos;
-	glm::vec3 HotDoggPos = GetAttachedGameObject()->GetTransform().GetPosition();
-	float distance = FLT_MAX;
-	//if no player return
-	if (m_PlayerVec.size() == 0)
-		return;
-	float xDiff{};
-	float yDiff{};
-
-	//Find closest Player
-	for (size_t i = 0; i < m_PlayerVec.size(); i++)
-	{
-		//Calculate distance with center point of player
-		xDiff = HotDoggPos.x - (m_PlayerVec[i]->m_ColliderRect.x + ((m_PlayerVec[i]->m_ColliderRect.width / 2.f)));
-		yDiff = HotDoggPos.y - (m_PlayerVec[i]->m_ColliderRect.y + (m_PlayerVec[i]->m_ColliderRect.height / 2.f));
-		float currDistance = std::sqrt(xDiff * xDiff + yDiff * yDiff);
-		if (currDistance < distance) {
-			closestPos.x = m_PlayerVec[i]->m_ColliderRect.x + ((m_PlayerVec[i]->m_ColliderRect.width / 2.f));
-			closestPos.y = m_PlayerVec[i]->m_ColliderRect.y + (m_PlayerVec[i]->m_ColliderRect.height / 2.f);
-			currDistance = distance;
-		}
-	}
-
-	if (m_HotDogMovement->GetIsMovingVertically() && (m_HotDogMovement->GetIsMovingHorizontally() == false)) {
-	//Go to closest player pos
-	// 1st quadrant
-		if (closestPos.x > HotDoggPos.x && closestPos.y >= HotDoggPos.y)
-			m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::RIGHT);
-		// 2nd quadrant
-		else if (closestPos.x <= HotDoggPos.x && closestPos.y > HotDoggPos.y)
-			m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::LEFT);
-		// 3rd quadrant
-		else if (closestPos.x < HotDoggPos.x && closestPos.y <= HotDoggPos.y)
-			m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::LEFT);
-
-		// 4th quadrant
-		else if (closestPos.x >= HotDoggPos.x && closestPos.y < HotDoggPos.y)
-			m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::RIGHT);
-	}
-	else if (m_HotDogMovement->GetIsMovingHorizontally() && (m_HotDogMovement->GetIsMovingVertically() == false))
-	{
-		//Set Ladder state
-		glm::vec2 vecToPlayer{ xDiff, yDiff };
-		vecToPlayer = normalize(vecToPlayer);
-
-		if (vecToPlayer.y > 0.5f)
-			m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::UP);
-		else if (vecToPlayer.y < -0.5f)
-			m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::DOWN);
-		else {
-			//On same floor 
-			//get random dir
-			int randomIdx = (rand() % 2);
-			if(randomIdx == 0)
-				m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::UP);
-			else
-				m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::DOWN);
-		}
-	}
-	else if ((m_HotDogMovement->GetIsMovingHorizontally() == false) && (m_HotDogMovement->GetIsMovingVertically() == false)) {
-		//if stuck failsafe
-		switch (m_HotDogMovement->GetVerticalDir())
-		{
-		case VerticalDirection::DOWN:
-			m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::UP);
-			break;
-		case VerticalDirection::UP:
-			m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::DOWN);
-			break;
-		default:
-			break;
-		}	switch (m_HotDogMovement->GetHorizonDir())
-		{
-		case HorizontalDirection::RIGHT:
-			m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::LEFT);
-			break;
-		case HorizontalDirection::LEFT:
-			m_HotDogMovement->SetNewHorizontalDirection(HorizontalDirection::RIGHT);
-			break;
-		default:
-			break;
-		}
-	}
 	
+	AIState* newState = m_CurrState->UpdateState(*this);
+	if (newState != nullptr) {
+		m_CurrState = newState;
+		m_CurrState->Entry(*this);
+	}
 
 }
 
-int dae::HotDoggBehaviourComponent::GetPlayerQuadrant()
+void dae::AIBehaviourComponent::SetHorizontalDir(HorizontalDirection horizon)
+{
+	m_HotDogMovement->SetNewHorizontalDirection(horizon);
+
+}
+
+void dae::AIBehaviourComponent::SetVerticalDir(VerticalDirection vertical)
+{
+	m_HotDogMovement->SetNewVerticalDirection(vertical);
+
+}
+
+glm::vec2 dae::AIBehaviourComponent::GetClosestPlayerPos() const
 {
 	glm::vec2 closestPos;
 	glm::vec3 HotDoggPos = GetAttachedGameObject()->GetTransform().GetPosition();
 	float distance = FLT_MAX;
 	//if no player return
-	if (m_PlayerVec.size() == 0)
-		return 0;
+	assert(m_PlayerVec.size() != 0);
+
 	//Find closest Player
 	for (size_t i = 0; i < m_PlayerVec.size(); i++)
 	{
@@ -146,23 +69,84 @@ int dae::HotDoggBehaviourComponent::GetPlayerQuadrant()
 			currDistance = distance;
 		}
 	}
-
-	//Go to closest player pos
-	 // 1st quadrant
-	int quad{};
-	if (closestPos.x > HotDoggPos.x && closestPos.y >= HotDoggPos.y)
-		quad = 1;
-	// 2nd quadrant
-	else if (closestPos.x <= HotDoggPos.x && closestPos.y > HotDoggPos.y)
-		quad = 2;
-	// 3rd quadrant
-	else if (closestPos.x < HotDoggPos.x && closestPos.y <= HotDoggPos.y)
-		quad = 3;
-
-	// 4th quadrant
-	else if (closestPos.x >= HotDoggPos.x && closestPos.y < HotDoggPos.y)
-		quad = 4;
-
-	return quad;
+	return closestPos;
 }
 
+
+
+
+
+
+void dae::HorizontalState::Entry(AIBehaviourComponent& ai)
+{
+
+	glm::vec2 pos = ai.GetClosestPlayerPos();
+	float currPosx = ai.GetAttachedGameObject()->GetTransform().GetPosition().x;
+	if (pos.x < (currPosx)) {
+		ai.SetHorizontalDir(HorizontalDirection::LEFT);
+		//Floor in sight
+	}
+	if (pos.x > (currPosx)) {
+		//Floor in sight
+		ai.SetHorizontalDir(HorizontalDirection::RIGHT);
+	}
+}
+
+dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
+{
+	//if notmoving horizontally switch
+	if (ai.GetMovementComponent()->CanMoveVertically() && m_CurrentTime > m_MinExitTime) {
+		m_CurrentTime = 0.f;
+		return &AIState::m_VerticalState;
+	}
+	else {
+		m_CurrentTime += Time::GetInstance().GetDeltaTime();
+	}
+
+	return nullptr;
+}
+
+
+
+void dae::VerticalState::Entry(AIBehaviourComponent& ai)
+{
+
+	float posY = ai.GetClosestPlayerPos().y;
+	float currPosY = ai.GetAttachedGameObject()->GetTransform().GetPosition().y;
+	if (posY < (currPosY )) {
+		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, -1), 50.f, "Ladder", 1)) {
+			//Floor in sight
+			ai.SetVerticalDir(VerticalDirection::UP);
+			return;
+		}
+		else
+			ai.SetVerticalDir(VerticalDirection::DOWN);
+	}
+	
+
+	if (posY > (currPosY)) {
+		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, 1), 50.f, "Ladder", 1)) {
+			//Floor in sight
+			ai.SetVerticalDir(VerticalDirection::DOWN);
+			return;
+		}
+		else
+			ai.SetVerticalDir(VerticalDirection::UP);
+	}
+
+
+}
+
+dae::AIState* dae::VerticalState::UpdateState(AIBehaviourComponent& ai)
+{
+
+	if (ai.GetMovementComponent()->GetIsMovingHorizontally() && m_CurrentTime > m_MinExitTime) {
+		m_CurrentTime = 0.f;
+		return &AIState::m_HorizontalState;
+	}
+	else {
+		m_CurrentTime += Time::GetInstance().GetDeltaTime();
+	}
+	return nullptr;
+
+}

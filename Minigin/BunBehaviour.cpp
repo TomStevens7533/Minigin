@@ -38,7 +38,7 @@ void dae::BunBehaviour::LateUpdate()
 				std::cout << "entered bun\n";
 			}
 			//Play burger pass sound effect
-			ServiceLocator::GetSoundSystem().play(m_BurgerPassSoundIdx, 10.f);
+			//ServiceLocator::GetSoundSystem().play(m_BurgerPassSoundIdx, 10.f);
 			m_pExitPeterCollision = peterCollision;
 		}
 		else if(m_IsPeterInCollFirst == true) {
@@ -83,7 +83,7 @@ void dae::BunBehaviour::LateUpdate()
 
 		//Check if other bun is in the way if true move other bun
 		std::shared_ptr<ColliderInfo> info = (m_pParent->GetScene()
-			->SceneRaycast(pos, glm::vec2{ 0, 1 }, 11.f, m_pBoxColliderComponent->GetColliderInfo(), "Bun"));
+			->SceneRaycast(pos, glm::vec2{ 0, 1 }, 11.f, "Bun",10, m_pBoxColliderComponent->GetColliderInfo()));
 
 		if (info && m_IsFalling) {
 			//Has hit other burgerpiece

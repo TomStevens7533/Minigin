@@ -156,7 +156,7 @@ static void CreateLadder(std::vector<glm::vec2>& posVec, int tilling) {
 	{
 		auto goLadder = std::make_shared<dae::GameObject>();
 		auto texComp = std::make_shared<TextureComponent>("ladder.png");
-		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Ladder", 1);
+		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Ladder", 5);
 
 
 		goLadder->AddComponent<TextureComponent>(texComp);
@@ -307,7 +307,7 @@ static void CreateMrHotDogg() {
 	auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png", 15, 11, 0.2f);
 	auto boxCollider = std::make_shared<BoxColliderComponent>("HotDog", 5);
 	auto movementComp = std::make_shared<MovementComponent>(55.f);
-	auto hotdogg = std::make_shared<HotDoggBehaviourComponent>("Pepper");
+	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper");
 
 
 	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);
@@ -318,7 +318,7 @@ static void CreateMrHotDogg() {
 	hotdoggGo->AddComponent<SpriteComponent>(spriteComponent);
 	hotdoggGo->AddComponent<BoxColliderComponent>(boxCollider);
 	hotdoggGo->AddComponent<MovementComponent>(movementComp);
-	hotdoggGo->AddComponent<HotDoggBehaviourComponent>(hotdogg);
+	hotdoggGo->AddComponent<AIBehaviourComponent>(hotdogg);
 
 
 

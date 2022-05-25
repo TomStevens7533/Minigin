@@ -1,16 +1,8 @@
 #pragma once
 #include "BaseComponent.h"
+#include "structs.h"
 namespace dae {
-	enum class HorizontalDirection {
-		NONE,
-		LEFT,
-		RIGHT
-	};
-	enum class VerticalDirection {
-		NONE,
-		UP,
-		DOWN
-	};
+
 	class BoxColliderComponent;
 	class MovementComponent : public BaseComponent
 	{
@@ -28,8 +20,13 @@ namespace dae {
 		VerticalDirection GetVerticalDir() { return m_CurrentVertoicalDirection; }
 
 
-		inline bool GetIsMovingVertically() { return m_IsMovingVertically; }
-		inline bool GetIsMovingHorizontally() { return m_IsMovingHorizontally; }
+		const inline bool GetIsMovingVertically() const { return m_IsMovingVertically; }
+		const inline bool GetIsMovingHorizontally() const { return m_IsMovingHorizontally; }
+
+		bool CanMoveVertically() const;
+		bool CanMoveHorizontally() const;
+		
+		glm::vec2 GetCenterPos() const;
 
 	private:
 		HorizontalDirection m_CurrentHorizonDirection = HorizontalDirection::NONE;

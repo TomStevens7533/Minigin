@@ -17,4 +17,15 @@ namespace dae {
 		GameObject* m_pAttachedGameObject = nullptr;
 	};
 
+	enum class HorizontalDirection {
+		NONE,
+		LEFT,
+		RIGHT
+	};
+	enum class VerticalDirection {
+		NONE,
+		UP,
+		DOWN
+	};
+
 }

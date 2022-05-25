@@ -64,6 +64,7 @@ void dae::MovementComponent::Update()
 		m_IsMovingHorizontally = false;
 		break;
 	default:
+		m_IsMovingHorizontally = false;
 		break;
 	}
 	//vertical
@@ -100,6 +101,7 @@ void dae::MovementComponent::Update()
 		m_IsMovingVertically = false;
 		break;
 	default:
+		m_IsMovingVertically = false;
 		break;
 	}
 
@@ -118,6 +120,48 @@ void dae::MovementComponent::LateUpdate()
 void dae::MovementComponent::SetNewVerticalDirection(VerticalDirection newDir)
 {
 	m_CurrentVertoicalDirection = newDir;
+}
+
+bool dae::MovementComponent::CanMoveVertically() const
+{
+	auto newPos = GetCenterPos();
+	glm::vec2 colliderDimensions = m_ColliderComponent->GetDimension();
+	Rectf colliderRect;
+	colliderRect = Rectf{ newPos.x, newPos.y, colliderDimensions.x / 2.f, colliderDimensions.y };
+
+	auto info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Ladder");
+	if (info) {
+		return true;
+	}
+	else
+		return false;
+}
+
+bool dae::MovementComponent::CanMoveHorizontally() const
+{
+
+	auto newPos = GetCenterPos();
+	glm::vec2 colliderDimensions = m_ColliderComponent->GetDimension();
+	Rectf colliderRect;
+	colliderRect = Rectf{ newPos.x, newPos.y, colliderDimensions.x / 2.f, colliderDimensions.y };
+
+
+
+	auto info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Floor");
+	if (info) {
+		return true;
+	}
+	else
+		return false;
+}
+
+glm::vec2 dae::MovementComponent::GetCenterPos() const
+{
+	Transform& tr = m_pParent->GetTransform();
+	glm::vec2 newPos;
+	newPos = tr.GetPosition();
+	glm::vec2 colliderDimensions = m_ColliderComponent->GetDimension();
+	return glm::vec2{ newPos.x + (colliderDimensions.x / 2.f), newPos.y };
 }
 
 void dae::MovementComponent::SetNewHorizontalDirection(HorizontalDirection newDir)

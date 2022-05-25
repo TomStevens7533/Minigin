@@ -117,7 +117,7 @@ std::shared_ptr<dae::ColliderInfo> SceneColliders::SceneRaycast(glm::vec2 pos, g
 {
 	assert(steps > 0);
 	float stepPercentage = (length / steps);
-	for (int i = 0; i < steps; i++)
+	for (int i = 1; i < (steps + 1); i++)
 	{
 		glm::vec2 newPos = pos + glm::vec2(dir.x * ((stepPercentage) * i), dir.y * ((stepPercentage) * i));
 		auto collInfo = IsPointInCollider(newPos, colliderToIgnore, tag);
