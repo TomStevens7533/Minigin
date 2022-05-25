@@ -107,19 +107,6 @@ dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 }
 
 
-dae::AIState* dae::VerticalState::UpdateState(AIBehaviourComponent& ai)
-{
-
-	if (ai.GetMovementComponent()->GetIsMovingHorizontally() && m_CurrentTime > m_MinExitTime) {
-		m_CurrentTime = 0.f;
-		return &AIState::m_HorizontalState;
-	}
-	else {
-		m_CurrentTime += Time::GetInstance().GetDeltaTime();
-	}
-	return nullptr;
-
-}
 
 void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 {
@@ -150,3 +137,16 @@ void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 
 }
 
+dae::AIState* dae::VerticalState::UpdateState(AIBehaviourComponent& ai)
+{
+
+	if (ai.GetMovementComponent()->GetIsMovingHorizontally() && m_CurrentTime > m_MinExitTime) {
+		m_CurrentTime = 0.f;
+		return &AIState::m_HorizontalState;
+	}
+	else {
+		m_CurrentTime += Time::GetInstance().GetDeltaTime();
+	}
+	return nullptr;
+
+}
