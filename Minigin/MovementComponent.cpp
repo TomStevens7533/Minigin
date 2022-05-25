@@ -127,7 +127,7 @@ bool dae::MovementComponent::CanMoveVertically() const
 	auto newPos = GetCenterPos();
 	glm::vec2 colliderDimensions = m_ColliderComponent->GetDimension();
 	Rectf colliderRect;
-	colliderRect = Rectf{ newPos.x, newPos.y, colliderDimensions.x / 2.f, colliderDimensions.y };
+	colliderRect = Rectf{ newPos.x, newPos.y, 0.f, colliderDimensions.y / 2.f };
 
 	auto info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Ladder");
 	if (info) {
@@ -141,13 +141,8 @@ bool dae::MovementComponent::CanMoveHorizontally() const
 {
 
 	auto newPos = GetCenterPos();
-	glm::vec2 colliderDimensions = m_ColliderComponent->GetDimension();
-	Rectf colliderRect;
-	colliderRect = Rectf{ newPos.x, newPos.y, colliderDimensions.x / 2.f, colliderDimensions.y };
 
-
-
-	auto info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Floor");
+	auto info = m_pParent->GetScene()->IsPointInCollider(newPos, "Floor");
 	if (info) {
 		return true;
 	}

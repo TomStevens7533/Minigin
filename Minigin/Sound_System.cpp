@@ -83,14 +83,14 @@ unsigned int SDL_Sound_System::SDL_SoundSystemImpl::RegisterSoundImpl(const std:
 
 	if (it != m_PathMap.end()) {
 		//if already exist;
-		unsigned int distandIdx = std::distance(m_PathMap.begin(), it);
+		unsigned int distandIdx = static_cast<unsigned int>(std::distance(m_PathMap.begin(), it));
 		return distandIdx;
 	}
 	else
 	{
 		//Not in path vec
 		m_PathMap.push_back(path);
-		return (m_PathMap.size() - 1);
+		return static_cast<unsigned int>(m_PathMap.size() - 1);
 	}
 
 }

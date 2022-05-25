@@ -114,7 +114,7 @@ void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 	float posY = ai.GetClosestPlayerPos().y;
 	float currPosY = ai.GetAttachedGameObject()->GetTransform().GetPosition().y;
 	if (posY < (currPosY )) {
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, -1), 50.f, "Ladder", 1)) {
+		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, -1), 30.f, "Ladder", 1)) {
 			//Floor in sight
 			ai.SetVerticalDir(VerticalDirection::UP);
 			return;
@@ -125,7 +125,7 @@ void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 	
 
 	if (posY > (currPosY)) {
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, 1), 50.f, "Ladder", 1)) {
+		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, 1),30.f, "Ladder", 1)) {
 			//Floor in sight
 			ai.SetVerticalDir(VerticalDirection::DOWN);
 			return;
