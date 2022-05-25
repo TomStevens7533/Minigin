@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "MovementComponent.h"
 #include "Time.h"
+#include "SpriteComponent.h"
 
 dae::HorizontalState dae::AIState::m_HorizontalState;
 
@@ -18,8 +19,8 @@ void dae::AIBehaviourComponent::Start()
 {
 	m_PlayerVec = GetAttachedGameObject()->GetScene()->GetAllCollidersWithTag(m_TagToFollow);
 	m_HotDogMovement = GetAttachedGameObject()->GetComponent<MovementComponent>();
+	m_SpriteComponent = GetAttachedGameObject()->GetComponent<SpriteComponent>();
 	m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::DOWN);
-
 	m_CurrState = &dae::AIState::m_HorizontalState;
 	m_CurrState->Entry(*this);
 
@@ -84,11 +85,19 @@ void dae::HorizontalState::Entry(AIBehaviourComponent& ai)
 	float currPosx = ai.GetAttachedGameObject()->GetTransform().GetPosition().x;
 	if (pos.x < (currPosx)) {
 		ai.SetHorizontalDir(HorizontalDirection::LEFT);
+
+		//Set anim
+		ai.GetSpriteComponent()->SetActiveAnimation("MoveSide");
+		ai.GetSpriteComponent()->SetFlipState(false);
 		//Floor in sight
 	}
 	if (pos.x > (currPosx)) {
 		//Floor in sight
 		ai.SetHorizontalDir(HorizontalDirection::RIGHT);
+
+		//Set anim
+		ai.GetSpriteComponent()->SetActiveAnimation("MoveSide");
+		ai.GetSpriteComponent()->SetFlipState(true);
 	}
 }
 
@@ -117,10 +126,16 @@ void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, -1), 30.f, "Ladder", 1)) {
 			//Floor in sight
 			ai.SetVerticalDir(VerticalDirection::UP);
+			ai.GetSpriteComponent()->SetActiveAnimation("MoveBackwards");
+			ai.GetSpriteComponent()->SetFlipState(false);
 			return;
 		}
-		else
+		else {
+			ai.GetSpriteComponent()->SetActiveAnimation("MoveForward");
+			ai.GetSpriteComponent()->SetFlipState(false);
 			ai.SetVerticalDir(VerticalDirection::DOWN);
+
+		}
 	}
 	
 
@@ -128,10 +143,16 @@ void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, 1),30.f, "Ladder", 1)) {
 			//Floor in sight
 			ai.SetVerticalDir(VerticalDirection::DOWN);
+			ai.GetSpriteComponent()->SetActiveAnimation("MoveForward");
+			ai.GetSpriteComponent()->SetFlipState(false);
 			return;
 		}
-		else
+		else {
+			ai.GetSpriteComponent()->SetActiveAnimation("MoveBackwards");
+			ai.GetSpriteComponent()->SetFlipState(false);
 			ai.SetVerticalDir(VerticalDirection::UP);
+
+		}
 	}
 
 

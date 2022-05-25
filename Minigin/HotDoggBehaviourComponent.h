@@ -29,7 +29,7 @@ namespace dae {
 		virtual AIState* UpdateState(AIBehaviourComponent& ai) override;
 
 	private:
-		float m_MinExitTime = 1.f;
+		float m_MinExitTime = 0.5f;
 		float m_CurrentTime = 0.f;
 	};
 	class VerticalState final : public AIState {
@@ -37,12 +37,12 @@ namespace dae {
 		virtual void Entry(AIBehaviourComponent& ai) override;
 		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
 	private:
-		float m_MinExitTime = 1.f;
+		float m_MinExitTime = 0.5f;
 		float m_CurrentTime = 0.f;
 
 	};
 
-
+	class SpriteComponent;
 	class MovementComponent;
 	class AIBehaviourComponent final : public BaseComponent 
 	{
@@ -66,6 +66,8 @@ namespace dae {
 		void SetVerticalDir(VerticalDirection vertical);
 		glm::vec2 GetClosestPlayerPos() const;
 		const MovementComponent* GetMovementComponent() const { return m_HotDogMovement; }
+		SpriteComponent* GetSpriteComponent() const { return m_SpriteComponent; }
+
 
 
 	private:
@@ -76,6 +78,7 @@ namespace dae {
 		std::vector<std::shared_ptr<dae::ColliderInfo>> m_PlayerVec;
 		std::string m_TagToFollow;
 		dae::MovementComponent* m_HotDogMovement = nullptr;
+		SpriteComponent* m_SpriteComponent = nullptr;
 	
 	};
 
