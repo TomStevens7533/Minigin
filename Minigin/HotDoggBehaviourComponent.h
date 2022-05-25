@@ -14,6 +14,7 @@ namespace dae {
 		virtual ~AIState() {};
 		virtual void Entry(AIBehaviourComponent&) = 0;
 		virtual  AIState* UpdateState(AIBehaviourComponent& ) = 0;
+		virtual void Exit(AIBehaviourComponent&) = 0;
 
 
 		static HorizontalState m_HorizontalState;
@@ -27,17 +28,20 @@ namespace dae {
 	public:
 		virtual void Entry(AIBehaviourComponent& ai) override;;
 		virtual AIState* UpdateState(AIBehaviourComponent& ai) override;
+		virtual void Exit(AIBehaviourComponent&) override;
 
 	private:
-		float m_MinExitTime = 0.5f;
+		float m_MinExitTime = 1.f;
 		float m_CurrentTime = 0.f;
 	};
 	class VerticalState final : public AIState {
 	public:
 		virtual void Entry(AIBehaviourComponent& ai) override;
 		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
+		virtual void Exit(AIBehaviourComponent&) override;
+
 	private:
-		float m_MinExitTime = 0.5f;
+		float m_MinExitTime = 1.f;
 		float m_CurrentTime = 0.f;
 
 	};

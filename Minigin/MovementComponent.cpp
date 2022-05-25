@@ -125,11 +125,8 @@ void dae::MovementComponent::SetNewVerticalDirection(VerticalDirection newDir)
 bool dae::MovementComponent::CanMoveVertically() const
 {
 	auto newPos = GetCenterPos();
-	glm::vec2 colliderDimensions = m_ColliderComponent->GetDimension();
-	Rectf colliderRect;
-	colliderRect = Rectf{ newPos.x, newPos.y, 0.f, colliderDimensions.y / 2.f };
 
-	auto info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Ladder");
+	auto info = m_pParent->GetScene()->IsPointInCollider(newPos, "Ladder");
 	if (info) {
 		return true;
 	}
@@ -156,7 +153,7 @@ glm::vec2 dae::MovementComponent::GetCenterPos() const
 	glm::vec2 newPos;
 	newPos = tr.GetPosition();
 	glm::vec2 colliderDimensions = m_ColliderComponent->GetDimension();
-	return glm::vec2{ newPos.x + (colliderDimensions.x / 2.f), newPos.y };
+	return glm::vec2{ newPos.x + (colliderDimensions.x / 2.f), newPos.y + (colliderDimensions.y / 2.f) };
 }
 
 void dae::MovementComponent::SetNewHorizontalDirection(HorizontalDirection newDir)
