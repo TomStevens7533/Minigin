@@ -51,7 +51,7 @@ void dae::Subject::removeObserver(std::shared_ptr<Observer> observer)
 	}
 }
 
-void dae::Subject::notify(const BaseComponent* entity, EventType event, EventArgs* args)
+void dae::Subject::notify(const BaseComponent* entity, int event, EventArgs* args)
 {
 	Observer* observer = head_;
 	while (observer != nullptr)

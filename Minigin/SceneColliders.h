@@ -17,7 +17,7 @@ namespace dae {
 		std::shared_ptr<ColliderInfo> IsRectColliding(Rectf lookupRect);
 		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point);
 		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag);
-
+		void UpdateColliders();
 
 		std::shared_ptr<ColliderInfo> IsRectColliding(Rectf lookupRect, std::string tag);
 		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point, std::string tag);

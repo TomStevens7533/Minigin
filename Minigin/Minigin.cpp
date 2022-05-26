@@ -219,7 +219,7 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		virtual void Excecute() {
 			ScoreArgs args;
 			args.scoreIncrease = m_Score;
-			notify(m_ScoreComponent.get(), EventType::SCORE_INCREASE, &args);
+			notify(m_ScoreComponent.get(), PepperEvent::SCORE_INCREASE, &args);
 		}
 	private:
 		std::shared_ptr<TextComponent> m_ScoreComponent; //Just used to simulate baseComponent
@@ -306,7 +306,7 @@ static void CreateMrHotDogg() {
 
 	auto hotdoggGo = std::make_shared<GameObject>();
 	auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png", 15, 11, 0.2f);
-	auto boxCollider = std::make_shared<BoxColliderComponent>("HotDog", 5);
+	auto boxCollider = std::make_shared<BoxColliderComponent>("Enemy", 5);
 	auto movementComp = std::make_shared<MovementComponent>(55.f);
 	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper");
 

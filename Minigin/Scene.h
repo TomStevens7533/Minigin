@@ -33,6 +33,8 @@ namespace dae
 		std::shared_ptr<ColliderInfo> SceneRaycast(glm::vec2 pos, glm::vec2 dir, float length, std::string tag, int steps = 10, const std::shared_ptr<ColliderInfo> colliderToIgnore = std::make_shared<ColliderInfo>());
 		std::vector < std::shared_ptr<dae::ColliderInfo> > GetAllCollidersWithTag(std::string tag);
 
+		void UpdateColliderOverlap();
+
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;

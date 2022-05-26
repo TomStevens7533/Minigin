@@ -5,7 +5,7 @@
 #endif
 
 #include "Minigin.h"
-#include "BurgerTIme.h"
+#include "BurgerTime.h"
 
 int main(int, char* []) {
 	BurgerTime game;

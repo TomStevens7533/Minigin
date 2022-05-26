@@ -8,7 +8,9 @@
 
 
 namespace dae {
-	GameObject::~GameObject() = default;
+	GameObject::~GameObject() {
+		std::cout << "des\n";
+	};
 
 	void GameObject::SetParent(GameObject* parent)
 	{

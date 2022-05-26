@@ -13,7 +13,7 @@ namespace dae {
 		virtual void Update() override {};
 		virtual void LateUpdate() override {};
 		virtual void Render() const override {};
-		virtual void onNotify(const BaseComponent* entity, EventType event, EventArgs* args) override;
+		virtual void onNotify(const BaseComponent* entity, int event, EventArgs* args) override;
 
 	private:
 		int m_Lives{};

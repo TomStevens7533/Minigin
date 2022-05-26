@@ -18,6 +18,7 @@ void Scene::Add(const std::shared_ptr<SceneObject>& object)
 
 void Scene::Update()
 {
+	m_SceneGrid.UpdateColliders();
 	for(auto& object : m_Objects)
 	{
 		object->Update();
@@ -31,6 +32,7 @@ void dae::Scene::Start()
 		object->Start();
 	}
 }
+
 
 std::vector < std::shared_ptr<dae::ColliderInfo> > Scene::GetAllCollidersWithTag(std::string tag)
 {

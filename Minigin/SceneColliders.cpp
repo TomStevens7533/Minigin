@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "SceneColliders.h"
 #include "Renderer.h"
+#include <algorithm>
 
 
 using namespace dae;
@@ -154,6 +155,21 @@ std::vector < std::shared_ptr<dae::ColliderInfo> > SceneColliders::GetAllCollide
 	return m_FilterVec;
 }
 
+void SceneColliders::UpdateColliders()
+{
+	for(auto& lookUpElement : m_SceneColliderVec) {
+
+		for (auto& CompareElement : m_SceneColliderVec)
+		{
+			if (lookUpElement != CompareElement) {
+
+				//Cal overlap functions
+				if (AreRectsOverlapping(lookUpElement->m_ColliderRect, CompareElement->m_ColliderRect))
+					lookUpElement->m_OverlapFunc(CompareElement);
+			}
+		}
+	}
+}
 
 
 

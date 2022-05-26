@@ -5,10 +5,14 @@
 #include "MovementComponent.h"
 #include "Time.h"
 #include "SpriteComponent.h"
+#include "BoxColliderComponent.h"
 
 dae::HorizontalState dae::AIState::m_HorizontalState;
 
 dae::VerticalState dae::AIState::m_VerticalState;
+
+dae::IdleState dae::AIState::m_IdleState;
+
 
 
 dae::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow) : m_TagToFollow{tagToFollow}
@@ -22,7 +26,12 @@ void dae::AIBehaviourComponent::Start()
 	m_SpriteComponent = GetAttachedGameObject()->GetComponent<SpriteComponent>();
 	m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::DOWN);
 
+	auto comp = GetAttachedGameObject()->GetComponent<BoxColliderComponent>();
+	assert(comp);
 
+	if (comp) {
+		comp->addObserver(this);
+	}
 }
 
 void dae::AIBehaviourComponent::Update()
@@ -81,6 +90,22 @@ glm::vec2 dae::AIBehaviourComponent::GetClosestPlayerPos() const
 
 
 
+void dae::AIBehaviourComponent::onNotify(const BaseComponent* , int eventType , EventArgs*  args)
+{
+	ColliderInfo colInfo;
+	CollisionArgs* colArgs;
+	switch (eventType)
+	{
+	case EventType::Collision:
+		//Change to dynamic safety check
+		colArgs = static_cast<CollisionArgs*>(args);
+		colInfo = colArgs->info;
+		std::cout <<colInfo.tag << std::endl;
+	default:
+		break;
+	}
+}
+
 void dae::HorizontalState::Entry(AIBehaviourComponent& ai)
 {
 
@@ -124,6 +149,12 @@ void dae::HorizontalState::Entry(AIBehaviourComponent& ai)
 
 dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 {
+	auto it = ai.GetAttachedGameObject()
+		->GetScene()->IsPointInCollider(ai.GetAttachedGameObject()->GetTransform().GetPosition(), "Shot");
+	if (it) {
+		return &AIState::m_IdleState;
+	}
+
 	//if notmoving horizontally switch
 	if (ai.GetMovementComponent()->CanMoveVertically() && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
@@ -133,6 +164,8 @@ dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
 	}
 
+
+
 	return nullptr;
 }
 
@@ -140,6 +173,12 @@ dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 
 dae::AIState* dae::VerticalState::UpdateState(AIBehaviourComponent& ai)
 {
+
+	auto it = ai.GetAttachedGameObject()
+		->GetScene()->IsPointInCollider(ai.GetAttachedGameObject()->GetTransform().GetPosition(), "Shot");
+	if (it) {
+		return &AIState::m_IdleState;
+	}
 
 	if (ai.GetMovementComponent()->CanMoveHorizontally() && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
@@ -160,6 +199,9 @@ void dae::HorizontalState::Exit(AIBehaviourComponent& ai)
 {
 	ai.SetHorizontalDir(HorizontalDirection::NONE);
 }
+
+
+
 void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 {
 
@@ -202,3 +244,8 @@ void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 }
 
 
+dae::AIState* dae::IdleState::UpdateState(AIBehaviourComponent&)
+{
+	std::cout << "Enemy hit\n";
+	return &AIState::m_HorizontalState;
+}

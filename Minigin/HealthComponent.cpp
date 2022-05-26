@@ -10,7 +10,7 @@ namespace dae {
 		HealthArgs args;
 		args.lives = m_Lives;
 		args.health = m_Health;
-		notify(this, EventType::ENTITY_DIED, &args);
+		notify(this, PepperEvent::ENTITY_DIED, &args);
 	}
 
 	void HealthComponent::DecreaseHealth(int healthDecrease)
@@ -27,7 +27,7 @@ namespace dae {
 			HealthArgs args;
 			args.lives = m_Lives;
 			args.health = m_Health;
-			notify(this, EventType::ENTITY_DIED, &args);
+			notify(this, PepperEvent::ENTITY_DIED, &args);
 		}
 	}	 
 		 
@@ -38,7 +38,7 @@ namespace dae {
 		HealthArgs args;
 		args.lives = m_Lives;
 		args.health = m_Health;
-		notify(this, EventType::HEALTH_SET, &args);
+		notify(this, PepperEvent::HEALTH_SET, &args);
 	}	 
 		 
 	int  HealthComponent::GetHealth() const
@@ -54,7 +54,7 @@ namespace dae {
 		HealthArgs args;
 		args.lives = m_Lives;
 		args.health = m_Health;
-		notify(this, EventType::HEALTH_SET, &args);
+		notify(this, PepperEvent::HEALTH_SET, &args);
 
 	}
 
@@ -70,7 +70,7 @@ namespace dae {
 		HealthArgs args;
 		args.lives = m_Lives;
 		args.health = m_Health;
-		notify(this, EventType::HEALTH_SET, &args);
+		notify(this, PepperEvent::HEALTH_SET, &args);
 	}
 
 }

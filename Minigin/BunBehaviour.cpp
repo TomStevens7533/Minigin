@@ -114,7 +114,7 @@ void dae::BunBehaviour::LateUpdate()
 				//Check enemies
 				ScoreArgs args;
 				args.scoreIncrease = m_IncreaseScore;
-				notify(this, EventType::SCORE_INCREASE, &args);
+				notify(this, PepperEvent::SCORE_INCREASE, &args);
 
 				m_IsFalling = false;
 				m_pInfoGround = nullptr;

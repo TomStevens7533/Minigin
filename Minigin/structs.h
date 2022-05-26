@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 namespace dae {
 	struct Rectf
 	{
@@ -15,6 +16,7 @@ namespace dae {
 		Rectf m_ColliderRect;
 		std::string tag = "None";
 		GameObject* m_pAttachedGameObject = nullptr;
+		std::function<void(const std::shared_ptr<ColliderInfo>)> m_OverlapFunc;
 	};
 
 	enum class HorizontalDirection {

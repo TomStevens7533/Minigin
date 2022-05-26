@@ -1,9 +1,15 @@
 #pragma once
 #include "BaseComponent.h"
 #include <glm/glm.hpp>
+#include "Subject.h"
+#include "structs.h"
 namespace dae {
-	struct ColliderInfo;
-	class BoxColliderComponent : public BaseComponent
+
+	struct CollisionArgs : public EventArgs {
+		ColliderInfo info;
+	};
+
+	class BoxColliderComponent : public BaseComponent, public Subject
 	{
 	public:
 		BoxColliderComponent(int width, int height, std::string tag, int precision = 0);
@@ -18,6 +24,8 @@ namespace dae {
 
 		inline glm::vec2 GetDimension() const { return m_Dimensions; };
 		const std::shared_ptr<ColliderInfo> GetColliderInfo() const;
+
+		void OnTriggerEnter(const std::shared_ptr<ColliderInfo> otherCollider);
 
 		BoxColliderComponent(const BoxColliderComponent& other) = delete;
 		BoxColliderComponent(BoxColliderComponent&& other) = delete;

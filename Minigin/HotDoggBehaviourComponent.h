@@ -2,6 +2,7 @@
 #include "BaseComponent.h"
 #include <vector>
 #include "structs.h"
+#include "Observer.h"
 
 namespace dae {
 
@@ -9,16 +10,20 @@ namespace dae {
 
 	class VerticalState;
 	class HorizontalState;
+	class IdleState;
+
 	class AIState {
 	public:
 		virtual ~AIState() {};
 		virtual void Entry(AIBehaviourComponent&) = 0;
 		virtual  AIState* UpdateState(AIBehaviourComponent& ) = 0;
 		virtual void Exit(AIBehaviourComponent&) = 0;
-
+		friend AIBehaviourComponent;
 
 		static HorizontalState m_HorizontalState;
 		static VerticalState m_VerticalState;
+		static IdleState m_IdleState;
+
 
 	};
 
@@ -29,6 +34,7 @@ namespace dae {
 		virtual void Entry(AIBehaviourComponent& ai) override;;
 		virtual AIState* UpdateState(AIBehaviourComponent& ai) override;
 		virtual void Exit(AIBehaviourComponent&) override;
+
 
 	private:
 		float m_MinExitTime = 1.f;
@@ -45,10 +51,22 @@ namespace dae {
 		float m_CurrentTime = 0.f;
 
 	};
+	class IdleState final : public AIState {
+	public:
+		virtual void Entry(AIBehaviourComponent&) override {};
+		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
+		virtual void Exit(AIBehaviourComponent&) override {};
+
+	private:
+		float m_MinExitTime = 1.f;
+		float m_CurrentTime = 0.f;
+
+	};
+
 
 	class SpriteComponent;
 	class MovementComponent;
-	class AIBehaviourComponent final : public BaseComponent 
+	class AIBehaviourComponent final : public BaseComponent, public Observer
 	{
 	public:
 		AIBehaviourComponent(std::string tagToFollow);
@@ -71,6 +89,8 @@ namespace dae {
 		glm::vec2 GetClosestPlayerPos() const;
 		const MovementComponent* GetMovementComponent() const { return m_HotDogMovement; }
 		SpriteComponent* GetSpriteComponent() const { return m_SpriteComponent; }
+
+		void onNotify(const BaseComponent* entity, int event, EventArgs* args = nullptr) override;
 
 
 
