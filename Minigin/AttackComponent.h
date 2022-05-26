@@ -1,0 +1,26 @@
+#pragma once
+#include "BaseComponent.h"
+#include <memory>
+
+namespace dae {
+	class AttackComponent : public BaseComponent
+	{
+	public:
+		AttackComponent() = default;
+		void Render() const override;
+		void Update() override;
+		void LateUpdate() override;
+		virtual void Start() override;
+		void Fire();
+
+		AttackComponent(const AttackComponent& other) = delete;
+		AttackComponent(AttackComponent&& other) = delete;
+		AttackComponent& operator=(const AttackComponent& other) = delete;
+		AttackComponent& operator=(AttackComponent&& other) = delete;
+	private:
+		std::shared_ptr<GameObject> m_pWeaponGameobject;
+		bool m_IsFiring = false;
+		float m_MaxPepperTime = 0.15f;
+		float m_CurrentPeperTime = 0.f;
+	};
+}

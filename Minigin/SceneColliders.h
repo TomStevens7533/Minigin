@@ -12,7 +12,8 @@ namespace dae {
 		SceneColliders() = default;
 		~SceneColliders() = default;
 		std::shared_ptr<ColliderInfo> AddCollider(ColliderInfo info);
-		void RemoveCollider(std::string tag, bool deleteAll = false);
+		//bool RemoveCollider(std::string tag, bool deleteAll = false);
+		bool RemoveCollider(const std::shared_ptr<ColliderInfo> col);
 		std::shared_ptr<ColliderInfo> IsRectColliding(Rectf lookupRect);
 		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point);
 		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag);

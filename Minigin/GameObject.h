@@ -49,12 +49,13 @@ namespace dae
 		size_t GetChildCount() const;
 		std::shared_ptr<GameObject> GetChildAt(INT Index) const;
 		void RemoveChild(int index);
+		void RemoveChild(std::shared_ptr<GameObject> childToRemove);
 		void AddChild(std::shared_ptr<GameObject>& go);
 		void ChangeRootPos(int newRootPos);
 		int GetPosFromRoot();
 
 		inline Transform& GetTransform() { return m_Transform; }
-
+		glm::vec3 RelativePositionToParent();
 
 	private:
 		Transform m_Transform;
@@ -64,7 +65,7 @@ namespace dae
 		GameObject* m_Parent = nullptr;
 		std::vector<std::shared_ptr<GameObject>> m_Children;
 		int m_PositionFromRoot = 0;
-
+		bool m_IsInitialized = false;
 		//Entities
 		EntityManager m_EntityManager;
 		

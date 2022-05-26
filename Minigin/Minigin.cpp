@@ -15,11 +15,9 @@
 #include "InputComponent.h"
 #include "Time.h"
 #include "RenderComponent.h"
-#include "Achievment.h"
 #include "LivesDisplayComponent.h"
 #include "ScoreDisplayComponent.h"
 #include "SpriteComponent.h"
-#include "RigidbodyComponent.h"
 #include "PetterPepperComponent.h"
 #include "BoxColliderComponent.h"
 #include "Parser.h"
@@ -29,6 +27,7 @@
 #include "MovementComponent.h"
 #include "BunBehaviour.h"
 #include "HotDoggBehaviourComponent.h"
+#include "AttackComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -263,6 +262,8 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png",15, 11, 0.3f);
 		auto peterPepperComp = std::make_shared<PetterPepperComponent>();
 		auto movementComp = std::make_shared<MovementComponent>(70.f);
+		auto attackComp = std::make_shared<AttackComponent>();
+
 		auto boxCollider = std::make_shared<BoxColliderComponent>("Pepper", 5);
 
 
@@ -271,7 +272,7 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		spriteComponent->AddAnimation("Move", 3, 0, 6, 1);
 		spriteComponent->AddAnimation("MoveBackwards", 0, 0, 3, 1);
 
-		
+		PeterPepper->AddComponent<AttackComponent>(attackComp);
 		PeterPepper->AddComponent<HealthComponent>(healthComponent);
 		PeterPepper->AddComponent<InputComponent>(inputComponent);
 		PeterPepper->AddComponent<SpriteComponent>(spriteComponent);
@@ -332,16 +333,16 @@ void dae::Minigin::LoadGame() const
 	//Background + SceneLoading
 	//-------------------------------------------------------------
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
-	auto go = std::make_shared<dae::GameObject>();
+	/*auto go = std::make_shared<dae::GameObject>();
 	auto texComp = std::make_shared<TextureComponent>("background.jpg");
 	go->SetPosition({ 0,0 });
 	go->AddComponent<TextureComponent>(texComp);
-	scene.Add(go);
+	scene.Add(go);*/
 
-	auto goChild = std::make_shared<dae::GameObject>();
+	/*auto goChild = std::make_shared<dae::GameObject>();
 	texComp = std::make_shared<TextureComponent>("logo.png");
 	goChild->SetPosition(glm::vec2{ 216, 180 });
-	goChild->AddComponent<TextureComponent>(texComp);
+	goChild->AddComponent<TextureComponent>(texComp);*/
 	ServiceLocator::RegisterSoundSystem(new LogginSoundSystem(new SDL_Sound_System()));
 
 
@@ -388,6 +389,7 @@ void dae::Minigin::LoadGame() const
 	}
 
 	CreateMrHotDogg();
+
 
 	//Call start after everything is initialized
 	scene.Start();

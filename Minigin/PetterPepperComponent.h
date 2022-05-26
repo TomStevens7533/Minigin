@@ -8,7 +8,6 @@
 namespace dae {
 	class InputComponent;
 	class SpriteComponent;
-	class RigidbodyComponent;
 	
 	class PetterPepperComponent : public BaseComponent, public Subject
 	{
@@ -23,7 +22,6 @@ namespace dae {
 	private:
 		InputComponent* m_InputComponent;
 		SpriteComponent* m_SpriteComponent;
-		RigidbodyComponent* m_RigidBodyComp;
 	};
 
 }

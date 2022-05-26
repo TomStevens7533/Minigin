@@ -39,6 +39,18 @@ namespace dae {
 		return m_PositionFromRoot;
 	}
 
+	glm::vec3 GameObject::RelativePositionToParent()
+	{
+		glm::vec3 currPos = GetTransform().GetPosition();
+
+		auto parent = GetParent();
+		while (parent != nullptr) {
+			currPos += parent->GetTransform().GetPosition();
+			parent = parent->GetParent();
+		}
+		return currPos;
+	}
+
 	GameObject* GameObject::GetParent() const
 	{
 		return m_Parent;
@@ -65,10 +77,20 @@ namespace dae {
  		m_Children.erase(std::next(m_Children.begin(), glm::clamp(index, 0, static_cast<int>(m_Children.size() - 1))));
 	}
 
+	void GameObject::RemoveChild(std::shared_ptr<GameObject> childToRemove)
+	{
+		m_Children.erase(std::remove(m_Children.begin(), m_Children.end(), childToRemove), m_Children.end());
+	}
+
 	void GameObject::AddChild(std::shared_ptr<GameObject>& go)
 	{
 		m_Children.push_back(go);
 		go->SetParent(this);
+		go->SetScene(this->GetScene());
+		
+		//Call start on new Child
+		if(go->m_IsInitialized == false)
+			go->Start();
 	}
 
 	void GameObject::Start()
@@ -80,6 +102,8 @@ namespace dae {
 		{
 			child->Start();
 		}
+
+		m_IsInitialized = true;
 	}
 
 	void GameObject::Update()
@@ -91,19 +115,6 @@ namespace dae {
 		{
 			child->Update();
 		}
-
-		
-
-		//TODO make fpscomponent own a textcomponent to replace this
-		//auto fpsComponent =  m_EntityManager.GetComponent<FPSComponent>();
-		//auto textComponent = m_EntityManager.GetComponent<TextComponent>();
-
-		//if (fpsComponent != nullptr && textComponent != nullptr) {
-		//	textComponent->SetText(std::to_string(fpsComponent->GetFpsCount()));
-		//}
-
-	
-
 	}
 
 	void GameObject::LateUpdate()

@@ -43,6 +43,7 @@ SDL_Sound_System::SDL_SoundSystemImpl::SDL_SoundSystemImpl() {
 SDL_Sound_System::SDL_SoundSystemImpl::~SDL_SoundSystemImpl()
 {
 	std::unique_lock lock(m_Mutex);
+	m_Cv.notify_all();
 	m_IsRunning = false;
 }
 void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
@@ -50,7 +51,6 @@ void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 
 	std::unique_lock lock(m_Mutex);
 	while (m_IsRunning) {
-		m_Cv.wait(lock);
 		while (!m_SoundQueue.empty())
 		{
 			lock.unlock();
@@ -70,6 +70,7 @@ void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 
 
 		}
+		m_Cv.wait(lock);
 
 
 	}

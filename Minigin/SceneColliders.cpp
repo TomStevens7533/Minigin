@@ -10,21 +10,31 @@ std::shared_ptr<ColliderInfo> SceneColliders::AddCollider(ColliderInfo info)
 	return m_SceneColliderVec.back();
 }
 
-void SceneColliders::RemoveCollider(std::string tag, bool deleteAll /*= false*/)
+//void SceneColliders::RemoveCollider(std::string tag, bool deleteAll /*= false*/)
+//{
+//	if (deleteAll == true) {
+//		m_SceneColliderVec.erase(std::remove_if(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), [&tag](std::shared_ptr<ColliderInfo> currInfo) {
+//			return (currInfo->tag == tag);
+//		})
+//		, m_SceneColliderVec.end());
+//	}
+//	else {
+//		auto it = std::remove_if(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), [&tag](std::shared_ptr<ColliderInfo> currInfo) {
+//			return (currInfo->tag == tag);
+//			});
+//		m_SceneColliderVec.erase(it);
+//	}
+//
+//}
+
+bool SceneColliders::RemoveCollider(const std::shared_ptr<ColliderInfo> col)
 {
-	if (deleteAll == true) {
-		m_SceneColliderVec.erase(std::remove_if(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), [&tag](std::shared_ptr<ColliderInfo> currInfo) {
-			return (currInfo->tag == tag);
-		})
-		, m_SceneColliderVec.end());
+	if (m_SceneColliderVec.erase(std::remove(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), col), m_SceneColliderVec.end()) != m_SceneColliderVec.end()) {
+		return true;
 	}
 	else {
-		auto it = std::remove_if(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), [&tag](std::shared_ptr<ColliderInfo> currInfo) {
-			return (currInfo->tag == tag);
-			});
-		m_SceneColliderVec.erase(it);
+		return false;
 	}
-
 }
 
 std::shared_ptr<ColliderInfo> SceneColliders::IsRectColliding(Rectf lookupRect)

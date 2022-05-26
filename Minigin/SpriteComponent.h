@@ -19,6 +19,7 @@ namespace dae {
 		void SetFlipState(bool isFlip = true) { m_IsFlipped = isFlip; };
 		glm::vec2 GetCurrentAnimDimensions();
 
+		bool GetFLipState() { return m_IsFlipped; }
 		void Render() const override;
 		void Update() override;
 		void LateUpdate() override {};

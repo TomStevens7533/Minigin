@@ -5,6 +5,7 @@
 #include "SpriteComponent.h"
 #include "GameObject.h"
 #include "ServiceLocator.h"
+#include "AttackComponent.h"
 class MoveRightEnterCommand : public Command {
 public:
 	MoveRightEnterCommand(dae::MovementComponent* peterComp)
@@ -104,11 +105,6 @@ public:
 		m_PeterComp->SetNewHorizontalDirection(dae::HorizontalDirection::NONE);
 
 		//Sprite
-		if (m_PeterSprite != nullptr) {
-			m_PeterSprite->SetActiveAnimation("MoveBackwards");
-			m_PeterSprite->SetFlipState(false);
-
-		}
 	}
 private:
 	dae::MovementComponent* m_PeterComp;
@@ -124,13 +120,6 @@ public:
 	};
 	virtual void Excecute() {
 		m_PeterComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
-
-		//Sprite
-		if (m_PeterSprite != nullptr) {
-			m_PeterSprite->SetActiveAnimation("MoveBackwards");
-			m_PeterSprite->SetFlipState(false);
-
-		}
 	}
 private:
 	dae::MovementComponent* m_PeterComp;
@@ -138,16 +127,15 @@ private:
 
 };
 
-class DamageCommand : public Command {
+class AttackCommand : public Command {
 public:
-	DamageCommand(dae::HealthComponent* componentToDamage, int damage) : m_ComponentToDamage{ componentToDamage }, m_Damage{ damage } {};
+	AttackCommand(dae::AttackComponent* attackComp) { m_pAttackComp = attackComp; }
 	virtual void Excecute() {
-		m_ComponentToDamage->DecreaseHealth(m_Damage);
+		if (m_pAttackComp != nullptr) {
+			m_pAttackComp->Fire();
 
-	
+		}
 	}
 private:
-	dae::HealthComponent* m_ComponentToDamage;
-
-	int m_Damage;
+	dae::AttackComponent* m_pAttackComp;
 };

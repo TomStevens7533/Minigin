@@ -16,13 +16,12 @@ namespace dae {
 
 	void RenderComponent::Render() const
 	{
-		Transform trans = m_pParent->GetTransform();
-		Renderer::GetInstance().RenderTexture(*(m_DataToRender), trans.GetPosition().x, trans.GetPosition().y);
+		glm::vec3 relativePos = GetAttachedGameObject()->RelativePositionToParent();
+		Renderer::GetInstance().RenderTexture(*(m_DataToRender), relativePos.x, relativePos.y);
 	}
 
 	void RenderComponent::Update()
 	{
-		
 	}
 
 	void RenderComponent::LateUpdate()

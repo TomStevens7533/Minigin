@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{12fd4b05-3b7b-45fd-8512-db6f2b76e7f5}</ProjectGuid>
+    <ProjectGuid>{63C31DEF-1B75-48B9-AE1D-562011419CE6}</ProjectGuid>
     <RootNamespace>BurgerTime</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -166,6 +166,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BurgerTime.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BurgerTime.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
