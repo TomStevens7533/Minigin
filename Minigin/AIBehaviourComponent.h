@@ -103,7 +103,7 @@ namespace dae {
 
 
 		AIState* m_CurrState = nullptr;
-		std::vector<std::shared_ptr<ColliderInfo>> m_PlayerVec;
+		std::vector<const ColliderInfo*> m_PlayerVec;
 		std::string m_TagToFollow;
 		dae::MovementComponent* m_HotDogMovement = nullptr;
 		SpriteComponent* m_SpriteComponent = nullptr;

@@ -34,7 +34,7 @@ void dae::Scene::Start()
 }
 
 
-std::vector < std::shared_ptr<dae::ColliderInfo> > Scene::GetAllCollidersWithTag(std::string tag)
+const std::vector < const dae::ColliderInfo* > Scene::GetAllCollidersWithTag(std::string tag) const
 {
 	return m_SceneGrid.GetAllCollidersWithTag(tag);
 }

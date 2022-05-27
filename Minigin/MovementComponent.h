@@ -23,9 +23,6 @@ namespace dae {
 		const inline bool GetIsMovingVertically() const { return m_IsMovingVertically; }
 		const inline bool GetIsMovingHorizontally() const { return m_IsMovingHorizontally; }
 
-		bool CanMoveVertically() const;
-		bool CanMoveHorizontally() const;
-		
 		glm::vec2 GetCenterPos() const;
 
 	private:

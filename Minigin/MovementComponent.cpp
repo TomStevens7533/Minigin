@@ -84,30 +84,6 @@ void dae::MovementComponent::SetNewVerticalDirection(VerticalDirection newDir)
 	m_CurrentVertoicalDirection = newDir;
 }
 
-bool dae::MovementComponent::CanMoveVertically() const
-{
-	auto newPos = GetCenterPos();
-
-	auto info = m_pParent->GetScene()->IsPointInCollider(newPos, "Ladder");
-	if (info) {
-		return true;
-	}
-	else
-		return false;
-}
-
-bool dae::MovementComponent::CanMoveHorizontally() const
-{
-
-	auto newPos = GetCenterPos();
-
-	auto info = m_pParent->GetScene()->IsPointInCollider(newPos, "Floor");
-	if (info) {
-		return true;
-	}
-	else
-		return false;
-}
 
 glm::vec2 dae::MovementComponent::GetCenterPos() const
 {
