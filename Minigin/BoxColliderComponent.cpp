@@ -31,13 +31,21 @@ void dae::BoxColliderComponent::Start()
 
 	}
 	ColliderInfo info;
+
+	info.OverlapEnterFunc 
+		= std::bind(&BoxColliderComponent::OnOverlapEnter, this, std::placeholders::_1);
+
+	info.OverlapStayFunc = std::bind(&BoxColliderComponent::OnOverlapStay, this, std::placeholders::_1);
+	info.OverlopExitFunc = std::bind(&BoxColliderComponent::OnOverlaExit, this, std::placeholders::_1);
+
+
+	ColliderCallbacks callbacks;
+
+
 	glm::vec3 goPos = GetAttachedGameObject()->RelativePositionToParent();
 	info.m_ColliderRect = Rectf{ goPos.x - m_Precision, goPos.y - m_Precision, m_Dimensions.x, m_Dimensions.y };
 	info.tag = m_ColliderTag;
 	info.m_pAttachedGameObject = m_pParent;
-	info.m_OverlapStayFunc = std::bind(&BoxColliderComponent::OnOverlapStay, this, std::placeholders::_1);
-	info.m_OverlapEnterFunc = std::bind(&BoxColliderComponent::OnOverlapEnter, this, std::placeholders::_1);
-	info.m_OverlapExitFunc = std::bind(&BoxColliderComponent::OnOverlaExit, this, std::placeholders::_1);
 	m_pColliderInfo = m_pParent->GetScene()->AddColliderToScene(info);
 
 
@@ -53,6 +61,17 @@ void dae::BoxColliderComponent::EnableCollider()
 	m_pColliderInfo->IsEnabled = true;
 }
 
+void dae::BoxColliderComponent::AddListener(ColliderCallbacks otherComp)
+{
+	m_RegisteredListeners.push_back(otherComp);
+
+}
+
+void dae::BoxColliderComponent::RemoveListender(ColliderCallbacks otherComp)
+{
+	//m_RegisteredListeners.erase(std::remove(m_RegisteredListeners.begin(), m_RegisteredListeners.end(), otherComp));
+}
+
 const dae::ColliderInfo& dae::BoxColliderComponent::GetColliderInfo() const
 {
 	return *m_pColliderInfo.get();
@@ -60,26 +79,31 @@ const dae::ColliderInfo& dae::BoxColliderComponent::GetColliderInfo() const
 
 void dae::BoxColliderComponent::OnOverlapStay(const std::shared_ptr<ColliderInfo> otherCollider)
 {
-	CollisionArgs args{};
-	args.info = *otherCollider;
-	//Send to observers
-	notify(this, EventType::OnCollisionStay, &args);
+	for (size_t i = 0; i < m_RegisteredListeners.size(); i++)
+	{
+		m_RegisteredListeners[i].OverlapStayFunc(otherCollider);
+	}
+
+	/*for (size_t i = 0; i < m_RegisteredListeners.size(); i++)
+	{
+		m_RegisteredListeners[i]->OnCollisionStay(*otherCollider);
+	}*/
 }
 
 void dae::BoxColliderComponent::OnOverlapEnter(const std::shared_ptr<ColliderInfo> otherCollider)
 {
-	CollisionArgs args{};
-	args.info = *otherCollider;
-	//Send to observers
-	notify(this, EventType::OnCollisionEnter, &args);
+	for (size_t i = 0; i < m_RegisteredListeners.size(); i++)
+	{
+		m_RegisteredListeners[i].OverlapEnterFunc(otherCollider);
+	}
 }
 
 void dae::BoxColliderComponent::OnOverlaExit(const std::shared_ptr<ColliderInfo> otherCollider)
 {
-	CollisionArgs args{};
-	args.info = *otherCollider;
-	//Send to observers
-	notify(this, EventType::OnCollisionExit, &args);
+	for (size_t i = 0; i < m_RegisteredListeners.size(); i++)
+	{
+		m_RegisteredListeners[i].OverlopExitFunc(otherCollider);
+	}
 }
 
 dae::BoxColliderComponent::BoxColliderComponent(int width, int height, std::string tag, int precision)

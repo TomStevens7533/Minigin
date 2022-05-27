@@ -41,9 +41,7 @@ void dae::BunBehaviour::Start()
 	auto colliderComponent = GetAttachedGameObject()->GetComponent<BoxColliderComponent>();
 	assert(colliderComponent);
 
-	if (colliderComponent) {
-		colliderComponent->addObserver(this);
-	}
+
 
 }
 
@@ -53,42 +51,42 @@ void dae::BunBehaviour::SetFalling()
 
 }
 
-void dae::BunBehaviour::onNotify(const BaseComponent*, int event, EventArgs* args /*= nullptr*/)
+void dae::BunBehaviour::onNotify(const BaseComponent*, int, EventArgs* /*= nullptr*/)
 {
-	CollisionArgs* cArgs = static_cast<CollisionArgs*>(args);
-	ColliderInfo info = cArgs->info;
+	//CollisionArgs* cArgs = static_cast<CollisionArgs*>(args);
+	//ColliderInfo info = cArgs->info;
 
-	switch (event)
-	{
-	case EventType::OnCollisionEnter:
-		if (info.tag == "Pepper") {
-			m_IsPeterInCollFirst = true;
-			m_EnterPeterPosX = info.m_ColliderRect.x;
-		}
-		else if ((info.tag == "BunEnd" || info.tag == "Floor") && m_IsFalling == true) {
-			m_IsFalling = false;
-			m_ScoreToThrow += 50;
-		}
-		else if (info.tag == "Bun" && m_IsFalling == false) {
-			m_IsFalling = true;
-		}
-		else if ((info.tag == "Enemy") && m_IsFalling == true) {
+	//switch (event)
+	//{
+	//case EventType::OnCollisionEnter:
+	//	if (info.tag == "Pepper") {
+	//		m_IsPeterInCollFirst = true;
+	//		m_EnterPeterPosX = info.m_ColliderRect.x;
+	//	}
+	//	else if ((info.tag == "BunEnd" || info.tag == "Floor") && m_IsFalling == true) {
+	//		m_IsFalling = false;
+	//		m_ScoreToThrow += 50;
+	//	}
+	//	else if (info.tag == "Bun" && m_IsFalling == false) {
+	//		m_IsFalling = true;
+	//	}
+	//	else if ((info.tag == "Enemy") && m_IsFalling == true) {
 
-			if (m_ScoreToThrow == 0)
-				m_ScoreToThrow = 500;
-			else
-				m_ScoreToThrow = m_ScoreToThrow * 2;
-		}
-		break;
-	case EventType::OnCollisionExit:
-		if (info.tag == "Pepper" && m_IsPeterInCollFirst && !MathHelper::AreEqual(m_EnterPeterPosX, info.m_ColliderRect.x, 2.f)) {
-			m_IsFalling = true;
-		}
-		break;
-	case EventType::OnCollisionStay:
-		break;
-	default:
-		break;
-	}
+	//		if (m_ScoreToThrow == 0)
+	//			m_ScoreToThrow = 500;
+	//		else
+	//			m_ScoreToThrow = m_ScoreToThrow * 2;
+	//	}
+	//	break;
+	//case EventType::OnCollisionExit:
+	//	if (info.tag == "Pepper" && m_IsPeterInCollFirst && !MathHelper::AreEqual(m_EnterPeterPosX, info.m_ColliderRect.x, 2.f)) {
+	//		m_IsFalling = true;
+	//	}
+	//	break;
+	//case EventType::OnCollisionStay:
+	//	break;
+	//default:
+	//	break;
+	//}
 }
 

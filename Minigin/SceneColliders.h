@@ -25,7 +25,6 @@ namespace dae {
 		SceneColliders(SceneColliders&& other) = delete;
 		SceneColliders& operator=(const SceneColliders& other) = delete;
 		SceneColliders& operator=(SceneColliders&& other) = delete;
-
 	private:
 		std::shared_ptr<ColliderInfo> IsRectCollidingScene(Rectf lookupRect);
 		std::shared_ptr<ColliderInfo> IsPointInColliderScene(glm::vec2 point);

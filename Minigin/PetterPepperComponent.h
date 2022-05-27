@@ -69,6 +69,10 @@ namespace dae {
 
 		friend class MoveState;
 		friend class AttackState;
+		void OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo);
+		void OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo);
+		void OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo);
+
 
 	protected:
 

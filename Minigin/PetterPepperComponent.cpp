@@ -42,7 +42,12 @@ namespace dae {
 
 		//Adds itself as observor fol collision events
 		if (m_ColliderComponent) {
-			m_ColliderComponent->addObserver(this);
+			ColliderCallbacks colBack;
+			colBack.OverlapEnterFunc = std::bind(&PetterPepperComponent::OnCollisionEnter, this, std::placeholders::_1);
+			colBack.OverlopExitFunc = std::bind(&PetterPepperComponent::OnCollisionExit, this, std::placeholders::_1);
+			colBack.OverlapStayFunc = std::bind(&PetterPepperComponent::OnCollisionStay, this, std::placeholders::_1);
+
+			m_ColliderComponent->AddListener(colBack);
 		}
 
 	}
@@ -66,65 +71,65 @@ namespace dae {
 
 	}
 
-	void PetterPepperComponent::onNotify(const BaseComponent*, int event, EventArgs* args)
+	void PetterPepperComponent::onNotify(const BaseComponent*, int , EventArgs* )
 	{
-		//Getevents
-		ColliderInfo colInfo;
-		ColliderInfo pepperCoIInfo = m_ColliderComponent->GetColliderInfo();
-		CollisionArgs* colArgs;
-		glm::vec2 searchPos1;
-		glm::vec2 searchPos2;
+		////Getevents
+		//ColliderInfo colInfo;
+		//ColliderInfo pepperCoIInfo = m_ColliderComponent->GetColliderInfo();
+		//CollisionArgs* colArgs;
+		//glm::vec2 searchPos1;
+		//glm::vec2 searchPos2;
 
-		switch (event)
-		{
-		case EventType::OnCollisionStay:
-			//Change to dynamic safety check
-			colArgs = static_cast<CollisionArgs*>(args);
+		//switch (event)
+		//{
+		//case EventType::OnCollisionStay:
+		//	//Change to dynamic safety check
+		//	colArgs = static_cast<CollisionArgs*>(args);
 
-			
-			colInfo = colArgs->info;
+		//	
+		//	colInfo = colArgs->info;
 
-			if (colInfo.tag == "Ladder") {
+		//	if (colInfo.tag == "Ladder") {
 
-				//UP
-				searchPos1.x = pepperCoIInfo.m_ColliderRect.x + (pepperCoIInfo.m_ColliderRect.width / 2.f);
-				searchPos1.y = pepperCoIInfo.m_ColliderRect.y + (pepperCoIInfo.m_ColliderRect.height / 2.f);
+		//		//UP
+		//		searchPos1.x = pepperCoIInfo.m_ColliderRect.x + (pepperCoIInfo.m_ColliderRect.width / 2.f);
+		//		searchPos1.y = pepperCoIInfo.m_ColliderRect.y + (pepperCoIInfo.m_ColliderRect.height / 2.f);
 
-				//Down
-				searchPos2.x = pepperCoIInfo.m_ColliderRect.x + (pepperCoIInfo.m_ColliderRect.width / 2.f);
-				searchPos2.y = pepperCoIInfo.m_ColliderRect.y + pepperCoIInfo.m_ColliderRect.height;
+		//		//Down
+		//		searchPos2.x = pepperCoIInfo.m_ColliderRect.x + (pepperCoIInfo.m_ColliderRect.width / 2.f);
+		//		searchPos2.y = pepperCoIInfo.m_ColliderRect.y + pepperCoIInfo.m_ColliderRect.height;
 
-				if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos1)) {
+		//		if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos1)) {
 
-					m_IsOnLadderUp = true;
-				}
-				if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos2)) {
-					m_IsOnLadderDown = true;
+		//			m_IsOnLadderUp = true;
+		//		}
+		//		if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos2)) {
+		//			m_IsOnLadderDown = true;
 
-				}
-			}
-			if (colInfo.tag == "Floor") {
+		//		}
+		//	}
+		//	if (colInfo.tag == "Floor") {
 
-				//right
-				searchPos1.x = pepperCoIInfo.m_ColliderRect.x + pepperCoIInfo.m_ColliderRect.width;
-				searchPos1.y = pepperCoIInfo.m_ColliderRect.y + pepperCoIInfo.m_ColliderRect.height;
+		//		//right
+		//		searchPos1.x = pepperCoIInfo.m_ColliderRect.x + pepperCoIInfo.m_ColliderRect.width;
+		//		searchPos1.y = pepperCoIInfo.m_ColliderRect.y + pepperCoIInfo.m_ColliderRect.height;
 
-				//left
-				searchPos2.x = pepperCoIInfo.m_ColliderRect.x;
-				searchPos2.y = pepperCoIInfo.m_ColliderRect.y + pepperCoIInfo.m_ColliderRect.height;
+		//		//left
+		//		searchPos2.x = pepperCoIInfo.m_ColliderRect.x;
+		//		searchPos2.y = pepperCoIInfo.m_ColliderRect.y + pepperCoIInfo.m_ColliderRect.height;
 
-				if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos1)) {
-					m_IsOnFloorRight = true;
-				}
-				if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos2)) {
-					m_IsOnFloorLeft = true;
-				}
+		//		if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos1)) {
+		//			m_IsOnFloorRight = true;
+		//		}
+		//		if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos2)) {
+		//			m_IsOnFloorLeft = true;
+		//		}
 
 
-			}
-		default:
-			break;
-		}
+		//	}
+		//default:
+		//	break;
+		//}
 	}
 
 	void PetterPepperComponent::MoveLeftEnter()
@@ -204,6 +209,64 @@ namespace dae {
 	void PetterPepperComponent::MoveDownExit()
 	{
 		m_MovementComp->SetNewVerticalDirection(VerticalDirection::NONE);
+	}
+
+	void PetterPepperComponent::OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo)
+	{
+		glm::vec2 searchPos1;
+		glm::vec2 searchPos2;
+		ColliderInfo info = m_ColliderComponent->GetColliderInfo();
+
+
+		if (otherInfo->tag == "Ladder") {
+
+			//UP
+			searchPos1.x = info.m_ColliderRect.x + (info.m_ColliderRect.width / 2.f);
+			searchPos1.y = info.m_ColliderRect.y + (info.m_ColliderRect.height / 2.f);
+									
+			//Down					
+			searchPos2.x = info.m_ColliderRect.x + (info.m_ColliderRect.width / 2.f);
+			searchPos2.y = info.m_ColliderRect.y + info.m_ColliderRect.height;
+
+			if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos1)) {
+
+				m_IsOnLadderUp = true;
+			}
+			if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos2)) {
+				m_IsOnLadderDown = true;
+
+			}
+		}
+		if (otherInfo->tag == "Floor") {
+
+			//right
+			searchPos1.x = info.m_ColliderRect.x + (info.m_ColliderRect.width / 4.f);
+			searchPos1.y = info.m_ColliderRect.y + (info.m_ColliderRect.height);
+
+			////left
+			searchPos2.x = info.m_ColliderRect.x + ((info.m_ColliderRect.width) );
+			searchPos2.y = info.m_ColliderRect.y + info.m_ColliderRect.height;
+
+			if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos2)) {
+				m_IsOnFloorRight = true;
+			}
+			if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos1)) {
+				m_IsOnFloorLeft = true;
+			}
+
+
+		}
+
+	}
+
+	void PetterPepperComponent::OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo)
+	{
+
+	}
+
+	void PetterPepperComponent::OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo)
+	{
+
 	}
 
 }

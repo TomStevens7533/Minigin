@@ -109,13 +109,13 @@ void SceneColliders::UpdateColliders()
 				if (it != lookUpElement->m_OverlappingColliders.end()) {
 					if (!isOverlapping) {
 						//Call exit
-						lookUpElement->m_OverlapExitFunc(CompareElement);
+						lookUpElement->OverlopExitFunc(CompareElement);
 						lookUpElement->m_OverlappingColliders.erase(it);
 						continue;
 
 					}
 					//Call overlapp
-					lookUpElement->m_OverlapStayFunc(CompareElement);
+					lookUpElement->OverlapStayFunc(CompareElement);
 					continue;
 
 				}
@@ -123,7 +123,7 @@ void SceneColliders::UpdateColliders()
 				else {
 					if (isOverlapping) {
 						//EnterOverlap;
-						lookUpElement->m_OverlapEnterFunc(CompareElement);
+						lookUpElement->OverlapEnterFunc(CompareElement);
 						lookUpElement->m_OverlappingColliders.push_back(CompareElement);
 					}
 				}

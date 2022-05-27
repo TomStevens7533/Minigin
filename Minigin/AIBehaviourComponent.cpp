@@ -33,9 +33,7 @@ void dae::AIBehaviourComponent::Start()
 	m_ColliderComponent = GetAttachedGameObject()->GetComponent<BoxColliderComponent>();
 	assert(m_ColliderComponent);
 
-	if (m_ColliderComponent) {
-		m_ColliderComponent->addObserver(this);
-	}
+	
 
 }
 
@@ -108,50 +106,50 @@ glm::vec2 dae::AIBehaviourComponent::GetClosestPlayerPos() const
 
 
 
-void dae::AIBehaviourComponent::onNotify(const BaseComponent* , int eventType, EventArgs* args)
+void dae::AIBehaviourComponent::onNotify(const BaseComponent* , int, EventArgs*)
 {
-	ColliderInfo colInfo;
-	ColliderInfo AiInfo = m_ColliderComponent->GetColliderInfo();
-	CollisionArgs* colArgs;
-	glm::vec2 searchPos;
-	switch (eventType)
-	{
-	case EventType::OnCollisionStay:
-		//Change to dynamic safety check
-		colArgs = static_cast<CollisionArgs*>(args);
-		colInfo = colArgs->info;
-		searchPos = { AiInfo.m_ColliderRect.x + (m_SpriteComponent->GetFLipState() ? 0.f 
-			: AiInfo.m_ColliderRect.width)
-			, AiInfo.m_ColliderRect.y + AiInfo.m_ColliderRect.height };
-		if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos)) {
-			if (colInfo.tag == "Ladder") {
-				if (m_CurrState != nullptr) {
-					m_IsOnLadder = true;
-				}
-			
+	//ColliderInfo colInfo;
+	//ColliderInfo AiInfo = m_ColliderComponent->GetColliderInfo();
+	//CollisionArgs* colArgs;
+	//glm::vec2 searchPos;
+	//switch (eventType)
+	//{
+	//case EventType::OnCollisionStay:
+	//	//Change to dynamic safety check
+	//	colArgs = static_cast<CollisionArgs*>(args);
+	//	colInfo = colArgs->info;
+	//	searchPos = { AiInfo.m_ColliderRect.x + (m_SpriteComponent->GetFLipState() ? 0.f 
+	//		: AiInfo.m_ColliderRect.width)
+	//		, AiInfo.m_ColliderRect.y + AiInfo.m_ColliderRect.height };
+	//	if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos)) {
+	//		if (colInfo.tag == "Ladder") {
+	//			if (m_CurrState != nullptr) {
+	//				m_IsOnLadder = true;
+	//			}
+	//		
 
 
-			}
-			if (colInfo.tag == "Floor") {
+	//		}
+	//		if (colInfo.tag == "Floor") {
 
-				if (m_CurrState != nullptr) {
-					m_IsOnFloor = true;
-				}
-			}
-						
-		}
-	case EventType::OnCollisionEnter:
-		if (colInfo.tag == "Shot") {
-			m_CurrState->Exit(*this);
-			m_CurrState = &AIState::m_HitState;
-			m_CurrState->Entry(*this);
-		}
-		break;
+	//			if (m_CurrState != nullptr) {
+	//				m_IsOnFloor = true;
+	//			}
+	//		}
+	//					
+	//	}
+	//case EventType::OnCollisionEnter:
+	//	if (colInfo.tag == "Shot") {
+	//		m_CurrState->Exit(*this);
+	//		m_CurrState = &AIState::m_HitState;
+	//		m_CurrState->Entry(*this);
+	//	}
+	//	break;
 
-		
-	default:
-		break;
-	}
+	//	
+	//default:
+	//	break;
+	//}
 }
 
 void dae::HorizontalState::Entry(AIBehaviourComponent& ai)

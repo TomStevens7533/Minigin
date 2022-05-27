@@ -5,7 +5,7 @@
 namespace dae {
 	struct ColliderInfo;
 	class BoxColliderComponent;
-	class BunBehaviour : public BaseComponent, public Subject, public Observer
+	class BunBehaviour : public BaseComponent, public Subject
 	{
 	public:
 		BunBehaviour() = default;

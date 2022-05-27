@@ -5,11 +5,9 @@
 #include "structs.h"
 namespace dae {
 
-	struct CollisionArgs : public EventArgs {
-		ColliderInfo info;
-	};
 
-	class BoxColliderComponent : public BaseComponent, public Subject
+
+	class BoxColliderComponent : public BaseComponent
 	{
 	public:
 		BoxColliderComponent(int width, int height, std::string tag, int precision = 0);
@@ -24,6 +22,9 @@ namespace dae {
 
 		void DisableCollider();
 		void EnableCollider();
+
+		void AddListener(ColliderCallbacks otherComp);
+		void RemoveListender(ColliderCallbacks otherComp);
 
 		inline glm::vec2 GetDimension() const { return m_Dimensions; };
 		const dae::ColliderInfo& GetColliderInfo() const;
@@ -45,5 +46,6 @@ namespace dae {
 		std::string m_ColliderTag;
 		int m_Precision{};
 		std::shared_ptr<ColliderInfo> m_pColliderInfo{nullptr};
+		std::vector<ColliderCallbacks>m_RegisteredListeners;
 	};
 }
