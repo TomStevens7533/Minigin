@@ -36,8 +36,9 @@ namespace dae {
 		virtual void Exit(AIBehaviourComponent&) override;
 
 
+
 	private:
-		float m_MinExitTime = 1.f;
+		float m_MinExitTime = 0.5f;
 		float m_CurrentTime = 0.f;
 	};
 	class VerticalState final : public AIState {
@@ -47,7 +48,7 @@ namespace dae {
 		virtual void Exit(AIBehaviourComponent&) override;
 
 	private:
-		float m_MinExitTime = 1.f;
+		float m_MinExitTime = 0.5f;
 		float m_CurrentTime = 0.f;
 
 	};
@@ -56,6 +57,7 @@ namespace dae {
 		virtual void Entry(AIBehaviourComponent&) override {};
 		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
 		virtual void Exit(AIBehaviourComponent&) override {};
+
 
 	private:
 		float m_MinExitTime = 1.f;
@@ -92,6 +94,11 @@ namespace dae {
 
 		void onNotify(const BaseComponent* entity, int event, EventArgs* args = nullptr) override;
 
+		friend class HorizontalState;
+		friend class VerticalState;
+		friend class IdleState;
+
+
 
 
 	private:
@@ -103,6 +110,8 @@ namespace dae {
 		dae::MovementComponent* m_HotDogMovement = nullptr;
 		SpriteComponent* m_SpriteComponent = nullptr;
 		BoxColliderComponent* m_ColliderComponent = nullptr;
+		bool m_IsOnLadder = false;
+		bool m_IsOnFloor = false;
 	
 	};
 

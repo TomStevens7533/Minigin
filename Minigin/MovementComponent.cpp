@@ -24,44 +24,22 @@ void dae::MovementComponent::Update()
 	Transform& tr = m_pParent->GetTransform();
 	glm::vec2 newPos;
 	newPos = tr.GetPosition();
-	glm::vec2 colliderDimensions = m_ColliderComponent->GetDimension();
-	Rectf colliderRect;
-	colliderRect = Rectf{ newPos.x, newPos.y, colliderDimensions.x, colliderDimensions.y };
-
 	std::shared_ptr<ColliderInfo> info;
 	glm::vec2 lookUpPos = newPos;
 	//Horizontal
 	switch (m_CurrentHorizonDirection) {
 	case HorizontalDirection::LEFT:
-		colliderRect.x = newPos.x -(colliderRect.width);
-		colliderRect.y += colliderRect.height / 2.f;
-		colliderRect.height /= 2.f;
-
-
-
-		info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Floor");
-		if (info) {
-			newPos.x -= m_Velocity * Time::GetInstance().GetDeltaTime();
-
-			tr.SetPosition(newPos.x, newPos.y, 0.f);
-			m_IsMovingHorizontally = true;
-			break;
-		}
-		m_IsMovingHorizontally = false;
+		newPos.x -= m_Velocity * Time::GetInstance().GetDeltaTime();
+		tr.SetPosition(newPos.x, newPos.y, 0.f);
 		break;
 	case HorizontalDirection::RIGHT:
-		colliderRect.x = newPos.x + (colliderRect.width);
-		colliderRect.y += colliderRect.height / 2.f;
-		colliderRect.height /= 2.f;
 
-		info = m_pParent->GetScene()->IsRectColliding(colliderRect, "Floor");
-		if (info) {
+		
 			newPos.x += m_Velocity * Time::GetInstance().GetDeltaTime();
 			tr.SetPosition(newPos.x, newPos.y, 0.f);
-			m_IsMovingHorizontally = true;
-			break;
-		}
-		m_IsMovingHorizontally = false;
+		
+		
+		
 		break;
 	default:
 		m_IsMovingHorizontally = false;
@@ -71,34 +49,18 @@ void dae::MovementComponent::Update()
 	switch (m_CurrentVertoicalDirection)
 	{
 	case VerticalDirection::DOWN:
-		lookUpPos.x += colliderRect.width / 2.f;
-		lookUpPos.y += colliderRect.height;
-
-		info = m_pParent->GetScene()->IsPointInCollider(lookUpPos, "Ladder");
-		if (info) {
-
+		
 			newPos.y += m_Velocity * Time::GetInstance().GetDeltaTime();
 			tr.SetPosition(newPos.x, newPos.y, 0.f);
-			m_IsMovingVertically = true;
-			break;
-		}
-		m_IsMovingVertically = false;
+		
 		break;
 	case VerticalDirection::UP:
 
-		lookUpPos.x += colliderRect.width / 2.f;
-		lookUpPos.y += colliderRect.height  / 1.5f;
-
-		info = m_pParent->GetScene()->IsPointInCollider(lookUpPos, "Ladder");
-		if (info) {
+		
 
 			newPos.y -= m_Velocity * Time::GetInstance().GetDeltaTime();
 			tr.SetPosition(newPos.x, newPos.y, 0.f);
-			m_IsMovingVertically = true;
-			break;
-
-		}
-		m_IsMovingVertically = false;
+	
 		break;
 	default:
 		m_IsMovingVertically = false;

@@ -6,6 +6,7 @@
 #include "Time.h"
 #include "SpriteComponent.h"
 #include "BoxColliderComponent.h"
+#include "MathHelper.h"
 
 dae::HorizontalState dae::AIState::m_HorizontalState;
 
@@ -25,7 +26,6 @@ void dae::AIBehaviourComponent::Start()
 	m_PlayerVec = GetAttachedGameObject()->GetScene()->GetAllCollidersWithTag(m_TagToFollow);
 	m_HotDogMovement = GetAttachedGameObject()->GetComponent<MovementComponent>();
 	m_SpriteComponent = GetAttachedGameObject()->GetComponent<SpriteComponent>();
-	m_HotDogMovement->SetNewVerticalDirection(VerticalDirection::DOWN);
 
 
 	//register self for collision events
@@ -35,6 +35,8 @@ void dae::AIBehaviourComponent::Start()
 	if (m_ColliderComponent) {
 		m_ColliderComponent->addObserver(this);
 	}
+	m_CurrState = &AIState::m_HorizontalState;
+	m_CurrState->Entry(*this);
 }
 
 void dae::AIBehaviourComponent::Render() const
@@ -48,12 +50,25 @@ void dae::AIBehaviourComponent::Update()
 		m_CurrState = &dae::AIState::m_HorizontalState;
 		m_CurrState->Entry(*this);
 	}
-	AIState* newState = m_CurrState->UpdateState(*this);
 	if (newState != nullptr) {
 		m_CurrState->Exit(*this);
 		m_CurrState = newState;
 		m_CurrState->Entry(*this);
 	}*/
+
+	if (m_CurrState != nullptr) {
+		AIState* newState = m_CurrState->UpdateState(*this);
+		if (newState != nullptr)
+		{
+			m_CurrState->Exit(*this);
+			m_CurrState = newState;
+			m_CurrState->Entry(*this);
+
+		}
+	}
+	m_IsOnLadder = false;
+	m_IsOnFloor = false;
+
 
 }
 
@@ -98,36 +113,42 @@ glm::vec2 dae::AIBehaviourComponent::GetClosestPlayerPos() const
 
 
 
-void dae::AIBehaviourComponent::onNotify(const BaseComponent* , int , EventArgs* )
+void dae::AIBehaviourComponent::onNotify(const BaseComponent* , int eventType, EventArgs* args)
 {
-	//ColliderInfo colInfo;
-	//ColliderInfo AiInfo = m_ColliderComponent->GetColliderInfo();
-	//CollisionArgs* colArgs;
-	//glm::vec2 searchPos;
-	//switch (eventType)
-	//{
-	//case EventType::OnCollisionEnter:
-	//	//Change to dynamic safety check
-	//	colArgs = static_cast<CollisionArgs*>(args);
-	//	colInfo = colArgs->info;
-	//	searchPos = { AiInfo.m_ColliderRect.x + AiInfo.m_ColliderRect.width
-	//		, AiInfo.m_ColliderRect.y + AiInfo.m_ColliderRect.height };
-	//	if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos)) {
-	//		if (colInfo.tag == "Ladder") {
-	//			if (m_CurrState != nullptr)
-	//				m_CurrState->Exit(*this);
-	//			m_CurrState = &dae::AIState::m_VerticalState;
-	//		}
-	//		else if (colInfo.tag == "Floor") {
-	//			if (m_CurrState != nullptr)
-	//				m_CurrState->Exit(*this);
-	//			m_CurrState = &dae::AIState::m_HorizontalState;
-	//		}
-	//	
-	//	}
-	//default:
-	//	break;
-	//}
+	ColliderInfo colInfo;
+	ColliderInfo AiInfo = m_ColliderComponent->GetColliderInfo();
+	CollisionArgs* colArgs;
+	glm::vec2 searchPos;
+	switch (eventType)
+	{
+	case EventType::OnCollisionStay:
+		//Change to dynamic safety check
+		colArgs = static_cast<CollisionArgs*>(args);
+		colInfo = colArgs->info;
+		searchPos = { AiInfo.m_ColliderRect.x + AiInfo.m_ColliderRect.width
+			, AiInfo.m_ColliderRect.y + AiInfo.m_ColliderRect.height };
+		if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos)) {
+			if (colInfo.tag == "Ladder") {
+				if (m_CurrState != nullptr) {
+					m_IsOnLadder = true;
+				}
+			
+
+
+			}
+			if (colInfo.tag == "Floor") {
+
+				if (m_CurrState != nullptr) {
+					m_IsOnFloor = true;
+				}
+			}
+						
+		}
+
+		
+	default:
+		break;
+	}
 }
 
 void dae::HorizontalState::Entry(AIBehaviourComponent& ai)
@@ -136,19 +157,17 @@ void dae::HorizontalState::Entry(AIBehaviourComponent& ai)
 	glm::vec2 pos = ai.GetClosestPlayerPos();
 	float currPosx = ai.GetAttachedGameObject()->GetTransform().GetPosition().x;
 	if (pos.x < (currPosx)) {
-		ai.SetHorizontalDir(HorizontalDirection::LEFT);
-
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos()
-			, glm::vec2(-1, 0), 35.f, "Floor", 1)) {
+		//if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos()
+		//	, glm::vec2(-1, 0), 35.f, "Floor", 1)) {
 			ai.SetHorizontalDir(HorizontalDirection::LEFT);
 			ai.GetSpriteComponent()->SetActiveAnimation("MoveSide");
 			ai.GetSpriteComponent()->SetFlipState(false);
-		}
+	/*	}
 		else {
 			ai.SetHorizontalDir(HorizontalDirection::RIGHT);
 			ai.GetSpriteComponent()->SetActiveAnimation("MoveSide");
 			ai.GetSpriteComponent()->SetFlipState(true);
-		}
+		}*/
 
 		//Set anim
 		
@@ -156,31 +175,26 @@ void dae::HorizontalState::Entry(AIBehaviourComponent& ai)
 	}
 	if (pos.x > (currPosx)) {
 		//Floor in sight
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos()
-			, glm::vec2(1, 0), 35.f, "Floor", 1)) {
+	/*	if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos()
+			, glm::vec2(1, 0), 35.f, "Floor", 1)) {*/
 
 			ai.SetHorizontalDir(HorizontalDirection::RIGHT);
 			ai.GetSpriteComponent()->SetActiveAnimation("MoveSide");
 			ai.GetSpriteComponent()->SetFlipState(true);
-		}
-		else {
-			ai.SetHorizontalDir(HorizontalDirection::LEFT);
-			ai.GetSpriteComponent()->SetActiveAnimation("MoveSide");
-			ai.GetSpriteComponent()->SetFlipState(false);
-		}
+		
 	}
 }
 
 dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 {
-	auto it = ai.GetAttachedGameObject()
-		->GetScene()->IsPointInCollider(ai.GetAttachedGameObject()->GetTransform().GetPosition(), "Shot");
-	if (it) {
-		return &AIState::m_IdleState;
-	}
+	//auto it = ai.GetAttachedGameObject()
+	//	->GetScene()->IsPointInCollider(ai.GetAttachedGameObject()->GetTransform().GetPosition(), "Shot");
+	//if (it) {
+	//	return &AIState::m_IdleState;
+	//}
 
 	//if notmoving horizontally switch
-	if (ai.GetMovementComponent()->CanMoveVertically() && m_CurrentTime > m_MinExitTime) {
+	if (ai.m_IsOnLadder && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
 		return &AIState::m_VerticalState;
 	}
@@ -198,13 +212,13 @@ dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 dae::AIState* dae::VerticalState::UpdateState(AIBehaviourComponent& ai)
 {
 
-	auto it = ai.GetAttachedGameObject()
+	/*auto it = ai.GetAttachedGameObject()
 		->GetScene()->IsPointInCollider(ai.GetAttachedGameObject()->GetTransform().GetPosition(), "Shot");
 	if (it) {
 		return &AIState::m_IdleState;
 	}
-
-	if (ai.GetMovementComponent()->CanMoveHorizontally() && m_CurrentTime > m_MinExitTime) {
+	*/
+	if (ai.m_IsOnFloor && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
 		return &AIState::m_HorizontalState;
 	}
@@ -232,36 +246,36 @@ void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 	float posY = ai.GetClosestPlayerPos().y;
 	float currPosY = ai.GetAttachedGameObject()->GetTransform().GetPosition().y;
 	if (posY < (currPosY )) {
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, -1), 35.f, "Ladder", 1)) {
-			//Floor in sight
+		/*if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, -1), 35.f, "Ladder", 1)) {
+			Floor in sight*/
 			ai.SetVerticalDir(VerticalDirection::UP);
 			ai.GetSpriteComponent()->SetActiveAnimation("MoveBackwards");
 			ai.GetSpriteComponent()->SetFlipState(false);
 			return;
-		}
-		else {
-			ai.GetSpriteComponent()->SetActiveAnimation("MoveForward");
-			ai.GetSpriteComponent()->SetFlipState(false);
-			ai.SetVerticalDir(VerticalDirection::DOWN);
+		//}
+		//else {
+		//	ai.GetSpriteComponent()->SetActiveAnimation("MoveForward");
+		//	ai.GetSpriteComponent()->SetFlipState(false);
+		//	ai.SetVerticalDir(VerticalDirection::DOWN);
 
-		}
+		//}
 	}
 	
 
 	if (posY > (currPosY)) {
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, 1),35.f, "Ladder", 1)) {
+		//if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(ai.GetMovementComponent()->GetCenterPos(), glm::vec2(0, 1),35.f, "Ladder", 1)) {
 			//Floor in sight
 			ai.SetVerticalDir(VerticalDirection::DOWN);
 			ai.GetSpriteComponent()->SetActiveAnimation("MoveForward");
 			ai.GetSpriteComponent()->SetFlipState(false);
 			return;
-		}
-		else {
-			ai.GetSpriteComponent()->SetActiveAnimation("MoveBackwards");
-			ai.GetSpriteComponent()->SetFlipState(false);
-			ai.SetVerticalDir(VerticalDirection::UP);
+			/*	}
+				else {
+					ai.GetSpriteComponent()->SetActiveAnimation("MoveBackwards");
+					ai.GetSpriteComponent()->SetFlipState(false);
+					ai.SetVerticalDir(VerticalDirection::UP);
 
-		}
+				}*/
 	}
 
 
