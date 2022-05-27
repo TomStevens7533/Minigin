@@ -21,10 +21,10 @@ namespace dae
 		inline std::string GetSceneName() { return m_Name; }
 		
 		//Collision
-		std::shared_ptr<ColliderInfo>IsRectColliding(Rectf lookupRect) { return m_SceneGrid.IsRectColliding(lookupRect); };
-		std::shared_ptr<ColliderInfo>IsPointInCollider(glm::vec2 point) { return m_SceneGrid.IsPointInCollider(point); };
-		std::shared_ptr<ColliderInfo> IsRectColliding(Rectf lookupRect, std::string tag) { return m_SceneGrid.IsRectColliding(lookupRect, tag); };
-		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point, std::string tag) { return m_SceneGrid.IsPointInCollider(point, tag); };
+		std::shared_ptr<ColliderInfo>IsRectColliding(Rectf lookupRect) { return m_SceneGrid.IsRectCollidingScene(lookupRect); };
+		std::shared_ptr<ColliderInfo>IsPointInCollider(glm::vec2 point) { return m_SceneGrid.IsPointInColliderScene(point); };
+		std::shared_ptr<ColliderInfo> IsRectColliding(Rectf lookupRect, std::string tag) { return m_SceneGrid.IsRectCollidingScene(lookupRect, tag); };
+		std::shared_ptr<ColliderInfo> IsPointInCollider(glm::vec2 point, std::string tag) { return m_SceneGrid.IsPointInColliderScene(point, tag); };
 
 		std::shared_ptr<ColliderInfo> AddColliderToScene(ColliderInfo colInfo) { return m_SceneGrid.AddCollider(colInfo); };
 		bool RemoveCollider(std::shared_ptr<ColliderInfo> colInfo) { return m_SceneGrid.RemoveCollider(colInfo); };

@@ -23,9 +23,13 @@ namespace dae {
 		virtual void Start() override;
 
 		inline glm::vec2 GetDimension() const { return m_Dimensions; };
-		const std::shared_ptr<ColliderInfo> GetColliderInfo() const;
+		const dae::ColliderInfo& GetColliderInfo() const;
 
-		void OnTriggerEnter(const std::shared_ptr<ColliderInfo> otherCollider);
+		void OnOverlapStay(const std::shared_ptr<ColliderInfo> otherCollider);
+		void OnOverlapEnter(const std::shared_ptr<ColliderInfo> otherCollider);
+		void OnOverlaExit(const std::shared_ptr<ColliderInfo> otherCollider);
+
+
 
 		BoxColliderComponent(const BoxColliderComponent& other) = delete;
 		BoxColliderComponent(BoxColliderComponent&& other) = delete;

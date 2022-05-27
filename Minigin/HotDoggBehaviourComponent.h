@@ -63,7 +63,7 @@ namespace dae {
 
 	};
 
-
+	class BoxColliderComponent;
 	class SpriteComponent;
 	class MovementComponent;
 	class AIBehaviourComponent final : public BaseComponent, public Observer
@@ -80,7 +80,7 @@ namespace dae {
 
 
 		virtual void Start() override;
-		virtual void Render() const override {};
+		virtual void Render() const override;
 		virtual void Update() override;
 		virtual void LateUpdate() override {};
 
@@ -98,11 +98,11 @@ namespace dae {
 
 
 		AIState* m_CurrState = nullptr;
-
 		std::vector<std::shared_ptr<dae::ColliderInfo>> m_PlayerVec;
 		std::string m_TagToFollow;
 		dae::MovementComponent* m_HotDogMovement = nullptr;
 		SpriteComponent* m_SpriteComponent = nullptr;
+		BoxColliderComponent* m_ColliderComponent = nullptr;
 	
 	};
 

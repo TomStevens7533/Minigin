@@ -225,6 +225,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HotDoggBehaviourComponent.h" />
     <ClInclude Include="Math.h" />
+    <ClInclude Include="MathHelper.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="PetterPepperComponent.h" />

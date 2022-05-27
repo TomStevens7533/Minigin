@@ -29,7 +29,7 @@ void dae::BunBehaviour::LateUpdate()
 {
 	if (!m_IsFalling) {
 		//Check if player is colliding
-		auto peterCollision = m_pParent->GetScene()->IsRectColliding(m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect, "Pepper");
+		auto peterCollision = m_pParent->GetScene()->IsRectColliding(m_pBoxColliderComponent->GetColliderInfo().m_ColliderRect, "Pepper");
 		if (peterCollision) {
 
 			if (m_IsPeterInCollFirst == false) {
@@ -45,8 +45,8 @@ void dae::BunBehaviour::LateUpdate()
 			//Check if peter pepper has walked the bun
 
 			std::cout << "exit bun\n";
-			float currentBunXPos = m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect.x;
-			float currentBunWith = m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect.width;
+			float currentBunXPos = m_pBoxColliderComponent->GetColliderInfo().m_ColliderRect.x;
+			float currentBunWith = m_pBoxColliderComponent->GetColliderInfo().m_ColliderRect.width;
 
 			if (m_BunEnterPosX < (currentBunXPos + (currentBunWith / 2.f))) {
 				//entered left side check
@@ -82,8 +82,9 @@ void dae::BunBehaviour::LateUpdate()
 		glm::vec2 pos = m_pParent->GetTransform().GetPosition();
 
 		//Check if other bun is in the way if true move other bun
+		ColliderInfo currInfo = m_pBoxColliderComponent->GetColliderInfo();
 		std::shared_ptr<ColliderInfo> info = (m_pParent->GetScene()
-			->SceneRaycast(pos, glm::vec2{ 0, 1 }, 11.f, "Bun",10, m_pBoxColliderComponent->GetColliderInfo()));
+			->SceneRaycast(pos, glm::vec2{ 0, 1 }, 11.f, "Bun",10, std::make_shared<ColliderInfo>(currInfo)));
 
 		if (info && m_IsFalling) {
 			//Has hit other burgerpiece
@@ -120,7 +121,8 @@ void dae::BunBehaviour::LateUpdate()
 				m_pInfoGround = nullptr;
 			}
 		}
-		infoGroud = (m_pParent->GetScene()->IsRectColliding(m_pBoxColliderComponent->GetColliderInfo()->m_ColliderRect, "BunEnd"));
+		ColliderInfo ccurrInfo = m_pBoxColliderComponent->GetColliderInfo();
+		infoGroud = (m_pParent->GetScene()->IsRectColliding(ccurrInfo.m_ColliderRect, "BunEnd"));
 		if (infoGroud) {
 			//if hitting end of screen turn off all velocity
 			m_IsInFinalPos = true;

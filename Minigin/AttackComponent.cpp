@@ -10,7 +10,7 @@
 
 void dae::AttackComponent::Render() const
 {
-
+	
 }
 
 void dae::AttackComponent::Update()

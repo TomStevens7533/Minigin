@@ -6,7 +6,9 @@ namespace dae {
 
 	struct EventArgs {};
 	enum EventType {
-		Collision = 999
+		OnCollisionStay = 999,
+		OnCollisionEnter = 998,
+		OnCollisionExit = 997
 	};
 	class Observer
 	{

@@ -2,13 +2,14 @@
 #include "SceneColliders.h"
 #include "Renderer.h"
 #include <algorithm>
-
+#include "MathHelper.h"
 
 using namespace dae;
 std::shared_ptr<ColliderInfo> SceneColliders::AddCollider(ColliderInfo info)
 {
-	m_SceneColliderVec.push_back(std::make_shared<ColliderInfo>(info));
-	return m_SceneColliderVec.back();
+	auto newColl = std::make_shared<ColliderInfo>(info);
+	m_SceneColliderVec.push_back(newColl);
+	return newColl;
 }
 
 //void SceneColliders::RemoveCollider(std::string tag, bool deleteAll /*= false*/)
@@ -38,23 +39,23 @@ bool SceneColliders::RemoveCollider(const std::shared_ptr<ColliderInfo> col)
 	}
 }
 
-std::shared_ptr<ColliderInfo> SceneColliders::IsRectColliding(Rectf lookupRect)
+std::shared_ptr<ColliderInfo> SceneColliders::IsRectCollidingScene(Rectf lookupRect)
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
-		if (AreRectsOverlapping(lookupRect, m_SceneColliderVec[i]->m_ColliderRect)) {
+		if (MathHelper::AreRectsOverlapping(lookupRect, m_SceneColliderVec[i]->m_ColliderRect)) {
 			return m_SceneColliderVec[i];
 		}
 	}
 	return nullptr;
 }
 
-std::shared_ptr<ColliderInfo> SceneColliders::IsRectColliding(Rectf lookupRect, std::string tag)
+std::shared_ptr<ColliderInfo> SceneColliders::IsRectCollidingScene(Rectf lookupRect, std::string tag)
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
 		if (!(lookupRect == m_SceneColliderVec[i]->m_ColliderRect)) {
-			if (m_SceneColliderVec[i]->tag == tag && AreRectsOverlapping(lookupRect, m_SceneColliderVec[i]->m_ColliderRect)) {
+			if (m_SceneColliderVec[i]->tag == tag && MathHelper::AreRectsOverlapping(lookupRect, m_SceneColliderVec[i]->m_ColliderRect)) {
 				return m_SceneColliderVec[i];
 			}
 		}
@@ -63,33 +64,33 @@ std::shared_ptr<ColliderInfo> SceneColliders::IsRectColliding(Rectf lookupRect, 
 	return nullptr;
 }
 
-std::shared_ptr<ColliderInfo> SceneColliders::IsPointInCollider(glm::vec2 point)
+std::shared_ptr<ColliderInfo> SceneColliders::IsPointInColliderScene(glm::vec2 point)
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
-		if (IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
+		if (MathHelper::IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
 			return m_SceneColliderVec[i];
 		}
 	}
 	return nullptr;
 }
 
-std::shared_ptr<ColliderInfo> SceneColliders::IsPointInCollider(glm::vec2 point, std::string tag)
+std::shared_ptr<ColliderInfo> SceneColliders::IsPointInColliderScene(glm::vec2 point, std::string tag)
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
-		if (m_SceneColliderVec[i]->tag == tag && IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
+		if (m_SceneColliderVec[i]->tag == tag && MathHelper::IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
 			return m_SceneColliderVec[i];
 		}
 	}
 	return nullptr;
 }
 
-std::shared_ptr<dae::ColliderInfo> SceneColliders::IsPointInCollider(glm::vec2 point, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag)
+std::shared_ptr<dae::ColliderInfo> SceneColliders::IsPointInColliderScene(glm::vec2 point, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag)
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
 	{
-		if (colliderToIgnore != m_SceneColliderVec[i]  && IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
+		if (colliderToIgnore != m_SceneColliderVec[i]  && MathHelper::IsPointInRect(m_SceneColliderVec[i]->m_ColliderRect, point)) {
 			if(tag == m_SceneColliderVec[i]->tag)
 				return m_SceneColliderVec[i];
 		}
@@ -97,31 +98,6 @@ std::shared_ptr<dae::ColliderInfo> SceneColliders::IsPointInCollider(glm::vec2 p
 	return nullptr;
 }
 
-bool SceneColliders::AreRectsOverlapping(Rectf lhs, Rectf rhs)
-{
-
-	// If one rectangle is on left side of the other
-	if ((lhs.x + lhs.width) < rhs.x || (rhs.x + rhs.width) < lhs.x)
-	{
-		return false;
-	}
-
-	// If one rectangle is under the other
-	if (lhs.y > (rhs.y + rhs.height) || rhs.y > (lhs.y + lhs.height))
-	{
-		return false;
-	}
-
-	return true;
-}
-
-bool SceneColliders::IsPointInRect(Rectf lhs, glm::vec2 point)
-{
-	if (point.x >= lhs.x && point.x <= (lhs.x + lhs.width) && point.y >= lhs.y && point.y <= (lhs.y + lhs.height))
-		return true;
-
-	return false;
-}
 
 std::shared_ptr<dae::ColliderInfo> SceneColliders::SceneRaycast(glm::vec2 pos, glm::vec2 dir,
 	float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag, int steps)
@@ -131,7 +107,7 @@ std::shared_ptr<dae::ColliderInfo> SceneColliders::SceneRaycast(glm::vec2 pos, g
 	for (int i = 1; i < (steps + 1); i++)
 	{
 		glm::vec2 newPos = pos + glm::vec2(dir.x * ((stepPercentage) * i), dir.y * ((stepPercentage) * i));
-		auto collInfo = IsPointInCollider(newPos, colliderToIgnore, tag);
+		auto collInfo = IsPointInColliderScene(newPos, colliderToIgnore, tag);
 
 		if (collInfo)
 			return collInfo;
@@ -163,9 +139,35 @@ void SceneColliders::UpdateColliders()
 		{
 			if (lookUpElement != CompareElement) {
 
+				bool isOverlapping = MathHelper::AreRectsOverlapping(lookUpElement->m_ColliderRect, CompareElement->m_ColliderRect);
+
+				auto it = std::find_if(lookUpElement->m_OverlappingColliders.begin()
+					, lookUpElement->m_OverlappingColliders.end(), [&CompareElement](auto weaklement) {
+						return weaklement.lock() == CompareElement;
+					
+					});
+				if (it != lookUpElement->m_OverlappingColliders.end()) {
+					if (!isOverlapping) {
+						//Call exit
+						lookUpElement->m_OverlapExitFunc(CompareElement);
+						lookUpElement->m_OverlappingColliders.erase(it);
+						continue;
+
+					}
+					//Call overlapp
+					lookUpElement->m_OverlapStayFunc(CompareElement);
+					continue;
+
+				}
 				//Cal overlap functions
-				if (AreRectsOverlapping(lookUpElement->m_ColliderRect, CompareElement->m_ColliderRect))
-					lookUpElement->m_OverlapFunc(CompareElement);
+				else {
+					if (isOverlapping) {
+						//EnterOverlap;
+						lookUpElement->m_OverlapEnterFunc(CompareElement);
+						lookUpElement->m_OverlappingColliders.push_back(CompareElement);
+					}
+				}
+				
 			}
 		}
 	}

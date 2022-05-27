@@ -35,21 +35,41 @@ void dae::BoxColliderComponent::Start()
 	info.m_ColliderRect = Rectf{ goPos.x - m_Precision, goPos.y - m_Precision, m_Dimensions.x, m_Dimensions.y };
 	info.tag = m_ColliderTag;
 	info.m_pAttachedGameObject = m_pParent;
-	info.m_OverlapFunc = std::bind(&BoxColliderComponent::OnTriggerEnter, this, std::placeholders::_1);
-	m_pColliderInfo =  m_pParent->GetScene()->AddColliderToScene(info);
+	info.m_OverlapStayFunc = std::bind(&BoxColliderComponent::OnOverlapStay, this, std::placeholders::_1);
+	info.m_OverlapEnterFunc = std::bind(&BoxColliderComponent::OnOverlapEnter, this, std::placeholders::_1);
+	info.m_OverlapExitFunc = std::bind(&BoxColliderComponent::OnOverlaExit, this, std::placeholders::_1);
+	m_pColliderInfo = m_pParent->GetScene()->AddColliderToScene(info);
+
+
 }
 
-const std::shared_ptr<dae::ColliderInfo> dae::BoxColliderComponent::GetColliderInfo() const
+const dae::ColliderInfo& dae::BoxColliderComponent::GetColliderInfo() const
 {
-	return m_pColliderInfo;
+	return *m_pColliderInfo.get();
 }
 
-void dae::BoxColliderComponent::OnTriggerEnter(const std::shared_ptr<ColliderInfo> otherCollider)
+void dae::BoxColliderComponent::OnOverlapStay(const std::shared_ptr<ColliderInfo> otherCollider)
 {
 	CollisionArgs args{};
 	args.info = *otherCollider;
 	//Send to observers
-	notify(this, EventType::Collision, &args);
+	notify(this, EventType::OnCollisionStay, &args);
+}
+
+void dae::BoxColliderComponent::OnOverlapEnter(const std::shared_ptr<ColliderInfo> otherCollider)
+{
+	CollisionArgs args{};
+	args.info = *otherCollider;
+	//Send to observers
+	notify(this, EventType::OnCollisionEnter, &args);
+}
+
+void dae::BoxColliderComponent::OnOverlaExit(const std::shared_ptr<ColliderInfo> otherCollider)
+{
+	CollisionArgs args{};
+	args.info = *otherCollider;
+	//Send to observers
+	notify(this, EventType::OnCollisionExit, &args);
 }
 
 dae::BoxColliderComponent::BoxColliderComponent(int width, int height, std::string tag, int precision)
@@ -60,7 +80,6 @@ dae::BoxColliderComponent::BoxColliderComponent(int width, int height, std::stri
 
 dae::BoxColliderComponent::~BoxColliderComponent()
 {
-	m_pParent->GetScene()->RemoveCollider(m_pColliderInfo);
 
 }
 
