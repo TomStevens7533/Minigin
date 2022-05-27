@@ -8,6 +8,7 @@
 #include "BoxColliderComponent.h"
 #include "MathHelper.h"
 
+
 dae::HorizontalState dae::AIState::m_HorizontalState;
 
 dae::VerticalState dae::AIState::m_VerticalState;

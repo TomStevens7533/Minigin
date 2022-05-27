@@ -1,11 +1,11 @@
 #include "MiniginPCH.h"
 #include "structs.h"
-#include "Math.h"
+#include "MathHelper.h"
 
 using namespace dae;
 bool Rectf::operator==(const Rectf& rhs)
 {
-	if (AreEqual(x, rhs.x) && AreEqual(y, rhs.y) && AreEqual(width, rhs.width) && AreEqual(height, rhs.height))
+	if (MathHelper::AreEqual(x, rhs.x) && MathHelper::AreEqual(y, rhs.y) && MathHelper::AreEqual(width, rhs.width) && MathHelper::AreEqual(height, rhs.height))
 		return true;
 
 	return false;

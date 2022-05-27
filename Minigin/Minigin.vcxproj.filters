@@ -141,9 +141,6 @@
     <ClInclude Include="BunBehaviour.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AIBehaviourComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -269,9 +266,6 @@
     <ClCompile Include="BunBehaviour.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Structs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AIBehaviourComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -280,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="PepperDisplayComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Structs.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

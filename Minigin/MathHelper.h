@@ -3,7 +3,10 @@
 
 namespace MathHelper
 {
-
+	inline bool AreEqual(float A, float B, float epsilon = 0.005f)
+	{
+		return (std::fabs(A - B) < epsilon);
+	}
 
 	inline bool AreRectsOverlapping(dae::Rectf lhs, dae::Rectf rhs)
 	{
