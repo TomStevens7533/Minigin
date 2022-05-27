@@ -159,6 +159,9 @@
     <ClInclude Include="MathHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PepperDisplayComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -273,6 +276,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="AttackComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PepperDisplayComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

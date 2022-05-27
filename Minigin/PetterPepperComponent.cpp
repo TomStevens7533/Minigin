@@ -54,6 +54,7 @@ namespace dae {
 
 	void PetterPepperComponent::LateUpdate()
 	{
+		//Reser movement
 		m_IsOnLadderDown = false;
 		m_IsOnLadderUp = false;
 		m_IsOnFloorRight = false;

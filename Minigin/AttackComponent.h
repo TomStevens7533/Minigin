@@ -1,9 +1,14 @@
 #pragma once
 #include "BaseComponent.h"
-#include <memory>
+#include "Subject.h"
 
 namespace dae {
-	class AttackComponent : public BaseComponent
+
+	struct AttackArgs : public EventArgs
+	{
+		int pepperShots;
+	};
+	class AttackComponent : public BaseComponent, public Subject
 	{
 	public:
 		AttackComponent() = default;
@@ -22,5 +27,6 @@ namespace dae {
 		bool m_IsFiring = false;
 		float m_MaxPepperTime = 0.15f;
 		float m_CurrentPeperTime = 0.f;
+		static int m_PepperShots;
 	};
 }

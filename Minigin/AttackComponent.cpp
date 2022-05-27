@@ -7,6 +7,7 @@
 #include "SpriteComponent.h"
 #include "Scene.h"
 #include "Time.h"
+int dae::AttackComponent::m_PepperShots = 5;
 
 void dae::AttackComponent::Render() const
 {
@@ -46,11 +47,17 @@ void dae::AttackComponent::Start()
 	auto boxComp = std::make_shared<BoxColliderComponent>("Shot");
 	m_pWeaponGameobject->AddComponent<TextureComponent>(TexComp);
 	m_pWeaponGameobject->AddComponent<BoxColliderComponent>(boxComp);
+
+
+	AttackArgs args;
+	args.pepperShots = m_PepperShots;
+	notify(this, PepperEvent::PEPPER_FIRED, &args);
 }
 
 void dae::AttackComponent::Fire()
 {
-	if (m_IsFiring == false) {
+	if (m_IsFiring == false && m_PepperShots > 0) {
+		--m_PepperShots;
 		std::cout << "Fire\n";
 		SpriteComponent* comp = GetAttachedGameObject()->GetComponent<SpriteComponent>();
 		bool isFlipped = comp->GetFLipState();
@@ -67,7 +74,14 @@ void dae::AttackComponent::Fire()
 		m_pWeaponGameobject->GetTransform().SetPosition(pos.x, pos.y, pos.z);
 		GetAttachedGameObject()->AddChild(m_pWeaponGameobject);
 
+
+
+		AttackArgs args;
+		args.pepperShots = m_PepperShots;
+		notify(this, PepperEvent::PEPPER_FIRED, &args);
+
 	}
 
 }
+
 

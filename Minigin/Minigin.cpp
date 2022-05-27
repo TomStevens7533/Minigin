@@ -28,6 +28,7 @@
 #include "BunBehaviour.h"
 #include "AIBehaviourComponent.h"
 #include "AttackComponent.h"
+#include "PepperDisplayComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -212,48 +213,51 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 22);
 
 
-	//Increase Score simulation 
-	class IncreaseScoreCommand : public Command, public Subject {
-	public:
-		IncreaseScoreCommand(int score, std::shared_ptr<TextComponent> scoreComp) : m_Score{ score }, m_ScoreComponent{ scoreComp } {};
-		virtual void Excecute() {
-			ScoreArgs args;
-			args.scoreIncrease = m_Score;
-			notify(m_ScoreComponent.get(), PepperEvent::SCORE_INCREASE, &args);
-		}
-	private:
-		std::shared_ptr<TextComponent> m_ScoreComponent; //Just used to simulate baseComponent
-		int m_Score;
-	};
-
 	glm::vec2 uiPos = glm::vec2{ 60.f, 20.f };
+	glm::vec3 color = { 255, 0, 0 };
+
+	//UI Creation
+	auto scoreDisplayGo = std::make_shared<GameObject>();
+	auto textComp = std::make_shared<TextComponent>("0", font, color);
+	auto scoreDisplayComponent = std::make_shared<ScoreDisplayComponent>("Score: ");
+	scoreDisplayGo->SetPosition(uiPos);
+	scoreDisplayGo->AddComponent<TextComponent>(textComp);
+	scoreDisplayGo->AddComponent<ScoreDisplayComponent>(scoreDisplayComponent);
+	scene->Add(scoreDisplayGo);
+	uiPos.x += 100.f;
+
+	auto liveDisplayGO = std::make_shared<GameObject>();
+	textComp = std::make_shared<TextComponent>(" ", font, color);
+	liveDisplayGO->SetPosition(uiPos);
+	auto liveDisplaycomp = std::make_shared<LivesDisplayComponent>("Lives: ");
+
+	liveDisplayGO->AddComponent<TextComponent>(textComp);
+	liveDisplayGO->AddComponent<LivesDisplayComponent>(liveDisplaycomp);
+	scene->Add(liveDisplayGO);
+
+	uiPos.x += 100.f;
+
+	auto pepperDisplayGO = std::make_shared<GameObject>();
+	textComp = std::make_shared<TextComponent>(" ", font, color);
+	auto pepperDisplaycomp = std::make_shared<PepperDisplayComponent>("Pepper: ");
+
+	pepperDisplayGO->AddComponent<TextComponent>(textComp);
+	pepperDisplayGO->AddComponent<PepperDisplayComponent>(pepperDisplaycomp);
+	scene->Add(pepperDisplayGO);
+	pepperDisplayGO->SetPosition(uiPos);
+
+
+
 	//for (size_t i = 0; i < posVec.size(); i++)
 	for (size_t i = 0; i < 1; i++)
 
 	{
-		glm::vec3 color = { static_cast<float>(rand() % 255), static_cast<float>(rand() % 255), static_cast<float>(rand() % 255) };
 		//UI Creation
-		auto scoreDisplayGo = std::make_shared<GameObject>();
-		auto textComp = std::make_shared<TextComponent>("0", font, color);
-		auto scoreDisplayComponent = std::make_shared<ScoreDisplayComponent>("Score: ");
-		scoreDisplayGo->SetPosition(uiPos);
-		scoreDisplayGo->AddComponent<TextComponent>(textComp);
-		scoreDisplayGo->AddComponent<ScoreDisplayComponent>(scoreDisplayComponent);
+	
 
 
 		//UI translate
-		uiPos.y += 40.f;
-
-		auto liveDisplayGO = std::make_shared<GameObject>();
-		textComp = std::make_shared<TextComponent>(" ", font, color);
-		liveDisplayGO->SetPosition(uiPos);
-		auto liveDisplaycomp = std::make_shared<LivesDisplayComponent>("Player " + std::to_string(i + 1) + ": ");
-
-		liveDisplayGO->AddComponent<TextComponent>(textComp);
-		liveDisplayGO->AddComponent<LivesDisplayComponent>(liveDisplaycomp);
-		scoreDisplayGo->AddChild(liveDisplayGO);
-		scene->Add(scoreDisplayGo);
-
+		
 		//Player Creation
 		//--------------------------------------------------
 		auto PeterPepper = std::make_shared<GameObject>();
@@ -263,6 +267,7 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		auto peterPepperComp = std::make_shared<PetterPepperComponent>();
 		auto movementComp = std::make_shared<MovementComponent>(70.f);
 		auto attackComp = std::make_shared<AttackComponent>();
+		attackComp->addObserver(pepperDisplaycomp);
 
 		auto boxCollider = std::make_shared<BoxColliderComponent>("Pepper", 5);
 
@@ -280,10 +285,6 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		PeterPepper->AddComponent<MovementComponent>(movementComp);
 		PeterPepper->AddComponent<BoxColliderComponent>(boxCollider);
 
-
-		auto* scoreCommand = new IncreaseScoreCommand(100, textComp);
-		scoreCommand->addObserver(scoreDisplayComponent);
-		inputComponent->AddCommand(ControllerButton::GAMEPAD_BUTTON_NORTH, 'Z', scoreCommand, KeyState::PRESSED);
 		healthComponent->addObserver(liveDisplaycomp);
 		healthComponent->SetHealth(10);
 		healthComponent->SetLives(5);
@@ -314,6 +315,10 @@ static void CreateMrHotDogg() {
 	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);
 	spriteComponent->AddAnimation("MoveForward", 0, 2, 2, 3);
 	spriteComponent->AddAnimation("MoveBackwards", 4, 2, 6, 3);
+	spriteComponent->AddAnimation("Death", 0, 4, 4, 3);
+	spriteComponent->AddAnimation("Fried", 0, 3, 6, 4);
+
+
 
 
 	hotdoggGo->AddComponent<SpriteComponent>(spriteComponent);

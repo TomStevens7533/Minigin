@@ -22,7 +22,7 @@ namespace dae {
 
 		static HorizontalState m_HorizontalState;
 		static VerticalState m_VerticalState;
-		static HitState m_IdleState;
+		static HitState m_HitState;
 
 
 	};
@@ -54,7 +54,7 @@ namespace dae {
 	};
 	class HitState final : public AIState {
 	public:
-		virtual void Entry(AIBehaviourComponent&) override {};
+		virtual void Entry(AIBehaviourComponent&) override;
 		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
 		virtual void Exit(AIBehaviourComponent&) override {};
 
@@ -89,8 +89,6 @@ namespace dae {
 		void SetHorizontalDir(HorizontalDirection horizon);
 		void SetVerticalDir(VerticalDirection vertical);
 		glm::vec2 GetClosestPlayerPos() const;
-		const MovementComponent* GetMovementComponent() const { return m_HotDogMovement; }
-		SpriteComponent* GetSpriteComponent() const { return m_SpriteComponent; }
 
 		void onNotify(const BaseComponent* entity, int event, EventArgs* args = nullptr) override;
 

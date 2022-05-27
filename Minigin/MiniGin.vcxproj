@@ -228,6 +228,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="PepperDisplayComponent.h" />
     <ClInclude Include="PetterPepperComponent.h" />
     <ClInclude Include="Prefab.h" />
     <ClInclude Include="SceneColliders.h" />
@@ -273,6 +274,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClCompile Include="AIBehaviourComponent.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="PepperDisplayComponent.cpp" />
     <ClCompile Include="PetterPepperComponent.cpp" />
     <ClCompile Include="SceneColliders.cpp" />
     <ClCompile Include="HealthComponent.cpp" />

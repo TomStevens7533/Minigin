@@ -12,7 +12,7 @@ dae::HorizontalState dae::AIState::m_HorizontalState;
 
 dae::VerticalState dae::AIState::m_VerticalState;
 
-dae::HitState dae::AIState::m_IdleState;
+dae::HitState dae::AIState::m_HitState;
 
 
 
@@ -139,6 +139,13 @@ void dae::AIBehaviourComponent::onNotify(const BaseComponent* , int eventType, E
 			}
 						
 		}
+	case EventType::OnCollisionEnter:
+		if (colInfo.tag == "Shot") {
+			m_CurrState->Exit(*this);
+			m_CurrState = &AIState::m_HitState;
+			m_CurrState->Entry(*this);
+		}
+		break;
 
 		
 	default:
@@ -196,7 +203,6 @@ dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_IsOnLadder && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
-		std::cout << "go ver\n";
 		return &AIState::m_VerticalState;
 	}
 	else {
@@ -213,7 +219,6 @@ dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 dae::AIState* dae::VerticalState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_IsOnFloor && m_CurrentTime > m_MinExitTime) {
-		std::cout << "go horizon\n";
 		m_CurrentTime = 0.f;
 		return &AIState::m_HorizontalState;
 	}
@@ -249,13 +254,13 @@ void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 		//Check if floor goes further else go other dir
 		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, -1), 35.f, "Ladder", 1)) {
 			ai.SetVerticalDir(VerticalDirection::UP);
-			ai.GetSpriteComponent()->SetActiveAnimation("MoveBackwards");
-			ai.GetSpriteComponent()->SetFlipState(false);
+			ai.m_SpriteComponent->SetActiveAnimation("MoveBackwards");
+			ai.m_SpriteComponent->SetFlipState(false);
 			return;
 		}
 		else {
-			ai.GetSpriteComponent()->SetActiveAnimation("MoveForward");
-			ai.GetSpriteComponent()->SetFlipState(false);
+			ai.m_SpriteComponent->SetActiveAnimation("MoveForward");
+			ai.m_SpriteComponent->SetFlipState(false);
 			ai.SetVerticalDir(VerticalDirection::DOWN);
 
 		}
@@ -267,13 +272,13 @@ void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, 1),35.f, "Ladder", 1)) {
 			//Floor in sight
 				ai.SetVerticalDir(VerticalDirection::DOWN);
-				ai.GetSpriteComponent()->SetActiveAnimation("MoveForward");
-				ai.GetSpriteComponent()->SetFlipState(false);
+				ai.m_SpriteComponent->SetActiveAnimation("MoveForward");
+				ai.m_SpriteComponent->SetFlipState(false);
 				return;
 			}
 			else {
-				ai.GetSpriteComponent()->SetActiveAnimation("MoveBackwards");
-				ai.GetSpriteComponent()->SetFlipState(false);
+				ai.m_SpriteComponent->SetActiveAnimation("MoveBackwards");
+				ai.m_SpriteComponent->SetFlipState(false);
 				ai.SetVerticalDir(VerticalDirection::UP);
 				return;
 
@@ -284,8 +289,23 @@ void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 }
 
 
+void dae::HitState::Entry(AIBehaviourComponent& ai)
+{
+	//Se sprite
+	ai.m_SpriteComponent->SetActiveAnimation("Fried");
+	ai.m_SpriteComponent->SetFlipState(false);
+}
+
 dae::AIState* dae::HitState::UpdateState(AIBehaviourComponent&)
 {
-	std::cout << "Enemy hit\n";
-	return &AIState::m_HorizontalState;
+	if (m_CurrentTime > m_MinExitTime) {
+		std::cout << "Enemy hit\n";
+		m_CurrentTime = 0.f;
+		return &AIState::m_HorizontalState;
+	}
+	else {
+		m_CurrentTime += Time::GetInstance().GetDeltaTime();
+		return nullptr;
+	}
+
 }
