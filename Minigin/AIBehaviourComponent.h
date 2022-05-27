@@ -10,7 +10,7 @@ namespace dae {
 
 	class VerticalState;
 	class HorizontalState;
-	class IdleState;
+	class HitState;
 
 	class AIState {
 	public:
@@ -22,7 +22,7 @@ namespace dae {
 
 		static HorizontalState m_HorizontalState;
 		static VerticalState m_VerticalState;
-		static IdleState m_IdleState;
+		static HitState m_IdleState;
 
 
 	};
@@ -52,7 +52,7 @@ namespace dae {
 		float m_CurrentTime = 0.f;
 
 	};
-	class IdleState final : public AIState {
+	class HitState final : public AIState {
 	public:
 		virtual void Entry(AIBehaviourComponent&) override {};
 		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
@@ -96,7 +96,7 @@ namespace dae {
 
 		friend class HorizontalState;
 		friend class VerticalState;
-		friend class IdleState;
+		friend class HitState;
 
 
 

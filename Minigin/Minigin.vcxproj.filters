@@ -144,7 +144,7 @@
     <ClInclude Include="Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HotDoggBehaviourComponent.h">
+    <ClInclude Include="AIBehaviourComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="MovementComponent.h">
@@ -269,7 +269,7 @@
     <ClCompile Include="Structs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HotDoggBehaviourComponent.cpp">
+    <ClCompile Include="AIBehaviourComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="AttackComponent.cpp">

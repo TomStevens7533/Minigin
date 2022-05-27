@@ -26,7 +26,7 @@
 #include "Sound_System.h"
 #include "MovementComponent.h"
 #include "BunBehaviour.h"
-#include "HotDoggBehaviourComponent.h"
+#include "AIBehaviourComponent.h"
 #include "AttackComponent.h"
 
 using namespace std;

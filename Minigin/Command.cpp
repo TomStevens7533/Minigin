@@ -6,127 +6,109 @@
 #include "GameObject.h"
 #include "ServiceLocator.h"
 #include "AttackComponent.h"
+#include "PetterPepperComponent.h"
+//Enter
 class MoveRightEnterCommand : public Command {
 public:
-	MoveRightEnterCommand(dae::MovementComponent* peterComp)
+	MoveRightEnterCommand(dae::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
-		m_PeterSprite = m_PeterComp->GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
 
 	};
 	virtual void Excecute() {
-		m_PeterComp->SetNewHorizontalDirection(dae::HorizontalDirection::RIGHT);
-
-
-		//sprite
-		if (m_PeterSprite != nullptr) {
-			m_PeterSprite->SetActiveAnimation("Move");
-			m_PeterSprite->SetFlipState(true);
-		}
+		m_PeterComp->MoveRightEnter();
 	}
 private:
-	dae::SpriteComponent* m_PeterSprite;
-	dae::MovementComponent* m_PeterComp;
+	dae::PetterPepperComponent* m_PeterComp;
 };
 class MoveUpEnterCommand : public Command {
 public:
-	MoveUpEnterCommand(dae::MovementComponent* peterComp)
+	MoveUpEnterCommand(dae::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
-		m_PeterSprite = m_PeterComp->GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
-
 	};
 	virtual void Excecute() {
-		m_PeterComp->SetNewVerticalDirection(dae::VerticalDirection::UP);
-
+		m_PeterComp->MoveUpEnter();
 		//sprite
-		if (m_PeterSprite != nullptr) {
-			m_PeterSprite->SetActiveAnimation("MoveForward");
-			m_PeterSprite->SetFlipState(false);
-
-		}
+	
 	}
 private:
-	dae::SpriteComponent* m_PeterSprite;
-	dae::MovementComponent* m_PeterComp;
+	dae::PetterPepperComponent* m_PeterComp;
 };
 class MoveDownEnterCommand : public Command {
 public:
-	MoveDownEnterCommand(dae::MovementComponent* peterComp)
+	MoveDownEnterCommand(dae::PetterPepperComponent* peterComp)
 	: m_PeterComp{ peterComp } {
-		//Get sprite component
-		m_PeterSprite = m_PeterComp->GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
-	
 	};
 	virtual void Excecute() {
-		dae::VerticalDirection dir = dae::VerticalDirection::DOWN;
-		m_PeterComp->SetNewVerticalDirection(dir);
-
-		//Sprite
-		if (m_PeterSprite != nullptr) {
-			m_PeterSprite->SetActiveAnimation("MoveBackwards");
-			m_PeterSprite->SetFlipState(false);
-		}
-	
-		
+		m_PeterComp->MoveDownEnter();
 	}
 private:
-	dae::SpriteComponent* m_PeterSprite;
-	dae::MovementComponent* m_PeterComp;
+	dae::PetterPepperComponent* m_PeterComp;
 };
 class MoveLeftEnterCommand : public Command {
 public:
-	MoveLeftEnterCommand(dae::MovementComponent* peterComp)
+	MoveLeftEnterCommand(dae::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
-		m_PeterSprite = m_PeterComp->GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
 	};
 	virtual void Excecute() {
-		m_PeterComp->SetNewHorizontalDirection(dae::HorizontalDirection::LEFT);
-
-		///sprite
- 		if (m_PeterSprite != nullptr) {
-			m_PeterSprite->SetActiveAnimation("Move");
-			m_PeterSprite->SetFlipState(false);
-		}
-
+		m_PeterComp->MoveLeftEnter();
 	}
 private:
-	dae::MovementComponent* m_PeterComp;
-	dae::SpriteComponent* m_PeterSprite;
+	dae::PetterPepperComponent* m_PeterComp;
 
 };
 
-//----------EXIT
-class MoveHorizontalExitCommand : public Command {
+//Exit commanbds
+class MoveRightExitCommand : public Command {
 public:
-	MoveHorizontalExitCommand(dae::MovementComponent* peterComp)
+	MoveRightExitCommand(dae::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
-		m_PeterSprite = m_PeterComp->GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
+
 	};
 	virtual void Excecute() {
-		m_PeterComp->SetNewHorizontalDirection(dae::HorizontalDirection::NONE);
-
-		//Sprite
+		m_PeterComp->MoveRightExit();
 	}
 private:
-	dae::MovementComponent* m_PeterComp;
-	dae::SpriteComponent* m_PeterSprite;
-
+	dae::PetterPepperComponent* m_PeterComp;
 };
-//----------EXIT
-class MoveVerticalExitCommand : public Command {
+class MoveUpExitCommand : public Command {
 public:
-	MoveVerticalExitCommand(dae::MovementComponent* peterComp)
+	MoveUpExitCommand(dae::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
-		m_PeterSprite = m_PeterComp->GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
 	};
 	virtual void Excecute() {
-		m_PeterComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
+		m_PeterComp->MoveUpExit();
+		//sprite
+
 	}
 private:
-	dae::MovementComponent* m_PeterComp;
-	dae::SpriteComponent* m_PeterSprite;
+	dae::PetterPepperComponent* m_PeterComp;
+};
+class MoveDownExitCommand : public Command {
+public:
+	MoveDownExitCommand(dae::PetterPepperComponent* peterComp)
+		: m_PeterComp{ peterComp } {
+	};
+	virtual void Excecute() {
+		m_PeterComp->MoveDownExit();
+	}
+private:
+	dae::PetterPepperComponent* m_PeterComp;
+};
+class MoveLeftExitCommand : public Command {
+public:
+	MoveLeftExitCommand(dae::PetterPepperComponent* peterComp)
+		: m_PeterComp{ peterComp } {
+	};
+	virtual void Excecute() {
+		m_PeterComp->MoveLeftExit();
+	}
+private:
+	dae::PetterPepperComponent* m_PeterComp;
 
 };
 
+
+//Attack
 class AttackCommand : public Command {
 public:
 	AttackCommand(dae::AttackComponent* attackComp) { m_pAttackComp = attackComp; }
