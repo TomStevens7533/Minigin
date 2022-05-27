@@ -125,7 +125,8 @@ void dae::AIBehaviourComponent::onNotify(const BaseComponent* , int eventType, E
 		//Change to dynamic safety check
 		colArgs = static_cast<CollisionArgs*>(args);
 		colInfo = colArgs->info;
-		searchPos = { AiInfo.m_ColliderRect.x + AiInfo.m_ColliderRect.width
+		searchPos = { AiInfo.m_ColliderRect.x + (m_SpriteComponent->GetFLipState() ? 0.f 
+			: AiInfo.m_ColliderRect.width)
 			, AiInfo.m_ColliderRect.y + AiInfo.m_ColliderRect.height };
 		if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos)) {
 			if (colInfo.tag == "Ladder") {
@@ -196,6 +197,7 @@ dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 	//if notmoving horizontally switch
 	if (ai.m_IsOnLadder && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
+		std::cout << "go ver\n";
 		return &AIState::m_VerticalState;
 	}
 	else {
@@ -219,6 +221,7 @@ dae::AIState* dae::VerticalState::UpdateState(AIBehaviourComponent& ai)
 	}
 	*/
 	if (ai.m_IsOnFloor && m_CurrentTime > m_MinExitTime) {
+		std::cout << "go horizon\n";
 		m_CurrentTime = 0.f;
 		return &AIState::m_HorizontalState;
 	}
