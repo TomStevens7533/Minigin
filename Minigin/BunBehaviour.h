@@ -5,7 +5,7 @@
 namespace dae {
 	struct ColliderInfo;
 	class BoxColliderComponent;
-	class BunBehaviour : public BaseComponent, public Subject
+	class BunBehaviour : public BaseComponent, public Subject, public Observer
 	{
 	public:
 		BunBehaviour() = default;
@@ -20,19 +20,15 @@ namespace dae {
 		BunBehaviour(BunBehaviour&& other) = delete;
 		BunBehaviour& operator=(const BunBehaviour& other) = delete;
 		BunBehaviour& operator=(BunBehaviour&& other) = delete;
-	private:
-		BoxColliderComponent* m_pBoxColliderComponent;
-		float m_BunEnterPosX;
-		std::shared_ptr<ColliderInfo> m_pExitPeterCollision;
 
+		virtual void onNotify(const BaseComponent* entity, int event, EventArgs* args = nullptr);
+	private:
 
 		bool m_IsFalling = false;
 		float m_Velocity = 30.f;
 		int m_IncreaseScore = 50;
 		bool m_IsPeterInCollFirst = false;
 		bool m_IsInFinalPos = false;
-		GameObject* m_pInfoGround{};
-		GameObject* m_pPepperGameobject{ nullptr };
-		unsigned int m_BurgerPassSoundIdx;
+		float m_EnterPeterPosX;
 	};
 }
