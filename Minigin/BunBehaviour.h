@@ -30,5 +30,6 @@ namespace dae {
 		bool m_IsPeterInCollFirst = false;
 		bool m_IsInFinalPos = false;
 		float m_EnterPeterPosX;
+		int m_ScoreToThrow = 0;
 	};
 }
