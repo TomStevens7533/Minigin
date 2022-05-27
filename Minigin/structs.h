@@ -16,6 +16,7 @@ namespace dae {
 		Rectf m_ColliderRect;
 		std::string tag = "None";
 		GameObject* m_pAttachedGameObject = nullptr;
+		bool IsEnabled = true;
 		std::function<void(const std::shared_ptr<ColliderInfo>)> m_OverlapStayFunc;
 		std::function<void(const std::shared_ptr<ColliderInfo>)> m_OverlapEnterFunc;
 		std::function<void(const std::shared_ptr<ColliderInfo>)> m_OverlapExitFunc;

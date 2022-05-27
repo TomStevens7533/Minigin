@@ -22,6 +22,9 @@ namespace dae {
 		void LateUpdate() override;
 		virtual void Start() override;
 
+		void DisableCollider();
+		void EnableCollider();
+
 		inline glm::vec2 GetDimension() const { return m_Dimensions; };
 		const dae::ColliderInfo& GetColliderInfo() const;
 

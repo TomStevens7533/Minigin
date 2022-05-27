@@ -139,6 +139,9 @@ void SceneColliders::UpdateColliders()
 		{
 			if (lookUpElement != CompareElement) {
 
+				if (CompareElement->IsEnabled == false)
+					continue;
+
 				bool isOverlapping = MathHelper::AreRectsOverlapping(lookUpElement->m_ColliderRect, CompareElement->m_ColliderRect);
 
 				auto it = std::find_if(lookUpElement->m_OverlappingColliders.begin()

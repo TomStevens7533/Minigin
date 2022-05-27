@@ -60,7 +60,7 @@ namespace dae {
 
 
 	private:
-		float m_MinExitTime = 1.f;
+		float m_MinExitTime = 3.f;
 		float m_CurrentTime = 0.f;
 
 	};

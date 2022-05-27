@@ -8,6 +8,7 @@ namespace dae {
 	{
 		int pepperShots;
 	};
+	class BoxColliderComponent;
 	class AttackComponent : public BaseComponent, public Subject
 	{
 	public:
@@ -24,6 +25,7 @@ namespace dae {
 		AttackComponent& operator=(AttackComponent&& other) = delete;
 	private:
 		std::shared_ptr<GameObject> m_pWeaponGameobject;
+		BoxColliderComponent* m_pPepperCollider = nullptr;
 		bool m_IsFiring = false;
 		float m_MaxPepperTime = 0.15f;
 		float m_CurrentPeperTime = 0.f;

@@ -24,6 +24,7 @@ void dae::AttackComponent::Update()
 		}
 		else {
 			m_CurrentPeperTime = 0.f;
+			m_pPepperCollider->DisableCollider();
 			GetAttachedGameObject()->RemoveChild(m_pWeaponGameobject);
 			m_IsFiring = false;
 		}
@@ -47,7 +48,7 @@ void dae::AttackComponent::Start()
 	auto boxComp = std::make_shared<BoxColliderComponent>("Shot");
 	m_pWeaponGameobject->AddComponent<TextureComponent>(TexComp);
 	m_pWeaponGameobject->AddComponent<BoxColliderComponent>(boxComp);
-
+	m_pPepperCollider = m_pWeaponGameobject->GetComponent<BoxColliderComponent>();
 
 	AttackArgs args;
 	args.pepperShots = m_PepperShots;
@@ -73,6 +74,7 @@ void dae::AttackComponent::Fire()
 
 		m_pWeaponGameobject->GetTransform().SetPosition(pos.x, pos.y, pos.z);
 		GetAttachedGameObject()->AddChild(m_pWeaponGameobject);
+		m_pPepperCollider->EnableCollider();
 
 
 

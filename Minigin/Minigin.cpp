@@ -316,7 +316,7 @@ static void CreateMrHotDogg() {
 	spriteComponent->AddAnimation("MoveForward", 0, 2, 2, 3);
 	spriteComponent->AddAnimation("MoveBackwards", 4, 2, 6, 3);
 	spriteComponent->AddAnimation("Death", 0, 4, 4, 3);
-	spriteComponent->AddAnimation("Fried", 0, 3, 6, 4);
+	spriteComponent->AddAnimation("Fried", 4, 3, 6, 4);
 
 
 

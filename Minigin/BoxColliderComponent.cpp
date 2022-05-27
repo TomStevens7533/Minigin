@@ -43,6 +43,16 @@ void dae::BoxColliderComponent::Start()
 
 }
 
+void dae::BoxColliderComponent::DisableCollider()
+{
+	m_pColliderInfo->IsEnabled = false;
+}
+
+void dae::BoxColliderComponent::EnableCollider()
+{
+	m_pColliderInfo->IsEnabled = true;
+}
+
 const dae::ColliderInfo& dae::BoxColliderComponent::GetColliderInfo() const
 {
 	return *m_pColliderInfo.get();
