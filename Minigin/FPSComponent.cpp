@@ -1,7 +1,8 @@
 #include "MiniginPCH.h"
 
 #include "FPSComponent.h"
-#include "Time.h"
+#include "DeltaTime.h"
+
 
 
 namespace dae {

@@ -6,7 +6,7 @@
 #include "BaseComponent.h"
 #include "BoxColliderComponent.h"
 #include "Scene.h"
-#include "Time.h"
+#include "DeltaTime.h"
 #include "ServiceLocator.h"
 
 dae::MovementComponent::MovementComponent(float movementVelocity) : m_Velocity{movementVelocity}

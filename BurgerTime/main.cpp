@@ -1,3 +1,4 @@
+#include "BurgerTimePCH.h"
 #if _DEBUG
 #if __has_include(<vld.h>)
 #include <vld.h>

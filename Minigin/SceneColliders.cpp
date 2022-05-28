@@ -152,10 +152,6 @@ const std::shared_ptr<dae::ColliderInfo> SceneColliders::SceneRaycast(glm::vec2 
 	return nullptr;
 }
 
-SceneColliders::~SceneColliders()
-{
-	std::cout << "lol\n";
-}
 
 
 

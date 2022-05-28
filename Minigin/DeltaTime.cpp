@@ -1,5 +1,5 @@
 #include "MiniginPCH.h"
-#include "Time.h"
+#include "DeltaTime.h"
 
 namespace dae {
 	Time::Time()

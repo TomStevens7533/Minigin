@@ -13,7 +13,7 @@
 #include "FPSComponent.h"
 #include "HealthComponent.h"
 #include "InputComponent.h"
-#include "Time.h"
+#include "DeltaTime.h"
 #include "RenderComponent.h"
 #include "LivesDisplayComponent.h"
 #include "ScoreDisplayComponent.h"
@@ -413,10 +413,6 @@ void dae::Minigin::Cleanup()
 void dae::Minigin::Run()
 {
 	Initialize();
-
-
-	// tell the resource manager where he can find the game data
-	ResourceManager::GetInstance().Init("../Data/");
 
 	LoadGame();
 

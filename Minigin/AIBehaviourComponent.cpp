@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "Scene.h"
 #include "MovementComponent.h"
-#include "Time.h"
+#include "DeltaTime.h"
 #include "SpriteComponent.h"
 #include "BoxColliderComponent.h"
 #include "MathHelper.h"

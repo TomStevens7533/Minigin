@@ -1,6 +1,6 @@
 #include "MiniginPCH.h"
 #include "Animation.h"
-#include "Time.h"
+#include "DeltaTime.h"
 #include <SDL.h>
 #include "Renderer.h"
 #include "Texture2D.h"

@@ -6,7 +6,8 @@
 #include <iostream>
 #include "SpriteComponent.h"
 #include "Scene.h"
-#include "Time.h"
+#include "DeltaTime.h"
+
 int dae::AttackComponent::m_PepperShots = 5;
 
 void dae::AttackComponent::Render() const
