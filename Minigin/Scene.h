@@ -23,7 +23,7 @@ namespace dae
 		//Collision
 
 		std::shared_ptr<ColliderInfo> AddColliderToScene(ColliderInfo colInfo) { return m_SceneGrid.AddCollider(colInfo); };
-		bool RemoveCollider(std::shared_ptr<ColliderInfo> colInfo) { return m_SceneGrid.RemoveCollider(colInfo); };
+		bool RemoveCollider(std::shared_ptr<ColliderInfo> colInfo); 
 
 		//Raycasts
 		std::shared_ptr<ColliderInfo> SceneRaycast(glm::vec2 pos, glm::vec2 dir, float length, std::string tag, int steps = 10, const std::shared_ptr<ColliderInfo> colliderToIgnore = std::make_shared<ColliderInfo>());

@@ -31,12 +31,15 @@ std::shared_ptr<ColliderInfo> SceneColliders::AddCollider(ColliderInfo info)
 
 bool SceneColliders::RemoveCollider(const std::shared_ptr<ColliderInfo> col)
 {
-	if (m_SceneColliderVec.erase(std::remove(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), col), m_SceneColliderVec.end()) != m_SceneColliderVec.end()) {
-		return true;
+	if (m_SceneColliderVec.size() > 0) {
+		if (m_SceneColliderVec.erase(std::remove(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), col), m_SceneColliderVec.end()) != m_SceneColliderVec.end()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
-	else {
-		return false;
-	}
+	return false;
 }
 
 std::shared_ptr<ColliderInfo> SceneColliders::IsRectCollidingScene(Rectf lookupRect)
@@ -149,6 +152,10 @@ const std::shared_ptr<dae::ColliderInfo> SceneColliders::SceneRaycast(glm::vec2 
 	return nullptr;
 }
 
+SceneColliders::~SceneColliders()
+{
+	std::cout << "lol\n";
+}
 
 
 

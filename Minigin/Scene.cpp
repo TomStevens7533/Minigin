@@ -8,7 +8,10 @@ unsigned int Scene::m_IdCounter = 0;
 
 Scene::Scene(const std::string& name) : m_Name(name) {}
 
-Scene::~Scene() = default;
+Scene::~Scene() {
+	m_Objects.clear();
+	std::cout << "fered\n";
+};
 
 void Scene::Add(const std::shared_ptr<SceneObject>& object)
 {
@@ -37,6 +40,15 @@ void dae::Scene::Start()
 	}
 }
 
+
+bool Scene::RemoveCollider(std::shared_ptr<ColliderInfo> colInfo)
+{
+	if (colInfo) {
+		return m_SceneGrid.RemoveCollider(colInfo);
+
+	}
+	return false;
+}
 
 void Scene::DestroySceneObject(std::shared_ptr<SceneObject> go)
 {
