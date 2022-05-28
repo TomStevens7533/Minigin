@@ -53,9 +53,6 @@ void dae::Minigin::Initialize()
 
 	Renderer::GetInstance().Init(m_Window);
 
-	//Init Sound
-	ServiceLocator::RegisterSoundSystem(new LogginSoundSystem(new SDL_Sound_System()));
-
 
 }
 //static void CreateTopBurger(std::vector<glm::vec2>& posVec) {
@@ -323,11 +320,7 @@ void dae::Minigin::LoadGame() const
 {
 	//Background + SceneLoading
 	//-------------------------------------------------------------
-	/*auto go = std::make_shared<dae::GameObject>();
-	auto texComp = std::make_shared<TextureComponent>("background.jpg");
-	go->SetPosition({ 0,0 });
-	go->AddComponent<TextureComponent>(texComp);
-	scene.Add(go);*/
+
 
 	/*auto goChild = std::make_shared<dae::GameObject>();
 	texComp = std::make_shared<TextureComponent>("logo.png");
@@ -337,7 +330,8 @@ void dae::Minigin::LoadGame() const
 
 
 	
-		
+	//Init Sound
+	ServiceLocator::RegisterSoundSystem(new LogginSoundSystem(new SDL_Sound_System()));
 	
 }
 
@@ -352,7 +346,6 @@ void dae::Minigin::Cleanup()
 
 void dae::Minigin::Run()
 {
-	Initialize();
 
 	LoadGame();
 
@@ -376,9 +369,11 @@ void dae::Minigin::Run()
 
 			//TODO add proper event system to catch user events
 			SDL_PollEvent(&e);
+			
 			if (e.type == SDL_QUIT) {
 				doContinue = false;
 			}
+
 
 			input.ProcessInput();
 			sceneManager.Update();
@@ -391,6 +386,8 @@ void dae::Minigin::Run()
 				lag -= m_FixedTimeStep;
 			}
 			renderer.Render();
+
+
 		}
 	}
 

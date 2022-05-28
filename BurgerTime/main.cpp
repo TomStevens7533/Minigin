@@ -9,10 +9,12 @@
 #include "BurgerTime.h"
 
 int main(int, char* []) {
+	dae::Minigin engine;
+	engine.Initialize();
+
 	Burger::BurgerTime game;
 	game.Initialize();
 
-	dae::Minigin engine;
 	engine.Run();
 	return 0;
 }
