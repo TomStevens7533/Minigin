@@ -13,6 +13,9 @@ void dae::BoxColliderComponent::LateUpdate()
 
 void dae::BoxColliderComponent::Start()
 {
+	if (m_pColliderInfo != nullptr)
+		m_pParent->GetScene()->RemoveCollider(m_pColliderInfo);
+
 	SpriteComponent* spriteComp = m_pParent->GetComponent<SpriteComponent>();
 	TextureComponent* texComp = m_pParent->GetComponent<TextureComponent>();
 
@@ -32,9 +35,7 @@ void dae::BoxColliderComponent::Start()
 	}
 	ColliderInfo info;
 
-	info.OverlapEnterFunc 
-		= std::bind(&BoxColliderComponent::OnOverlapEnter, this, std::placeholders::_1);
-
+	info.OverlapEnterFunc = std::bind(&BoxColliderComponent::OnOverlapEnter, this, std::placeholders::_1);
 	info.OverlapStayFunc = std::bind(&BoxColliderComponent::OnOverlapStay, this, std::placeholders::_1);
 	info.OverlopExitFunc = std::bind(&BoxColliderComponent::OnOverlaExit, this, std::placeholders::_1);
 
@@ -81,7 +82,8 @@ void dae::BoxColliderComponent::OnOverlapStay(const std::shared_ptr<ColliderInfo
 {
 	for (size_t i = 0; i < m_RegisteredListeners.size(); i++)
 	{
-		m_RegisteredListeners[i].OverlapStayFunc(otherCollider);
+		if (m_RegisteredListeners[i].OverlapStayFunc != nullptr)
+			m_RegisteredListeners[i].OverlapStayFunc(otherCollider);
 	}
 
 	/*for (size_t i = 0; i < m_RegisteredListeners.size(); i++)
@@ -94,7 +96,8 @@ void dae::BoxColliderComponent::OnOverlapEnter(const std::shared_ptr<ColliderInf
 {
 	for (size_t i = 0; i < m_RegisteredListeners.size(); i++)
 	{
-		m_RegisteredListeners[i].OverlapEnterFunc(otherCollider);
+		if (m_RegisteredListeners[i].OverlapEnterFunc != nullptr)
+			m_RegisteredListeners[i].OverlapEnterFunc(otherCollider);
 	}
 }
 
@@ -102,7 +105,8 @@ void dae::BoxColliderComponent::OnOverlaExit(const std::shared_ptr<ColliderInfo>
 {
 	for (size_t i = 0; i < m_RegisteredListeners.size(); i++)
 	{
-		m_RegisteredListeners[i].OverlopExitFunc(otherCollider);
+		if(m_RegisteredListeners[i].OverlopExitFunc != nullptr)
+			m_RegisteredListeners[i].OverlopExitFunc(otherCollider);
 	}
 }
 

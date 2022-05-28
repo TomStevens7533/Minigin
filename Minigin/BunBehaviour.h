@@ -21,7 +21,10 @@ namespace dae {
 		BunBehaviour& operator=(const BunBehaviour& other) = delete;
 		BunBehaviour& operator=(BunBehaviour&& other) = delete;
 
-		virtual void onNotify(const BaseComponent* entity, int event, EventArgs* args = nullptr);
+		void OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo);
+		void OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo);
+		void OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo);
+
 	private:
 
 		bool m_IsFalling = false;

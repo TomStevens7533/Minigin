@@ -68,7 +68,7 @@ namespace dae {
 	class BoxColliderComponent;
 	class SpriteComponent;
 	class MovementComponent;
-	class AIBehaviourComponent final : public BaseComponent, public Observer
+	class AIBehaviourComponent final : public BaseComponent
 	{
 	public:
 		AIBehaviourComponent(std::string tagToFollow);
@@ -90,14 +90,14 @@ namespace dae {
 		void SetVerticalDir(VerticalDirection vertical);
 		glm::vec2 GetClosestPlayerPos() const;
 
-		void onNotify(const BaseComponent* entity, int event, EventArgs* args = nullptr) override;
-
 		friend class HorizontalState;
 		friend class VerticalState;
 		friend class HitState;
 
 
-
+		void OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo);
+		void OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo);
+		void OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo);
 
 	private:
 

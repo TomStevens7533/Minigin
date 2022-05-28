@@ -89,8 +89,7 @@ namespace dae {
 		go->SetScene(this->GetScene());
 		
 		//Call start on new Child
-		if(go->m_IsInitialized == false)
-			go->Start();
+		go->Start();
 	}
 
 	void GameObject::Start()

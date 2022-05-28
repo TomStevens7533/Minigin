@@ -43,6 +43,12 @@ void dae::BunBehaviour::Start()
 
 
 
+	ColliderCallbacks colBack;
+	colBack.OverlapEnterFunc = std::bind(&BunBehaviour::OnCollisionEnter, this, std::placeholders::_1);
+	colBack.OverlopExitFunc = std::bind(&BunBehaviour::OnCollisionExit, this, std::placeholders::_1);
+	colBack.OverlapStayFunc = std::bind(&BunBehaviour::OnCollisionStay, this, std::placeholders::_1);
+
+	colliderComponent->AddListener(colBack);
 }
 
 void dae::BunBehaviour::SetFalling()
@@ -51,42 +57,44 @@ void dae::BunBehaviour::SetFalling()
 
 }
 
-void dae::BunBehaviour::onNotify(const BaseComponent*, int, EventArgs* /*= nullptr*/)
+void dae::BunBehaviour::OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo)
 {
-	//CollisionArgs* cArgs = static_cast<CollisionArgs*>(args);
-	//ColliderInfo info = cArgs->info;
 
-	//switch (event)
-	//{
-	//case EventType::OnCollisionEnter:
-	//	if (info.tag == "Pepper") {
-	//		m_IsPeterInCollFirst = true;
-	//		m_EnterPeterPosX = info.m_ColliderRect.x;
-	//	}
-	//	else if ((info.tag == "BunEnd" || info.tag == "Floor") && m_IsFalling == true) {
-	//		m_IsFalling = false;
-	//		m_ScoreToThrow += 50;
-	//	}
-	//	else if (info.tag == "Bun" && m_IsFalling == false) {
-	//		m_IsFalling = true;
-	//	}
-	//	else if ((info.tag == "Enemy") && m_IsFalling == true) {
-
-	//		if (m_ScoreToThrow == 0)
-	//			m_ScoreToThrow = 500;
-	//		else
-	//			m_ScoreToThrow = m_ScoreToThrow * 2;
-	//	}
-	//	break;
-	//case EventType::OnCollisionExit:
-	//	if (info.tag == "Pepper" && m_IsPeterInCollFirst && !MathHelper::AreEqual(m_EnterPeterPosX, info.m_ColliderRect.x, 2.f)) {
-	//		m_IsFalling = true;
-	//	}
-	//	break;
-	//case EventType::OnCollisionStay:
-	//	break;
-	//default:
-	//	break;
-	//}
 }
 
+void dae::BunBehaviour::OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo)
+{
+	if (m_IsInFinalPos)
+		return;
+
+
+	ColliderInfo info = *otherInfo;
+	if (info.tag == "Pepper") {
+		m_IsPeterInCollFirst = true;
+		m_EnterPeterPosX = info.m_ColliderRect.x;
+	}
+	else if ((info.tag == "BunEnd" || info.tag == "Floor") && m_IsFalling == true) {
+		m_IsFalling = false;
+		m_ScoreToThrow += 50;
+		if (info.tag == "BunEnd")
+			m_IsInFinalPos = true;
+	}
+	else if (info.tag == "Bun" && m_IsFalling == false) {
+		m_IsFalling = true;
+	}
+	else if ((info.tag == "Enemy") && m_IsFalling == true) {
+
+		if (m_ScoreToThrow == 0)
+			m_ScoreToThrow = 500;
+		else
+			m_ScoreToThrow = m_ScoreToThrow * 2;
+	}
+
+}
+
+void dae::BunBehaviour::OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo)
+{
+	if (otherInfo->tag == "Pepper" && m_IsPeterInCollFirst && !MathHelper::AreEqual(m_EnterPeterPosX, otherInfo->m_ColliderRect.x, 2.f)) {
+		m_IsFalling = true;
+	}
+}

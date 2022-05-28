@@ -19,8 +19,6 @@ void dae::AttackComponent::Update()
 	if (m_IsFiring) {
 		if (m_CurrentPeperTime < m_MaxPepperTime) {
 			m_CurrentPeperTime += dae::Time::GetInstance().GetDeltaTime();
-			std::cout << m_pWeaponGameobject->RelativePositionToParent().x <<
-				m_pWeaponGameobject->RelativePositionToParent().y << std::endl;
 		}
 		else {
 			m_CurrentPeperTime = 0.f;
