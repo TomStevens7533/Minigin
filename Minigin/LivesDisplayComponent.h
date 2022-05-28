@@ -16,8 +16,6 @@ namespace dae {
 		virtual void onNotify(const BaseComponent* entity, int event, EventArgs* args) override;
 
 	private:
-		int m_Lives{};
 		std::string m_BaseString{};
-
 	};
 }

@@ -45,7 +45,7 @@ namespace dae {
 	//};
 
 
-	class PetterPepperComponent final : public BaseComponent, public Observer
+	class PetterPepperComponent final : public BaseComponent
 	{
 	public:
 		virtual void Start() override;
@@ -53,7 +53,6 @@ namespace dae {
 		virtual void LateUpdate() override;
 		virtual void Render() const override;
 
-		void onNotify(const BaseComponent* entity, int event, EventArgs* args = nullptr) override;
 
 
 		void MoveLeftEnter();

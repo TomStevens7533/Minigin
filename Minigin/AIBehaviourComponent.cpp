@@ -294,6 +294,9 @@ void dae::HitState::Entry(AIBehaviourComponent& ai)
 	//Se sprite
 	ai.m_SpriteComponent->SetActiveAnimation("Fried");
 	ai.m_SpriteComponent->SetFlipState(false);
+
+	//Disable enemy collider
+	ai.m_ColliderComponent->DisableCollider();
 }
 
 dae::AIState* dae::HitState::UpdateState(AIBehaviourComponent&)
@@ -308,4 +311,9 @@ dae::AIState* dae::HitState::UpdateState(AIBehaviourComponent&)
 		return nullptr;
 	}
 
+}
+
+void dae::HitState::Exit(AIBehaviourComponent& ai)
+{
+	ai.m_ColliderComponent->EnableCollider();
 }

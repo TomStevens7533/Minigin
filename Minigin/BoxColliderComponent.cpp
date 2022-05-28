@@ -54,6 +54,9 @@ void dae::BoxColliderComponent::Start()
 
 void dae::BoxColliderComponent::DisableCollider()
 {
+	//Clear overlapping colliders
+	m_pColliderInfo->m_OverlappingColliders.clear();
+
 	m_pColliderInfo->IsEnabled = false;
 }
 

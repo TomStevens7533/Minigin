@@ -12,7 +12,7 @@ namespace dae {
 	class HealthComponent final : public BaseComponent, public Subject
 	{
 	public:
-		HealthComponent(int health = 10, int lives = 1);
+		HealthComponent(int health = 1, int lives = 5);
 		~HealthComponent() = default;
 
 		void Render() const override {};

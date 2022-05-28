@@ -268,6 +268,7 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		auto movementComp = std::make_shared<MovementComponent>(70.f);
 		auto attackComp = std::make_shared<AttackComponent>();
 		attackComp->addObserver(pepperDisplaycomp);
+		healthComponent->addObserver(liveDisplaycomp);
 
 		auto boxCollider = std::make_shared<BoxColliderComponent>("Pepper", 5);
 
@@ -285,9 +286,6 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		PeterPepper->AddComponent<MovementComponent>(movementComp);
 		PeterPepper->AddComponent<BoxColliderComponent>(boxCollider);
 
-		healthComponent->addObserver(liveDisplaycomp);
-		healthComponent->SetHealth(10);
-		healthComponent->SetLives(5);
 
 		glm::vec2 pos = posVec[i];
 		PeterPepper->SetPosition(pos.x, pos.y);

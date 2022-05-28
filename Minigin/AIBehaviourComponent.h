@@ -56,11 +56,11 @@ namespace dae {
 	public:
 		virtual void Entry(AIBehaviourComponent&) override;
 		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
-		virtual void Exit(AIBehaviourComponent&) override {};
+		virtual void Exit(AIBehaviourComponent&) override;
 
 
 	private:
-		float m_MinExitTime = 3.f;
+		float m_MinExitTime = 5.f;
 		float m_CurrentTime = 0.f;
 
 	};

@@ -71,67 +71,6 @@ namespace dae {
 
 	}
 
-	void PetterPepperComponent::onNotify(const BaseComponent*, int , EventArgs* )
-	{
-		////Getevents
-		//ColliderInfo colInfo;
-		//ColliderInfo pepperCoIInfo = m_ColliderComponent->GetColliderInfo();
-		//CollisionArgs* colArgs;
-		//glm::vec2 searchPos1;
-		//glm::vec2 searchPos2;
-
-		//switch (event)
-		//{
-		//case EventType::OnCollisionStay:
-		//	//Change to dynamic safety check
-		//	colArgs = static_cast<CollisionArgs*>(args);
-
-		//	
-		//	colInfo = colArgs->info;
-
-		//	if (colInfo.tag == "Ladder") {
-
-		//		//UP
-		//		searchPos1.x = pepperCoIInfo.m_ColliderRect.x + (pepperCoIInfo.m_ColliderRect.width / 2.f);
-		//		searchPos1.y = pepperCoIInfo.m_ColliderRect.y + (pepperCoIInfo.m_ColliderRect.height / 2.f);
-
-		//		//Down
-		//		searchPos2.x = pepperCoIInfo.m_ColliderRect.x + (pepperCoIInfo.m_ColliderRect.width / 2.f);
-		//		searchPos2.y = pepperCoIInfo.m_ColliderRect.y + pepperCoIInfo.m_ColliderRect.height;
-
-		//		if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos1)) {
-
-		//			m_IsOnLadderUp = true;
-		//		}
-		//		if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos2)) {
-		//			m_IsOnLadderDown = true;
-
-		//		}
-		//	}
-		//	if (colInfo.tag == "Floor") {
-
-		//		//right
-		//		searchPos1.x = pepperCoIInfo.m_ColliderRect.x + pepperCoIInfo.m_ColliderRect.width;
-		//		searchPos1.y = pepperCoIInfo.m_ColliderRect.y + pepperCoIInfo.m_ColliderRect.height;
-
-		//		//left
-		//		searchPos2.x = pepperCoIInfo.m_ColliderRect.x;
-		//		searchPos2.y = pepperCoIInfo.m_ColliderRect.y + pepperCoIInfo.m_ColliderRect.height;
-
-		//		if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos1)) {
-		//			m_IsOnFloorRight = true;
-		//		}
-		//		if (MathHelper::IsPointInRect(colInfo.m_ColliderRect, searchPos2)) {
-		//			m_IsOnFloorLeft = true;
-		//		}
-
-
-		//	}
-		//default:
-		//	break;
-		//}
-	}
-
 	void PetterPepperComponent::MoveLeftEnter()
 	{
 		if (m_IsOnFloorLeft) {
@@ -257,11 +196,17 @@ namespace dae {
 
 		}
 
+
 	}
 
 	void PetterPepperComponent::OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo)
 	{
-
+		//Check enemy hit
+		if (otherInfo->tag == "Enemy") {
+			auto healthComp = GetAttachedGameObject()->GetComponent<HealthComponent>();
+			if (healthComp != nullptr)
+				healthComp->DecreaseHealth(1);
+		}
 	}
 
 	void PetterPepperComponent::OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo)
