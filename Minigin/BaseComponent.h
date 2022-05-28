@@ -16,7 +16,6 @@ namespace dae {
 		GameObject* GetAttachedGameObject() const { return m_pParent; }
 		void SetAttachedGo(GameObject* parentGO) { m_pParent = parentGO; }
 
-
 	protected:
 		GameObject* m_pParent = nullptr;
 	};

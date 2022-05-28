@@ -7,6 +7,7 @@
 #include "SpriteComponent.h"
 #include "BoxColliderComponent.h"
 #include "MathHelper.h"
+#include "BaseComponent.h"
 
 
 dae::HorizontalState dae::AIState::m_HorizontalState;
@@ -16,6 +17,8 @@ dae::VerticalState dae::AIState::m_VerticalState;
 dae::HitState dae::AIState::m_HitState;
 
 
+
+dae::DeathState dae::AIState::m_DeathState;
 
 dae::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow) : m_TagToFollow{tagToFollow}
 {
@@ -144,6 +147,24 @@ void dae::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<ColliderI
 		m_CurrState->Exit(*this);
 		m_CurrState = &AIState::m_HitState;
 		m_CurrState->Entry(*this);
+	}
+	if (otherInfo->tag == "Bun") {
+
+		glm::vec2 topCheck;
+		topCheck.x = m_ColliderComponent->GetColliderInfo().m_ColliderRect.x 
+			+ (m_ColliderComponent->GetColliderInfo().m_ColliderRect.width / 2.f);
+		topCheck.y = m_ColliderComponent->GetColliderInfo().m_ColliderRect.y;
+
+		//Bun detection
+		if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, topCheck)) {
+			m_IsDeath = true;
+			m_CurrState->Exit(*this);
+			m_CurrState = &AIState::m_DeathState;
+			m_CurrState->Entry(*this);
+			//Death State
+		}
+
+
 	}
 
 }
@@ -316,4 +337,23 @@ dae::AIState* dae::HitState::UpdateState(AIBehaviourComponent&)
 void dae::HitState::Exit(AIBehaviourComponent& ai)
 {
 	ai.m_ColliderComponent->EnableCollider();
+}
+
+void dae::DeathState::Entry(AIBehaviourComponent& ai)
+{
+	ai.m_SpriteComponent->SetActiveAnimation("Death");
+}
+
+dae::AIState* dae::DeathState::UpdateState(AIBehaviourComponent& ai)
+{
+	if (ai.m_SpriteComponent->IsActiveInFinalFrame()) {
+		m_IsSpawning = true;
+		ai.GetAttachedGameObject()->SetDestroyFlag(true);
+	}
+	return nullptr;
+}
+
+void dae::DeathState::Exit(AIBehaviourComponent&)
+{
+
 }

@@ -121,7 +121,7 @@ dae::BoxColliderComponent::BoxColliderComponent(int width, int height, std::stri
 
 dae::BoxColliderComponent::~BoxColliderComponent()
 {
-
+	GetAttachedGameObject()->GetScene()->RemoveCollider(m_pColliderInfo);
 }
 
 void dae::BoxColliderComponent::Render() const

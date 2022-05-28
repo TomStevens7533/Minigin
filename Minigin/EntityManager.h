@@ -81,7 +81,6 @@ namespace dae
 		void Update();
 		void LateUpdate();
 		void Render() const;
-
 	private:
 		struct BaseComponentHashCalculator {
 		public:

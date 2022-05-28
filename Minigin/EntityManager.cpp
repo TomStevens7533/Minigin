@@ -24,7 +24,7 @@ namespace dae {
 	{
 		for (auto mapPair : m_ComponentSet)
 		{
-			mapPair->Update();
+				mapPair->Update();
 		}
 	}
 
@@ -32,7 +32,7 @@ namespace dae {
 	{
 		for (auto mapPair : m_ComponentSet)
 		{
-			mapPair->LateUpdate();
+				mapPair->LateUpdate();
 		}
 	}
 
@@ -40,7 +40,7 @@ namespace dae {
 	{
 		for (auto mapPair : m_ComponentSet)
 		{
-			mapPair->Render();
+				mapPair->Render();
 		}
 	}
 

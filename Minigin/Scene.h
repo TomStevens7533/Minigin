@@ -35,7 +35,8 @@ namespace dae
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
-
+	private:
+		void DestroySceneObject(std::shared_ptr<SceneObject> go);
 	private: 
 		explicit Scene(const std::string& name);
 

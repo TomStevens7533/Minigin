@@ -19,9 +19,13 @@ void Scene::Add(const std::shared_ptr<SceneObject>& object)
 void Scene::Update()
 {
 	m_SceneGrid.UpdateColliders();
-	for(auto& object : m_Objects)
+
+	for (size_t i = 0; i < m_Objects.size(); i++)
 	{
-		object->Update();
+		m_Objects[i]->Update();
+		if (m_Objects[i]->GetDestroyFlag())
+			DestroySceneObject(m_Objects[i]);
+
 	}
 }
 
@@ -33,6 +37,12 @@ void dae::Scene::Start()
 	}
 }
 
+
+void Scene::DestroySceneObject(std::shared_ptr<SceneObject> go)
+{
+	auto it = std::find(m_Objects.begin(), m_Objects.end(), go);
+	m_Objects.erase(it);
+}
 
 std::shared_ptr<ColliderInfo> Scene::SceneRaycast(glm::vec2 pos, glm::vec2 dir, float length, std::string tag, int steps /*= 10*/, const std::shared_ptr<ColliderInfo> colliderToIgnore /*= std::make_shared<ColliderInfo>()*/)
 {

@@ -13,6 +13,8 @@
 #include "MovementComponent.h"
 
 namespace dae {
+
+
 	void PetterPepperComponent::Start()
 	{
 		m_InputComponent = GetAttachedGameObject()->GetComponent<InputComponent>();
@@ -64,6 +66,13 @@ namespace dae {
 		m_IsOnLadderUp = false;
 		m_IsOnFloorRight = false;
 		m_IsOnFloorLeft = false;
+
+		if (m_IsHit && m_SpriteComponent->IsActiveInFinalFrame()) {
+			auto healthComp = GetAttachedGameObject()->GetComponent<HealthComponent>();
+			if (healthComp != nullptr)
+				healthComp->DecreaseHealth(1);
+			m_IsHit = false;
+		}
 	}
 
 	void PetterPepperComponent::Render() const
@@ -203,9 +212,9 @@ namespace dae {
 	{
 		//Check enemy hit
 		if (otherInfo->tag == "Enemy") {
-			auto healthComp = GetAttachedGameObject()->GetComponent<HealthComponent>();
-			if (healthComp != nullptr)
-				healthComp->DecreaseHealth(1);
+			m_IsHit = true;
+			m_SpriteComponent->SetActiveAnimation("Death");
+			m_SpriteComponent->SetFlipState(false);
 		}
 	}
 

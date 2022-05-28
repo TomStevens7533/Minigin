@@ -20,7 +20,12 @@ namespace dae
 		void SetScene(Scene* currsScene) { m_CurrentScene = currsScene; };
 		Scene* GetScene() { return m_CurrentScene; };
 
+		bool GetDestroyFlag() { return m_DestoryFlag; }
+		void SetDestroyFlag(bool isDestroy) { m_DestoryFlag = isDestroy; }
+
 	private:
 		Scene* m_CurrentScene = nullptr;
+		bool m_DestoryFlag = false;
+
 	};
 }

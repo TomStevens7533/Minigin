@@ -277,6 +277,8 @@ static void CreatePlayer(const std::vector<glm::vec2>& posVec) {
 		spriteComponent->AddAnimation("MoveForward", 6, 0, 9, 1);
 		spriteComponent->AddAnimation("Move", 3, 0, 6, 1);
 		spriteComponent->AddAnimation("MoveBackwards", 0, 0, 3, 1);
+		spriteComponent->AddAnimation("Death", 6, 1, 9, 2);
+
 
 		PeterPepper->AddComponent<AttackComponent>(attackComp);
 		PeterPepper->AddComponent<HealthComponent>(healthComponent);
@@ -313,8 +315,9 @@ static void CreateMrHotDogg() {
 	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);
 	spriteComponent->AddAnimation("MoveForward", 0, 2, 2, 3);
 	spriteComponent->AddAnimation("MoveBackwards", 4, 2, 6, 3);
-	spriteComponent->AddAnimation("Death", 0, 4, 4, 3);
 	spriteComponent->AddAnimation("Fried", 4, 3, 6, 4);
+	spriteComponent->AddAnimation("Death", 0, 3, 4, 4);
+
 
 
 

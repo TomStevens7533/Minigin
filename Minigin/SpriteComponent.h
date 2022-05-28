@@ -25,6 +25,7 @@ namespace dae {
 		void LateUpdate() override {};
 		virtual void Start() override {};
 
+		bool IsActiveInFinalFrame() const { return m_ActiveAnimation->IsInFinalFrame(); }
 
 		SpriteComponent(const SpriteComponent&) = delete;
 		SpriteComponent(SpriteComponent&&) = delete;

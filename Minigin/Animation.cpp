@@ -50,7 +50,8 @@ namespace dae {
 		if (m_AccumulatedTime > m_FrameTime)
 		{
 
-			if (!m_Backwards)++m_CurrentFrame %= m_TotalFrames;
+			if (!m_Backwards)
+				++m_CurrentFrame %= m_TotalFrames;
 			else --m_CurrentFrame %= m_TotalFrames;
 			m_AccumulatedTime -= m_FrameTime;
 
@@ -88,6 +89,11 @@ namespace dae {
 		totalDim.y /= m_Rows;
 
 		return totalDim;
+	}
+
+	bool Animation::IsInFinalFrame() const
+	{
+		return (m_CurrentFrame == (m_TotalFrames - 1));
 	}
 
 }

@@ -28,7 +28,7 @@ namespace dae {
 	private:
 
 		bool m_IsFalling = false;
-		float m_Velocity = 30.f;
+		float m_Velocity = 60.f;
 		int m_IncreaseScore = 50;
 		bool m_IsPeterInCollFirst = false;
 		bool m_IsInFinalPos = false;

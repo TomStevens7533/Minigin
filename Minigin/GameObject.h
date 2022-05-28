@@ -57,6 +57,8 @@ namespace dae
 		inline Transform& GetTransform() { return m_Transform; }
 		glm::vec3 RelativePositionToParent();
 
+
+
 	private:
 		Transform m_Transform;
 		// todo: mmm, every gameobject has a texture? Is that correct?

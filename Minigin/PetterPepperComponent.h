@@ -12,38 +12,6 @@ namespace dae {
 	class MovementComponent;
 	//
 
-	//class PepperState {
-	//public:
-	//	virtual ~PepperState() {};
-	//	virtual void Entry(PetterPepperComponent& pepper) = 0;
-	//	virtual  PepperState* UpdateState(PetterPepperComponent& pepper) = 0;
-	//	virtual void Exit(PetterPepperComponent& pepper) = 0;
-
-	//	static MoveState m_MoveState;
-	//	static AttackState m_AttackState;
-
-
-	//};
-
-	//class MoveState final : public PepperState {
-	//public:
-	//	virtual void Entry(PetterPepperComponent& ai) override;
-	//	virtual  PepperState* UpdateState(PetterPepperComponent& pepper) override;
-	//	virtual void Exit(PetterPepperComponent&) override;
-	//private:
-	//	float m_MinExitTime = 0.5f;
-	//	float m_CurrentTime = 0.f;
-	//};
-	//class AttackState final : public PepperState {
-	//public:
-	//	virtual void Entry(PetterPepperComponent& ai) override;
-	//	virtual  PepperState* UpdateState(PetterPepperComponent& pepper) override;
-	//	virtual void Exit(PetterPepperComponent&) override;
-	//private:
-	//	float m_MinExitTime = 0.2f;
-	//	float m_CurrentTime = 0.f;
-	//};
-
 
 	class PetterPepperComponent final : public BaseComponent
 	{
@@ -66,8 +34,6 @@ namespace dae {
 		void MoveUpExit();
 		void MoveDownExit();
 
-		friend class MoveState;
-		friend class AttackState;
 		void OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo);
 		void OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo);
 		void OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo);
@@ -89,6 +55,8 @@ namespace dae {
 
 		bool m_IsOnFloorRight = false;
 		bool m_IsOnFloorLeft = false;
+
+		bool m_IsHit = false;
 
 	};
 

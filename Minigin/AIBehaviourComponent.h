@@ -10,6 +10,7 @@ namespace dae {
 
 	class VerticalState;
 	class HorizontalState;
+	class DeathState;
 	class HitState;
 
 	class AIState {
@@ -23,6 +24,9 @@ namespace dae {
 		static HorizontalState m_HorizontalState;
 		static VerticalState m_VerticalState;
 		static HitState m_HitState;
+		static DeathState m_DeathState;
+
+
 
 
 	};
@@ -64,6 +68,19 @@ namespace dae {
 		float m_CurrentTime = 0.f;
 
 	};
+	class DeathState final : public AIState {
+	public:
+		virtual void Entry(AIBehaviourComponent&) override;
+		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
+		virtual void Exit(AIBehaviourComponent&) override;
+
+
+	private:
+		float m_MinExitTime = 5.f;
+		float m_CurrentTime = 0.f;
+		bool m_IsSpawning = false;
+
+	};
 
 	class BoxColliderComponent;
 	class SpriteComponent;
@@ -93,6 +110,8 @@ namespace dae {
 		friend class HorizontalState;
 		friend class VerticalState;
 		friend class HitState;
+		friend class DeathState;
+
 
 
 		void OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo);
@@ -110,6 +129,7 @@ namespace dae {
 		BoxColliderComponent* m_ColliderComponent = nullptr;
 		bool m_IsOnLadder = false;
 		bool m_IsOnFloor = false;
+		bool m_IsDeath = false;
 	
 	};
 
