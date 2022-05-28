@@ -2,9 +2,13 @@
 #include "BaseComponent.h"
 #include <vector>
 #include "structs.h"
-#include "Observer.h"
 
-namespace dae {
+namespace dae { 
+class SpriteComponent;
+class BoxColliderComponent;
+}
+
+namespace Burger {
 
 	class AIBehaviourComponent;
 
@@ -82,10 +86,9 @@ namespace dae {
 
 	};
 
-	class BoxColliderComponent;
-	class SpriteComponent;
+
 	class MovementComponent;
-	class AIBehaviourComponent final : public BaseComponent
+	class AIBehaviourComponent final : public dae::BaseComponent
 	{
 	public:
 		AIBehaviourComponent(std::string tagToFollow);
@@ -103,8 +106,8 @@ namespace dae {
 		virtual void Update() override;
 		virtual void LateUpdate() override {};
 
-		void SetHorizontalDir(HorizontalDirection horizon);
-		void SetVerticalDir(VerticalDirection vertical);
+		void SetHorizontalDir(dae::HorizontalDirection horizon);
+		void SetVerticalDir(dae::VerticalDirection vertical);
 		glm::vec2 GetClosestPlayerPos() const;
 
 		friend class HorizontalState;
@@ -114,9 +117,9 @@ namespace dae {
 
 
 
-		void OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo);
-		void OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo);
-		void OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo);
+		void OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo);
+		void OnCollisionEnter(const std::shared_ptr<dae::ColliderInfo> otherInfo);
+		void OnCollisionExit(const std::shared_ptr<dae::ColliderInfo> otherInfo);
 
 	private:
 
@@ -124,9 +127,9 @@ namespace dae {
 		AIState* m_CurrState = nullptr;
 		std::vector < const dae::ColliderInfo* > m_PlayerVec;
 		std::string m_TagToFollow;
-		dae::MovementComponent* m_HotDogMovement = nullptr;
-		SpriteComponent* m_SpriteComponent = nullptr;
-		BoxColliderComponent* m_ColliderComponent = nullptr;
+		MovementComponent* m_HotDogMovement = nullptr;
+		dae::SpriteComponent* m_SpriteComponent = nullptr;
+		dae::BoxColliderComponent* m_ColliderComponent = nullptr;
 		bool m_IsOnLadder = false;
 		bool m_IsOnFloor = false;
 		bool m_IsDeath = false;

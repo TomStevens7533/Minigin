@@ -84,26 +84,11 @@
     <ClInclude Include="InputComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="HealthComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="EventType.h">
-      <Filter>Observer/Subject</Filter>
-    </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Observer.h">
       <Filter>Observer/Subject</Filter>
     </ClInclude>
     <ClInclude Include="Subject.h">
       <Filter>Observer/Subject</Filter>
-    </ClInclude>
-    <ClInclude Include="LivesDisplayComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreDisplayComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="SpriteComponent.h">
       <Filter>Components</Filter>
@@ -123,9 +108,6 @@
     <ClInclude Include="SceneColliders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PetterPepperComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="ServiceLocator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -135,26 +117,14 @@
     <ClInclude Include="SoundEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BunBehaviour.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="AIBehaviourComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="MovementComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="AttackComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Prefab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MathHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PepperDisplayComponent.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="Command.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -215,17 +185,8 @@
     <ClCompile Include="InputComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="HealthComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Subject.cpp">
       <Filter>Observer/Subject</Filter>
-    </ClCompile>
-    <ClCompile Include="LivesDisplayComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreDisplayComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="SpriteComponent.cpp">
       <Filter>Components</Filter>
@@ -236,14 +197,8 @@
     <ClCompile Include="BoxColliderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Command.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SceneColliders.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PetterPepperComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Sound_System.cpp">
       <Filter>Source Files</Filter>
@@ -253,21 +208,6 @@
     </ClCompile>
     <ClCompile Include="ServiceLocator.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MovementComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BunBehaviour.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="AIBehaviourComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="AttackComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="PepperDisplayComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Structs.cpp">
       <Filter>Source Files</Filter>

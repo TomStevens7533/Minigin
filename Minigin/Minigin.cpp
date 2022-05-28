@@ -1,33 +1,15 @@
 #include "MiniginPCH.h"
 #include "Minigin.h"
-#include <thread>
-#include <chrono>
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "Scene.h"
-#include "TextureComponent.h"
-#include "TextComponent.h"
-#include "FPSComponent.h"
-#include "HealthComponent.h"
-#include "InputComponent.h"
 #include "DeltaTime.h"
-#include "RenderComponent.h"
-#include "LivesDisplayComponent.h"
-#include "ScoreDisplayComponent.h"
-#include "SpriteComponent.h"
-#include "PetterPepperComponent.h"
-#include "BoxColliderComponent.h"
 #include "SDL_mixer.h"
 #include "ServiceLocator.h"
 #include "Sound_System.h"
-#include "MovementComponent.h"
-#include "BunBehaviour.h"
-#include "AIBehaviourComponent.h"
-#include "AttackComponent.h"
-#include "PepperDisplayComponent.h"
 
 using namespace std;
 using namespace dae;

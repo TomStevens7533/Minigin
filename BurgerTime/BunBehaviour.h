@@ -2,10 +2,10 @@
 #include "BaseComponent.h"
 #include "structs.h"
 #include "Subject.h"
-namespace dae {
+namespace Burger {
 	struct ColliderInfo;
 	class BoxColliderComponent;
-	class BunBehaviour : public BaseComponent, public Subject
+	class BunBehaviour : public dae::BaseComponent, public dae::Subject
 	{
 	public:
 		BunBehaviour() = default;
@@ -21,9 +21,9 @@ namespace dae {
 		BunBehaviour& operator=(const BunBehaviour& other) = delete;
 		BunBehaviour& operator=(BunBehaviour&& other) = delete;
 
-		void OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo);
-		void OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo);
-		void OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo);
+		void OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo);
+		void OnCollisionEnter(const std::shared_ptr<dae::ColliderInfo> otherInfo);
+		void OnCollisionExit(const std::shared_ptr<dae::ColliderInfo> otherInfo);
 
 	private:
 

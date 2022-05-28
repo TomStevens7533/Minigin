@@ -1,5 +1,5 @@
 #include "MiniginPCH.h"
-#include "Command.h"
+
 #include "HealthComponent.h"
 #include "MovementComponent.h"
 #include "SpriteComponent.h"
@@ -7,10 +7,11 @@
 #include "ServiceLocator.h"
 #include "AttackComponent.h"
 #include "PetterPepperComponent.h"
+#include "Command.h"
 //Enter
-class MoveRightEnterCommand : public Command {
+class MoveRightEnterCommand : public dae::Command {
 public:
-	MoveRightEnterCommand(dae::PetterPepperComponent* peterComp)
+	MoveRightEnterCommand(Burger::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
 
 	};
@@ -18,11 +19,11 @@ public:
 		m_PeterComp->MoveRightEnter();
 	}
 private:
-	dae::PetterPepperComponent* m_PeterComp;
+	Burger::PetterPepperComponent* m_PeterComp;
 };
-class MoveUpEnterCommand : public Command {
+class MoveUpEnterCommand : public dae::Command {
 public:
-	MoveUpEnterCommand(dae::PetterPepperComponent* peterComp)
+	MoveUpEnterCommand(Burger::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
 	};
 	virtual void Excecute() {
@@ -31,36 +32,36 @@ public:
 	
 	}
 private:
-	dae::PetterPepperComponent* m_PeterComp;
+	Burger::PetterPepperComponent* m_PeterComp;
 };
-class MoveDownEnterCommand : public Command {
+class MoveDownEnterCommand : public dae::Command {
 public:
-	MoveDownEnterCommand(dae::PetterPepperComponent* peterComp)
+	MoveDownEnterCommand(Burger::PetterPepperComponent* peterComp)
 	: m_PeterComp{ peterComp } {
 	};
 	virtual void Excecute() {
 		m_PeterComp->MoveDownEnter();
 	}
 private:
-	dae::PetterPepperComponent* m_PeterComp;
+	Burger::PetterPepperComponent* m_PeterComp;
 };
-class MoveLeftEnterCommand : public Command {
+class MoveLeftEnterCommand : public dae::Command {
 public:
-	MoveLeftEnterCommand(dae::PetterPepperComponent* peterComp)
+	MoveLeftEnterCommand(Burger::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
 	};
 	virtual void Excecute() {
 		m_PeterComp->MoveLeftEnter();
 	}
 private:
-	dae::PetterPepperComponent* m_PeterComp;
+	Burger::PetterPepperComponent* m_PeterComp;
 
 };
 
 //Exit commanbds
-class MoveRightExitCommand : public Command {
+class MoveRightExitCommand : public dae::Command {
 public:
-	MoveRightExitCommand(dae::PetterPepperComponent* peterComp)
+	MoveRightExitCommand(Burger::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
 
 	};
@@ -68,11 +69,11 @@ public:
 		m_PeterComp->MoveRightExit();
 	}
 private:
-	dae::PetterPepperComponent* m_PeterComp;
+	Burger::PetterPepperComponent* m_PeterComp;
 };
-class MoveUpExitCommand : public Command {
+class MoveUpExitCommand : public dae::Command {
 public:
-	MoveUpExitCommand(dae::PetterPepperComponent* peterComp)
+	MoveUpExitCommand(Burger::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
 	};
 	virtual void Excecute() {
@@ -81,37 +82,37 @@ public:
 
 	}
 private:
-	dae::PetterPepperComponent* m_PeterComp;
+	Burger::PetterPepperComponent* m_PeterComp;
 };
-class MoveDownExitCommand : public Command {
+class MoveDownExitCommand : public dae::Command {
 public:
-	MoveDownExitCommand(dae::PetterPepperComponent* peterComp)
+	MoveDownExitCommand(Burger::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
 	};
 	virtual void Excecute() {
 		m_PeterComp->MoveDownExit();
 	}
 private:
-	dae::PetterPepperComponent* m_PeterComp;
+	Burger::PetterPepperComponent* m_PeterComp;
 };
-class MoveLeftExitCommand : public Command {
+class MoveLeftExitCommand : public dae::Command {
 public:
-	MoveLeftExitCommand(dae::PetterPepperComponent* peterComp)
+	MoveLeftExitCommand(Burger::PetterPepperComponent* peterComp)
 		: m_PeterComp{ peterComp } {
 	};
 	virtual void Excecute() {
 		m_PeterComp->MoveLeftExit();
 	}
 private:
-	dae::PetterPepperComponent* m_PeterComp;
+	Burger::PetterPepperComponent* m_PeterComp;
 
 };
 
 
 //Attack
-class AttackCommand : public Command {
+class AttackCommand : public dae::Command {
 public:
-	AttackCommand(dae::AttackComponent* attackComp) { m_pAttackComp = attackComp; }
+	AttackCommand(Burger::AttackComponent* attackComp) { m_pAttackComp = attackComp; }
 	virtual void Excecute() {
 		if (m_pAttackComp != nullptr) {
 			m_pAttackComp->Fire();
@@ -119,5 +120,5 @@ public:
 		}
 	}
 private:
-	dae::AttackComponent* m_pAttackComp;
+	Burger::AttackComponent* m_pAttackComp;
 };

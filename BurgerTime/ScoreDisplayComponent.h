@@ -3,14 +3,14 @@
 #include "Observer.h"
 #include <string>
 
-namespace dae {
+namespace Burger {
 
-	struct ScoreArgs : public EventArgs
+	struct ScoreArgs : public dae::EventArgs
 	{
 		int scoreIncrease;
 	};
 
-	class ScoreDisplayComponent final : public BaseComponent, public Observer {
+	class ScoreDisplayComponent final : public dae::BaseComponent, public dae::Observer {
 	public:
 		ScoreDisplayComponent(std::string newString);
 		~ScoreDisplayComponent() = default;
@@ -19,10 +19,9 @@ namespace dae {
 		virtual void Update() override {};
 		virtual void LateUpdate() override {};
 		virtual void Render() const override {};
-		virtual void onNotify(const BaseComponent* entity, int event, EventArgs* args) override;
+		virtual void onNotify(const BaseComponent* entity, int event, dae::EventArgs* args) override;
 
 
-		void ScoreScore(int score);
 
 	private:
 		int m_Score{0};

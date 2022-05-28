@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
 #include <memory>
-#include "EventType.h"
 namespace dae {
 
 	struct EventArgs {};

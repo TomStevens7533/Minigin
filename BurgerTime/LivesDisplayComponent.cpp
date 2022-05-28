@@ -3,21 +3,22 @@
 #include "GameObject.h"
 #include "TextComponent.h"
 #include "HealthComponent.h"
+#include "EventType.h"
 
-dae::LivesDisplayComponent::LivesDisplayComponent(std::string newString) : m_BaseString{newString} {}
+Burger::LivesDisplayComponent::LivesDisplayComponent(std::string newString) : m_BaseString{newString} {}
 
 
-void dae::LivesDisplayComponent::onNotify(const BaseComponent*, int event, EventArgs* args)
+void Burger::LivesDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* args)
 {
 	//GetComponent
 	HealthArgs* hargs = static_cast<HealthArgs*>(args);
 	switch (event)
 	{
-	case dae::PepperEvent::ENTITY_DIED:
-		m_pParent->GetComponent<TextComponent>()->SetText(m_BaseString + std::to_string(hargs->lives));
+	case Burger::PepperEvent::ENTITY_DIED:
+		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(hargs->lives));
 		break;
-	case dae::PepperEvent::HEALTH_SET:
-		m_pParent->GetComponent<TextComponent>()->SetText(m_BaseString + std::to_string(hargs->lives));
+	case Burger::PepperEvent::HEALTH_SET:
+		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(hargs->lives));
 		break;
 	}
 }

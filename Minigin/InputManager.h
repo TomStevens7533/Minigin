@@ -50,13 +50,13 @@ namespace dae
 	public:
 		friend class Singleton<InputManager>;
 		bool IsKeyDown(ControllerButton button, int deviceIdx) const;
-		bool IsKeyDown(Uint8 key) const;
+		bool IsKeyDown(unsigned char key) const;
 
 		bool IsKeyPressed(ControllerButton button, int deviceIdx) const;
-		bool IsKeyPressed(Uint8 key) const;
+		bool IsKeyPressed(unsigned char key) const;
 
 		bool IsKeyReleased(ControllerButton button, int deviceIdx) const;
-		bool IsKeyReleased(Uint8 key) const;
+		bool IsKeyReleased(unsigned char key) const;
 
 		bool HandleCommand(ControllerButton button, unsigned char key, KeyState state, Command* command, int playerIdx);
 

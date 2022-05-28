@@ -3,9 +3,9 @@
 #include <string>
 #include "Observer.h"
 
-namespace dae {
+namespace Burger {
 
-	class PepperDisplayComponent final : public BaseComponent, public Observer {
+	class PepperDisplayComponent final : public dae::BaseComponent, public dae::Observer {
 	public:
 		PepperDisplayComponent(std::string newString);
 		~PepperDisplayComponent() = default;
@@ -14,7 +14,7 @@ namespace dae {
 		virtual void Update() override {};
 		virtual void LateUpdate() override {};
 		virtual void Render() const override {};
-		virtual void onNotify(const BaseComponent* entity, int event, EventArgs* args) override;
+		virtual void onNotify(const BaseComponent* entity, int event, dae::EventArgs* args) override;
 
 	private:
 		int m_Lives{};

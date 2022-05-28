@@ -8,7 +8,7 @@ namespace dae {
 			InputManager::GetInstance().SetNewPlayerAmount(m_deviceIdx + 1);
 		}
 	}
-	void InputComponent::AddCommand(ControllerButton button, Uint8 key, Command* command, KeyState state)
+	void InputComponent::AddCommand(ControllerButton button, unsigned char key, Command* command, KeyState state)
 	{
 		InputManager::GetInstance().AddCommand(button, static_cast<unsigned char>(key), command, state, m_deviceIdx);
 	}

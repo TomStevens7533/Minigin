@@ -7,6 +7,7 @@
 #include "SpriteComponent.h"
 #include "Scene.h"
 #include "DeltaTime.h"
+#include "EventType.h"
 
 int Burger::AttackComponent::m_PepperShots = 5;
 
@@ -44,11 +45,11 @@ void Burger::AttackComponent::Start()
 {
 	//Create pepper shot gameobject
 	m_pWeaponGameobject = std::make_shared<dae::GameObject>();
-	auto TexComp = std::make_shared<TextureComponent>("pepperShot.png");
-	auto boxComp = std::make_shared<BoxColliderComponent>("Shot");
+	std::shared_ptr<TextureComponent> TexComp = std::make_shared<TextureComponent>("pepperShot.png");
+	std::shared_ptr<dae::BoxColliderComponent> boxComp = std::make_shared<dae::BoxColliderComponent>("Shot");
 	m_pWeaponGameobject->AddComponent<TextureComponent>(TexComp);
 	m_pWeaponGameobject->AddComponent<dae::BoxColliderComponent>(boxComp);
-	m_pPepperCollider = m_pWeaponGameobject->GetComponent<BoxColliderComponent>();
+	m_pPepperCollider = m_pWeaponGameobject->GetComponent<dae::BoxColliderComponent>();
 
 	AttackArgs args;
 	args.pepperShots = m_PepperShots;
@@ -80,7 +81,7 @@ void Burger::AttackComponent::Fire()
 
 		AttackArgs args;
 		args.pepperShots = m_PepperShots;
-		notify(this, PepperEvent::PEPPER_FIRED, &args);
+
 
 	}
 

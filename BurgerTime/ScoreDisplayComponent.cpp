@@ -1,22 +1,23 @@
 #include "MiniginPCH.h"
 #include "ScoreDisplayComponent.h"
 #include "GameObject.h"
+#include "EventType.h"
 #include "TextComponent.h"
-dae::ScoreDisplayComponent::ScoreDisplayComponent(std::string newString) : m_BaseString{newString} {}
+Burger::ScoreDisplayComponent::ScoreDisplayComponent(std::string newString) : m_BaseString{newString} {}
 
-void dae::ScoreDisplayComponent::Start()
+void Burger::ScoreDisplayComponent::Start()
 {
-	m_pParent->GetComponent<TextComponent>()->SetText(m_BaseString + std::to_string(m_Score));
+	m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(m_Score));
 }
 
-void dae::ScoreDisplayComponent::onNotify(const BaseComponent*, int event, EventArgs* args)
+void Burger::ScoreDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* args)
 {
 	ScoreArgs* sargs = static_cast<ScoreArgs*>(args);
 	m_Score += sargs->scoreIncrease;
 	switch (event)
 	{
-	case dae::PepperEvent::SCORE_INCREASE:
-		m_pParent->GetComponent<TextComponent>()->SetText(m_BaseString + std::to_string(m_Score));
+	case Burger::PepperEvent::SCORE_INCREASE:
+		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(m_Score));
 		break;
 	}
 }

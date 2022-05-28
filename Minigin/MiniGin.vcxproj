@@ -214,32 +214,23 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BoxColliderComponent.h" />
-    <ClInclude Include="BunBehaviour.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="AIBehaviourComponent.h" />
     <ClInclude Include="MathHelper.h" />
-    <ClInclude Include="MovementComponent.h" />
-    <ClInclude Include="PepperDisplayComponent.h" />
-    <ClInclude Include="PetterPepperComponent.h" />
     <ClInclude Include="Prefab.h" />
     <ClInclude Include="SceneColliders.h" />
-    <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="Sound_System.h" />
-    <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
-    <ClInclude Include="EventType.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="KeyCodes.h" />
@@ -248,7 +239,6 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="ScoreDisplayComponent.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="structs.h" />
@@ -261,26 +251,17 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="AttackComponent.cpp" />
     <ClCompile Include="BoxColliderComponent.cpp" />
-    <ClCompile Include="BunBehaviour.cpp" />
-    <ClCompile Include="Command.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="AIBehaviourComponent.cpp" />
-    <ClCompile Include="MovementComponent.cpp" />
-    <ClCompile Include="PepperDisplayComponent.cpp" />
-    <ClCompile Include="PetterPepperComponent.cpp" />
     <ClCompile Include="SceneColliders.cpp" />
-    <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="Sound_System.cpp" />
-    <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MiniginPCH.cpp">
@@ -295,7 +276,6 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="ScoreDisplayComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Structs.cpp" />
     <ClCompile Include="Subject.cpp" />

@@ -2,9 +2,9 @@
 #include "BaseComponent.h"
 #include "Observer.h"
 
-namespace dae {
+namespace Burger {
 
-	class LivesDisplayComponent final : public BaseComponent, public Observer {
+	class LivesDisplayComponent final : public dae::BaseComponent, public dae::Observer {
 	public:
 		LivesDisplayComponent(std::string newString);
 		~LivesDisplayComponent() = default;
@@ -13,7 +13,7 @@ namespace dae {
 		virtual void Update() override {};
 		virtual void LateUpdate() override {};
 		virtual void Render() const override {};
-		virtual void onNotify(const BaseComponent* entity, int event, EventArgs* args) override;
+		virtual void onNotify(const BaseComponent* entity, int event, dae::EventArgs* args) override;
 
 	private:
 		std::string m_BaseString{};

@@ -10,29 +10,29 @@
 #include "BaseComponent.h"
 
 
-dae::HorizontalState dae::AIState::m_HorizontalState;
+Burger::HorizontalState Burger::AIState::m_HorizontalState;
 
-dae::VerticalState dae::AIState::m_VerticalState;
+Burger::VerticalState Burger::AIState::m_VerticalState;
 
-dae::HitState dae::AIState::m_HitState;
+Burger::HitState Burger::AIState::m_HitState;
 
 
+using namespace dae;
+Burger::DeathState Burger::AIState::m_DeathState;
 
-dae::DeathState dae::AIState::m_DeathState;
-
-dae::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow) : m_TagToFollow{tagToFollow}
+Burger::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow) : m_TagToFollow{tagToFollow}
 {
 
 }
-void dae::AIBehaviourComponent::Start()
+void Burger::AIBehaviourComponent::Start()
 {
 	m_PlayerVec = GetAttachedGameObject()->GetScene()->GetAllCollidersWithTag(m_TagToFollow);
 	m_HotDogMovement = GetAttachedGameObject()->GetComponent<MovementComponent>();
-	m_SpriteComponent = GetAttachedGameObject()->GetComponent<SpriteComponent>();
+	m_SpriteComponent = GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
 
 
 	//register self for collision events
-	m_ColliderComponent = GetAttachedGameObject()->GetComponent<BoxColliderComponent>();
+	m_ColliderComponent = GetAttachedGameObject()->GetComponent<dae::BoxColliderComponent>();
 	assert(m_ColliderComponent);
 
 	ColliderCallbacks colBack;
@@ -44,12 +44,12 @@ void dae::AIBehaviourComponent::Start()
 
 }
 
-void dae::AIBehaviourComponent::Render() const
+void Burger::AIBehaviourComponent::Render() const
 {
 	
 }
 
-void dae::AIBehaviourComponent::Update()
+void Burger::AIBehaviourComponent::Update()
 {
 	if (m_CurrState != nullptr) {
 		AIState* newState = m_CurrState->UpdateState(*this);
@@ -72,19 +72,19 @@ void dae::AIBehaviourComponent::Update()
 
 }
 
-void dae::AIBehaviourComponent::SetHorizontalDir(HorizontalDirection horizon)
+void Burger::AIBehaviourComponent::SetHorizontalDir(HorizontalDirection horizon)
 {
 	m_HotDogMovement->SetNewHorizontalDirection(horizon);
 
 }
 
-void dae::AIBehaviourComponent::SetVerticalDir(VerticalDirection vertical)
+void Burger::AIBehaviourComponent::SetVerticalDir(VerticalDirection vertical)
 {
 	m_HotDogMovement->SetNewVerticalDirection(vertical);
 
 }
 
-glm::vec2 dae::AIBehaviourComponent::GetClosestPlayerPos() const
+glm::vec2 Burger::AIBehaviourComponent::GetClosestPlayerPos() const
 {
 	glm::vec2 closestPos;
 	glm::vec3 HotDoggPos = GetAttachedGameObject()->GetTransform().GetPosition();
@@ -113,7 +113,7 @@ glm::vec2 dae::AIBehaviourComponent::GetClosestPlayerPos() const
 
 
 
-void dae::AIBehaviourComponent::OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo)
+void Burger::AIBehaviourComponent::OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo)
 {
 	ColliderInfo aiColInfo = m_ColliderComponent->GetColliderInfo();
 	glm::vec2 searchPos = { aiColInfo.m_ColliderRect.x + (m_SpriteComponent->GetFLipState() ? 0.f
@@ -140,7 +140,7 @@ void dae::AIBehaviourComponent::OnCollisionStay(const std::shared_ptr<ColliderIn
 
 }
 
-void dae::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo)
+void Burger::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo)
 {
 	if (otherInfo->tag == "Shot") {
 		std::cout << "hit\n";
@@ -169,12 +169,12 @@ void dae::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<ColliderI
 
 }
 
-void dae::AIBehaviourComponent::OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo)
+void Burger::AIBehaviourComponent::OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo)
 {
 
 }
 
-void dae::HorizontalState::Entry(AIBehaviourComponent& ai)
+void Burger::HorizontalState::Entry(AIBehaviourComponent& ai)
 {
 
 	glm::vec2 pos = ai.GetClosestPlayerPos();
@@ -220,7 +220,7 @@ void dae::HorizontalState::Entry(AIBehaviourComponent& ai)
 	}
 }
 
-dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
+Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_IsOnLadder && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
@@ -237,7 +237,7 @@ dae::AIState* dae::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 
 
 
-dae::AIState* dae::VerticalState::UpdateState(AIBehaviourComponent& ai)
+Burger::AIState* Burger::VerticalState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_IsOnFloor && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
@@ -250,18 +250,18 @@ dae::AIState* dae::VerticalState::UpdateState(AIBehaviourComponent& ai)
 
 }
 
-void dae::VerticalState::Exit(AIBehaviourComponent& ai)
+void Burger::VerticalState::Exit(AIBehaviourComponent& ai)
 {
 	ai.SetVerticalDir(VerticalDirection::NONE);
 }
-void dae::HorizontalState::Exit(AIBehaviourComponent& ai)
+void Burger::HorizontalState::Exit(AIBehaviourComponent& ai)
 {
 	ai.SetHorizontalDir(HorizontalDirection::NONE);
 }
 
 
 
-void dae::VerticalState::Entry(AIBehaviourComponent& ai)
+void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 {
 
 	float posY = ai.GetClosestPlayerPos().y;
@@ -310,7 +310,7 @@ void dae::VerticalState::Entry(AIBehaviourComponent& ai)
 }
 
 
-void dae::HitState::Entry(AIBehaviourComponent& ai)
+void Burger::HitState::Entry(AIBehaviourComponent& ai)
 {
 	//Se sprite
 	ai.m_SpriteComponent->SetActiveAnimation("Fried");
@@ -320,7 +320,7 @@ void dae::HitState::Entry(AIBehaviourComponent& ai)
 	ai.m_ColliderComponent->DisableCollider();
 }
 
-dae::AIState* dae::HitState::UpdateState(AIBehaviourComponent&)
+Burger::AIState* Burger::HitState::UpdateState(AIBehaviourComponent&)
 {
 	if (m_CurrentTime > m_MinExitTime) {
 		std::cout << "Enemy hit\n";
@@ -334,17 +334,17 @@ dae::AIState* dae::HitState::UpdateState(AIBehaviourComponent&)
 
 }
 
-void dae::HitState::Exit(AIBehaviourComponent& ai)
+void Burger::HitState::Exit(AIBehaviourComponent& ai)
 {
 	ai.m_ColliderComponent->EnableCollider();
 }
 
-void dae::DeathState::Entry(AIBehaviourComponent& ai)
+void Burger::DeathState::Entry(AIBehaviourComponent& ai)
 {
 	ai.m_SpriteComponent->SetActiveAnimation("Death");
 }
 
-dae::AIState* dae::DeathState::UpdateState(AIBehaviourComponent& ai)
+Burger::AIState* Burger::DeathState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_SpriteComponent->IsActiveInFinalFrame()) {
 		m_IsSpawning = true;
@@ -353,7 +353,7 @@ dae::AIState* dae::DeathState::UpdateState(AIBehaviourComponent& ai)
 	return nullptr;
 }
 
-void dae::DeathState::Exit(AIBehaviourComponent&)
+void Burger::DeathState::Exit(AIBehaviourComponent&)
 {
 
 }

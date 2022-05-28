@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseComponent.h"
 #include "Subject.h"
+#include "AttackComponent.h"
+#include "BoxColliderComponent.h"
 
 namespace Burger {
 
@@ -8,8 +10,8 @@ namespace Burger {
 	{
 		int pepperShots;
 	};
-	class BoxColliderComponent;
-	class AttackComponent : public dae::BaseComponent, public dae::Subject
+	class GameObject;
+	class AttackComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
 		AttackComponent() = default;

@@ -61,7 +61,7 @@ namespace dae {
 		return m_Children.size();
 	}
 
-	std::shared_ptr<GameObject> GameObject::GetChildAt(INT Index) const
+	std::shared_ptr<GameObject> GameObject::GetChildAt(int Index) const
 	{
 		if (Index <= static_cast<int>(m_Children.size()))
 			return m_Children[Index];

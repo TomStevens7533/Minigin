@@ -175,16 +175,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AIBehaviourComponent.h" />
+    <ClInclude Include="AttackComponent.h" />
+    <ClInclude Include="BunBehaviour.h" />
     <ClInclude Include="BurgerStructs.h" />
     <ClInclude Include="BurgerTime.h" />
     <ClInclude Include="BurgerTimePCH.h" />
+    <ClInclude Include="EventType.h" />
+    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="LivesDisplayComponent.h" />
+    <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="PepperDisplayComponent.h" />
+    <ClInclude Include="PetterPepperComponent.h" />
+    <ClInclude Include="PrefabCreator.h" />
+    <ClInclude Include="ScoreDisplayComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AIBehaviourComponent.cpp" />
+    <ClCompile Include="AttackComponent.cpp" />
+    <ClCompile Include="BunBehaviour.cpp" />
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="BurgerTimePCH.cpp" />
+    <ClCompile Include="Command.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="PepperDisplayComponent.cpp" />
+    <ClCompile Include="PetterPepperComponent.cpp" />
+    <ClCompile Include="PrefabCreator.cpp" />
+    <ClCompile Include="ScoreDisplayComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

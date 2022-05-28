@@ -9,17 +9,18 @@
 #include "DeltaTime.h"
 #include "ServiceLocator.h"
 
-dae::MovementComponent::MovementComponent(float movementVelocity) : m_Velocity{movementVelocity}
+using namespace dae;
+Burger::MovementComponent::MovementComponent(float movementVelocity) : m_Velocity{movementVelocity}
 {
 
 }
 
-void dae::MovementComponent::Start()
+void Burger::MovementComponent::Start()
 {
-	m_ColliderComponent = GetAttachedGameObject()->GetComponent<BoxColliderComponent>();
+	m_ColliderComponent = GetAttachedGameObject()->GetComponent<dae::BoxColliderComponent>();
 }
 
-void dae::MovementComponent::Update()
+void Burger::MovementComponent::Update()
 {
 	Transform& tr = m_pParent->GetTransform();
 	glm::vec2 newPos;
@@ -70,7 +71,7 @@ void dae::MovementComponent::Update()
 
 }
 
-void dae::MovementComponent::LateUpdate()
+void Burger::MovementComponent::LateUpdate()
 {
 
 	
@@ -79,13 +80,13 @@ void dae::MovementComponent::LateUpdate()
 
 }
 
-void dae::MovementComponent::SetNewVerticalDirection(VerticalDirection newDir)
+void Burger::MovementComponent::SetNewVerticalDirection(VerticalDirection newDir)
 {
 	m_CurrentVertoicalDirection = newDir;
 }
 
 
-glm::vec2 dae::MovementComponent::GetCenterPos() const
+glm::vec2 Burger::MovementComponent::GetCenterPos() const
 {
 	Transform& tr = m_pParent->GetTransform();
 	glm::vec2 newPos;
@@ -94,7 +95,7 @@ glm::vec2 dae::MovementComponent::GetCenterPos() const
 	return glm::vec2{ newPos.x + (colliderDimensions.x / 2.f), newPos.y + (colliderDimensions.y / 2.f) };
 }
 
-void dae::MovementComponent::SetNewHorizontalDirection(HorizontalDirection newDir)
+void Burger::MovementComponent::SetNewHorizontalDirection(HorizontalDirection newDir)
 {
 	m_CurrentHorizonDirection = newDir;
 }

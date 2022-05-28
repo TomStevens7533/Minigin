@@ -1,15 +1,15 @@
 #include "BaseComponent.h"
 #include "Subject.h"
 
-namespace dae {
+namespace Burger {
 
-	struct HealthArgs : public EventArgs
+	struct HealthArgs : public dae::EventArgs
 	{
 		int health;
 		int lives;
 	};
 
-	class HealthComponent final : public BaseComponent, public Subject
+	class HealthComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
 		HealthComponent(int health = 1, int lives = 5);
