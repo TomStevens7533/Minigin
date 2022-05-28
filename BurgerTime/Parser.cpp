@@ -1,22 +1,24 @@
-#include "MiniginPCH.h"
-#include "Parser.h"
-#include "document.h"
-#include <iostream>
+
+#include <stdio.h>
+#include <iostream> // std::cout
+#include <sstream> // stringstream
 #include <fstream>
-#include "GameObject.h"
-#include "PetterPepperComponent.h"
-using namespace dae;
+#include <vector>
+#include "document.h"
+#include "Parser.h"
+
+using namespace Burger;
 using namespace rapidjson;
 
 class Parser::ParserImpl
 {
 public:
 	ParserImpl(std::string path);
-	std::map<std::string, std::vector<glm::vec2>>& GetObjectMapImpl()  { return m_ObjectMap; };
+	std::map<std::string, std::vector<point>>& GetObjectMapImpl()  { return m_ObjectMap; };
 private:
 	void ParseLevelFileImpl(std::string path);
 private:
-	std::map<std::string, std::vector<glm::vec2>> m_ObjectMap;
+	std::map<std::string, std::vector<point>> m_ObjectMap;
 };
 
 Parser::ParserImpl::ParserImpl(std::string path)
@@ -43,7 +45,7 @@ void Parser::ParserImpl::ParseLevelFileImpl(std::string path)
 	{
 		GenericObject ElementObj = jsonArray[i].GetObj();
 		std::string objName;
-		std::vector<glm::vec2> posVec;
+		std::vector<point> posVec;
 		for (auto memIt = ElementObj.MemberBegin(); memIt != ElementObj.MemberEnd(); memIt++)
 		{
 			if (memIt->value.IsArray() == true) {
@@ -54,7 +56,8 @@ void Parser::ParserImpl::ParseLevelFileImpl(std::string path)
 				{
 					if (posArray[x].Size() != 2)
 						throw ParserException("Not correct format for needed positions: size of pos array needs to be 2");
-					glm::vec2 newPos;
+					
+					point newPos;
 					newPos.x = posArray[x][0].GetFloat();
 					newPos.y = posArray[x][1].GetFloat();
 					posVec.push_back(newPos);
@@ -76,7 +79,7 @@ Parser::Parser(std::string path) : m_pPimpl { new ParserImpl(path)}
 
 }
 
-std::map<std::string, std::vector<glm::vec2>>& Parser::GeLevelObject()
+std::map<std::string, std::vector<point>>& Parser::GeLevelObject()
 {
 	return m_pPimpl->GetObjectMapImpl();
 }

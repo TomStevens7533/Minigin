@@ -2,7 +2,9 @@
 #include <iostream>
 #include <map>
 #include <memory>
-namespace dae {
+#include "BurgerStructs.h"
+
+namespace Burger {
 	class ParserException : public std::runtime_error
 	{
 	public:
@@ -17,7 +19,7 @@ namespace dae {
 	public:
 		Parser(std::string path);
 		~Parser();
-		std::map<std::string, std::vector<glm::vec2>>& GeLevelObject();
+		std::map<std::string, std::vector<point>>& GeLevelObject();
 	public:
 		Parser(const Parser& other) = delete;
 		Parser(Parser&& other) = delete;

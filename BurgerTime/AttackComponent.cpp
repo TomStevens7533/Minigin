@@ -8,14 +8,15 @@
 #include "Scene.h"
 #include "DeltaTime.h"
 
-int dae::AttackComponent::m_PepperShots = 5;
+int Burger::AttackComponent::m_PepperShots = 5;
 
-void dae::AttackComponent::Render() const
+using namespace dae;
+void Burger::AttackComponent::Render() const
 {
 	
 }
 
-void dae::AttackComponent::Update()
+void Burger::AttackComponent::Update()
 {
 	if (m_IsFiring) {
 		if (m_CurrentPeperTime < m_MaxPepperTime) {
@@ -34,19 +35,19 @@ void dae::AttackComponent::Update()
 
 }
 
-void dae::AttackComponent::LateUpdate()
+void Burger::AttackComponent::LateUpdate()
 {
 
 }
 
-void dae::AttackComponent::Start()
+void Burger::AttackComponent::Start()
 {
 	//Create pepper shot gameobject
 	m_pWeaponGameobject = std::make_shared<dae::GameObject>();
 	auto TexComp = std::make_shared<TextureComponent>("pepperShot.png");
 	auto boxComp = std::make_shared<BoxColliderComponent>("Shot");
 	m_pWeaponGameobject->AddComponent<TextureComponent>(TexComp);
-	m_pWeaponGameobject->AddComponent<BoxColliderComponent>(boxComp);
+	m_pWeaponGameobject->AddComponent<dae::BoxColliderComponent>(boxComp);
 	m_pPepperCollider = m_pWeaponGameobject->GetComponent<BoxColliderComponent>();
 
 	AttackArgs args;
@@ -54,7 +55,7 @@ void dae::AttackComponent::Start()
 	notify(this, PepperEvent::PEPPER_FIRED, &args);
 }
 
-void dae::AttackComponent::Fire()
+void Burger::AttackComponent::Fire()
 {
 	if (m_IsFiring == false && m_PepperShots > 0) {
 		--m_PepperShots;

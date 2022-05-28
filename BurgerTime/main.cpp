@@ -9,7 +9,7 @@
 #include "BurgerTime.h"
 
 int main(int, char* []) {
-	BurgerTime game;
+	Burger::BurgerTime game;
 	game.Initialize();
 
 	dae::Minigin engine;

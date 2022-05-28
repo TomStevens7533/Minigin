@@ -2,14 +2,14 @@
 #include "BaseComponent.h"
 #include "Subject.h"
 
-namespace dae {
+namespace Burger {
 
-	struct AttackArgs : public EventArgs
+	struct AttackArgs : public dae::EventArgs
 	{
 		int pepperShots;
 	};
 	class BoxColliderComponent;
-	class AttackComponent : public BaseComponent, public Subject
+	class AttackComponent : public dae::BaseComponent, public dae::Subject
 	{
 	public:
 		AttackComponent() = default;
@@ -24,8 +24,8 @@ namespace dae {
 		AttackComponent& operator=(const AttackComponent& other) = delete;
 		AttackComponent& operator=(AttackComponent&& other) = delete;
 	private:
-		std::shared_ptr<GameObject> m_pWeaponGameobject;
-		BoxColliderComponent* m_pPepperCollider = nullptr;
+		std::shared_ptr<dae::GameObject> m_pWeaponGameobject;
+		dae::BoxColliderComponent* m_pPepperCollider = nullptr;
 		bool m_IsFiring = false;
 		float m_MaxPepperTime = 0.15f;
 		float m_CurrentPeperTime = 0.f;

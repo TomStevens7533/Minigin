@@ -123,9 +123,6 @@
     <ClInclude Include="SceneColliders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Parser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PetterPepperComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -243,9 +240,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneColliders.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PetterPepperComponent.cpp">
