@@ -77,8 +77,10 @@ void Burger::BunBehaviour::OnCollisionEnter(const std::shared_ptr<dae::ColliderI
 	else if ((info.tag == "BunEnd" || info.tag == "Floor") && m_IsFalling == true) {
 		m_IsFalling = false;
 		m_ScoreToThrow += 50;
-		if (info.tag == "BunEnd")
+		if (info.tag == "BunEnd") {
 			m_IsInFinalPos = true;
+			//Notify game sate observer
+		}
 	}
 	else if (info.tag == "Bun" && m_IsFalling == false) {
 		m_IsFalling = true;

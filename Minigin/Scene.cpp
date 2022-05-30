@@ -17,6 +17,11 @@ void Scene::Add(const std::shared_ptr<SceneObject>& object)
 {
 	m_Objects.push_back(object);
 	object->SetScene(this);
+
+	if (object->GetInitState() == false && m_IsStarted == true) {
+		object->Start();
+	}
+	
 }
 
 void Scene::Update()
@@ -34,10 +39,13 @@ void Scene::Update()
 
 void dae::Scene::Start()
 {
-	for (const auto& object : m_Objects)
+	assert(m_IsStarted == false);
+
+	for (size_t i = 0; i < m_Objects.size(); i++)
 	{
-		object->Start();
+		m_Objects[i]->Start();
 	}
+	m_IsStarted = true;
 }
 
 

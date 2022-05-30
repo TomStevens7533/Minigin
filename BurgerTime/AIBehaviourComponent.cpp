@@ -8,25 +8,24 @@
 #include "BoxColliderComponent.h"
 #include "MathHelper.h"
 #include "BaseComponent.h"
-
-
-Burger::HorizontalState Burger::AIState::m_HorizontalState;
-
-Burger::VerticalState Burger::AIState::m_VerticalState;
-
-Burger::HitState Burger::AIState::m_HitState;
-
+#include "EventType.h"
 
 using namespace dae;
-Burger::DeathState Burger::AIState::m_DeathState;
 
 Burger::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow) : m_TagToFollow{tagToFollow}
 {
 
 }
+
+Burger::AIBehaviourComponent::~AIBehaviourComponent()
+{
+	if (m_CurrState != nullptr)
+		delete m_CurrState;
+}
+
 void Burger::AIBehaviourComponent::Start()
 {
-	m_PlayerVec = GetAttachedGameObject()->GetScene()->GetAllCollidersWithTag(m_TagToFollow);
+	
 	m_HotDogMovement = GetAttachedGameObject()->GetComponent<MovementComponent>();
 	m_SpriteComponent = GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
 
@@ -51,11 +50,15 @@ void Burger::AIBehaviourComponent::Render() const
 
 void Burger::AIBehaviourComponent::Update()
 {
+	if(m_PlayerVec.size() == 0)
+		m_PlayerVec = GetAttachedGameObject()->GetScene()->GetAllCollidersWithTag(m_TagToFollow);
+
 	if (m_CurrState != nullptr) {
 		AIState* newState = m_CurrState->UpdateState(*this);
 		if (newState != nullptr)
 		{
 			m_CurrState->Exit(*this);
+			delete m_CurrState;
 			m_CurrState = newState;
 			m_CurrState->Entry(*this);
 
@@ -63,8 +66,9 @@ void Burger::AIBehaviourComponent::Update()
 	}
 	else {
 		//First setup
-		m_CurrState = &AIState::m_HorizontalState;
+		m_CurrState = new HorizontalState();
 		m_CurrState->Entry(*this);
+		m_IsSpawning = false;
 	}
 	m_IsOnLadder = false;
 	m_IsOnFloor = false;
@@ -90,6 +94,8 @@ glm::vec2 Burger::AIBehaviourComponent::GetClosestPlayerPos() const
 	glm::vec3 HotDoggPos = GetAttachedGameObject()->GetTransform().GetPosition();
 	float distance = FLT_MAX;
 	//if no player return
+
+
 	assert(m_PlayerVec.size() != 0);
 
 	//Find closest Player
@@ -145,7 +151,8 @@ void Burger::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<Collid
 	if (otherInfo->tag == "Shot") {
 		std::cout << "hit\n";
 		m_CurrState->Exit(*this);
-		m_CurrState = &AIState::m_HitState;
+		delete m_CurrState;
+		m_CurrState = new HitState();
 		m_CurrState->Entry(*this);
 	}
 	if (otherInfo->tag == "Bun") {
@@ -159,7 +166,8 @@ void Burger::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<Collid
 		if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, topCheck)) {
 			m_IsDeath = true;
 			m_CurrState->Exit(*this);
-			m_CurrState = &AIState::m_DeathState;
+			delete m_CurrState;
+			m_CurrState = new DeathState();
 			m_CurrState->Entry(*this);
 			//Death State
 		}
@@ -187,7 +195,7 @@ void Burger::HorizontalState::Entry(AIBehaviourComponent& ai)
 
 	if (pos.x < (currPosx)) {
 		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos
-			, glm::vec2(-1, 0), 35.f, "Floor", 1)) {
+			, glm::vec2(-1, 0), 35.f, "Floor", 1) || ai.m_IsSpawning) {
 			ai.SetHorizontalDir(HorizontalDirection::LEFT);
 			ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
 			ai.m_SpriteComponent->SetFlipState(false);
@@ -205,7 +213,7 @@ void Burger::HorizontalState::Entry(AIBehaviourComponent& ai)
 	if (pos.x > (currPosx)) {
 		//Floor in sight
 		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos
-			, glm::vec2(1, 0), 35.f, "Floor", 1)) {
+			, glm::vec2(1, 0), 35.f, "Floor", 1) || ai.m_IsSpawning) {
 
 			ai.SetHorizontalDir(HorizontalDirection::RIGHT);
 			ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
@@ -224,7 +232,7 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_IsOnLadder && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
-		return &AIState::m_VerticalState;
+		return new VerticalState();
 	}
 	else {
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
@@ -241,7 +249,7 @@ Burger::AIState* Burger::VerticalState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_IsOnFloor && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
-		return &AIState::m_HorizontalState;
+		return new HorizontalState();
 	}
 	else {
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
@@ -273,11 +281,14 @@ void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 		, AiInfo.m_ColliderRect.y + AiInfo.m_ColliderRect.height };
 	if (posY < (currPosY )) {
 		//Check if floor goes further else go other dir
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, -1), 35.f, "Ladder", 1)) {
+		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, -1), 35.f, "Ladder", 1)
+			|| ai.m_IsSpawning) {
+
 			ai.SetVerticalDir(VerticalDirection::UP);
 			ai.m_SpriteComponent->SetActiveAnimation("MoveBackwards");
 			ai.m_SpriteComponent->SetFlipState(false);
 			return;
+
 		}
 		else {
 			ai.m_SpriteComponent->SetActiveAnimation("MoveForward");
@@ -290,7 +301,8 @@ void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 
 	if (posY > (currPosY)) {
 		//Check if floor goes further else go other dir
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, 1),35.f, "Ladder", 1)) {
+		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, 1),35.f, "Ladder", 1)
+			|| ai.m_IsSpawning) {
 			//Floor in sight
 				ai.SetVerticalDir(VerticalDirection::DOWN);
 				ai.m_SpriteComponent->SetActiveAnimation("MoveForward");
@@ -325,7 +337,7 @@ Burger::AIState* Burger::HitState::UpdateState(AIBehaviourComponent&)
 	if (m_CurrentTime > m_MinExitTime) {
 		std::cout << "Enemy hit\n";
 		m_CurrentTime = 0.f;
-		return &AIState::m_HorizontalState;
+		return new HorizontalState();
 	}
 	else {
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
@@ -348,6 +360,8 @@ Burger::AIState* Burger::DeathState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_SpriteComponent->IsActiveInFinalFrame()) {
 		m_IsSpawning = true;
+		//Notify death of enemy
+		ai.notify(&ai, PepperEvent::WORST_DIED);
 		ai.GetAttachedGameObject()->SetDestroyFlag(true);
 	}
 	return nullptr;

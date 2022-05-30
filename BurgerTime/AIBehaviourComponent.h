@@ -2,6 +2,7 @@
 #include "BaseComponent.h"
 #include <vector>
 #include "structs.h"
+#include "Subject.h"
 
 namespace dae { 
 class SpriteComponent;
@@ -24,15 +25,6 @@ namespace Burger {
 		virtual  AIState* UpdateState(AIBehaviourComponent& ) = 0;
 		virtual void Exit(AIBehaviourComponent&) = 0;
 		friend AIBehaviourComponent;
-
-		static HorizontalState m_HorizontalState;
-		static VerticalState m_VerticalState;
-		static HitState m_HitState;
-		static DeathState m_DeathState;
-
-
-
-
 	};
 
 
@@ -88,11 +80,11 @@ namespace Burger {
 
 
 	class MovementComponent;
-	class AIBehaviourComponent final : public dae::BaseComponent
+	class AIBehaviourComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
 		AIBehaviourComponent(std::string tagToFollow);
-		~AIBehaviourComponent() = default;
+		~AIBehaviourComponent();
 
 
 		AIBehaviourComponent(const AIBehaviourComponent& other) = delete;
@@ -133,6 +125,8 @@ namespace Burger {
 		bool m_IsOnLadder = false;
 		bool m_IsOnFloor = false;
 		bool m_IsDeath = false;
+		bool m_IsSpawning = true;
+
 	
 	};
 

@@ -67,7 +67,6 @@ namespace dae
 		GameObject* m_Parent = nullptr;
 		std::vector<std::shared_ptr<GameObject>> m_Children;
 		int m_PositionFromRoot = 0;
-		bool m_IsInitialized = false;
 		//Entities
 		EntityManager m_EntityManager;
 		

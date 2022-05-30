@@ -43,7 +43,8 @@ namespace dae
 		std::string m_Name;
 		std::vector < std::shared_ptr<SceneObject>> m_Objects{};
 		SceneColliders m_SceneGrid;
-		static unsigned int m_IdCounter; 
+		static unsigned int m_IdCounter;
+		bool m_IsStarted = false;
 	};
 
 }

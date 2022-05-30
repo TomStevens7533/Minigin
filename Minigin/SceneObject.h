@@ -22,10 +22,13 @@ namespace dae
 
 		bool GetDestroyFlag() { return m_DestoryFlag; }
 		void SetDestroyFlag(bool isDestroy) { m_DestoryFlag = isDestroy; }
+		bool GetInitState() { return m_IsInitialized; }
 
+	protected:
+		bool m_DestoryFlag = false;
+		bool m_IsInitialized = false;
 	private:
 		Scene* m_CurrentScene = nullptr;
-		bool m_DestoryFlag = false;
 
 	};
 }

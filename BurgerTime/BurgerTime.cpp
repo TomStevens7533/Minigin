@@ -39,37 +39,96 @@ void BurgerTime::CreateLevel1()
 				scene.Add(pepper);
 			}
 		}
-	/*	else if (mapElement.first == "PlatformSoloPrefab") {
-			CreatePlatform(mapElement.second, 2);
+		else if (mapElement.first == "PlatformSoloPrefab") {
+
+			for (point elementPos : mapElement.second)
+			{
+				auto pepper = PrefabCreator::CreatePlatformPrefab(elementPos, 2);
+				scene.Add(pepper);
+			}
 		}
 		else if (mapElement.first == "PlatformLongPrefab") {
-			CreatePlatform(mapElement.second, 10);
+			for (point elementPos : mapElement.second)
+			{
+				auto pepper = PrefabCreator::CreatePlatformPrefab(elementPos, 10);
+				scene.Add(pepper);
+			}
 		}
 		else if (mapElement.first == "LadderLongPrefab") {
-			CreateLadder(mapElement.second, 12);
+
+			for (point elementPos : mapElement.second)
+			{
+				auto pepper = PrefabCreator::CreateLadderPrefab(elementPos, 12);
+				scene.Add(pepper);
+			}
 		}
 		else if (mapElement.first == "LadderShortPrefab") {
-			CreateLadder(mapElement.second, 10);
+			for (point elementPos : mapElement.second)
+			{
+				auto pepper = PrefabCreator::CreateLadderPrefab(elementPos, 10);
+				scene.Add(pepper);
+			}
 		}
 		else if (mapElement.first == "TopBun") {
-			CreateTopBurger(mapElement.second);
+			for (point elementPos : mapElement.second)
+			{
+				auto topBurger = PrefabCreator::CreatTopBurgerPrefab(elementPos);
+				scene.Add(topBurger);
+			}
 		}
 		else if (mapElement.first == "Lettuce") {
-			CreateLettuce(mapElement.second);
-
+			for (point elementPos : mapElement.second)
+			{
+				auto letuce = PrefabCreator::CreatLettuceBurgerPrefab(elementPos);
+				scene.Add(letuce);
+			}
 		}
 		else if (mapElement.first == "Tomato") {
-			CreateTomato(mapElement.second);
-
+			for (point elementPos : mapElement.second)
+			{
+				auto tomato = PrefabCreator::CreatTomatoBurgerPrefab(elementPos);
+				scene.Add(tomato);
+			}
 		}
 		else if (mapElement.first == "LowerBun") {
-			CreateLowerBun(mapElement.second);
-
+			for (point elementPos : mapElement.second)
+			{
+				auto lowerbun = PrefabCreator::CreatLowerBurgerPrefab(elementPos);
+				scene.Add(lowerbun);
+			}
 		}
 		else if (mapElement.first == "BurgerCatcher") {
-			CreateBurgerCatcher(mapElement.second);
+			for (point elementPos : mapElement.second)
+			{
+				auto burerCatch = PrefabCreator::CreatBurgerCathcherPrefab(elementPos);
+				scene.Add(burerCatch);
+			}
+		}
+		else if (mapElement.first == "EnemySpawnPoints") {
 
-		}*/
+			auto spawner = PrefabCreator::CreateEnemySpawner(mapElement.second);
+			scene.Add(spawner);
+		}
+
+
+		//els
+		// 
+		// e if (mapElement.first == "Lettuce") {
+		//	CreateLettuce(mapElement.second);
+
+		//}
+		//else if (mapElement.first == "Tomato") {
+		//	CreateTomato(mapElement.second);
+
+		//}
+		//else if (mapElement.first == "LowerBun") {
+		//	CreateLowerBun(mapElement.second);
+
+		//}
+		//else if (mapElement.first == "BurgerCatcher") {
+		//	CreateBurgerCatcher(mapElement.second);
+
+		//}
 	}
 
 

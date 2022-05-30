@@ -57,21 +57,21 @@ void dae::Minigin::Initialize()
 }
 //static void CreateTopBurger(std::vector<glm::vec2>& posVec) {
 //
-//	for (size_t i = 0; i < posVec.size(); i++)
-//	{
-//		glm::vec2 bunPos = posVec[i];
-//		auto scene = SceneManager::GetInstance().GetScene("Demo");
-//		auto goBurgerPiece = std::make_shared<dae::GameObject>();
-//		goBurgerPiece->GetTransform().SetPosition(bunPos.x, bunPos.y, 0);
-//		auto TexComp = std::make_shared<TextureComponent>("TopBun.png");
-//		auto boxComp = std::make_shared<BoxColliderComponent>("Bun");
-//		auto bunComp = std::make_shared<BunBehaviour>();
-//		goBurgerPiece->AddComponent<BoxColliderComponent>(boxComp);
-//		goBurgerPiece->AddComponent<TextureComponent>(TexComp);
-//		goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//	
 //
-//		scene->Add(goBurgerPiece);
-//	}
+//	
+//	
 //
 //}
 //static void CreateLettuce(std::vector<glm::vec2>& posVec) {
@@ -136,16 +136,16 @@ void dae::Minigin::Initialize()
 //	//lader creation
 //	for (size_t i = 0; i < posVec.size(); i++)
 //	{
-//		auto goLadder = std::make_shared<dae::GameObject>();
-//		auto texComp = std::make_shared<TextureComponent>("ladder.png");
-//		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Ladder", 6);
+//		
+//		
+//		
 //
 //
-//		goLadder->AddComponent<TextureComponent>(texComp);
-//		goLadder->AddComponent<BoxColliderComponent>(goBoxColl);
-//		texComp->TileTexture(tilling, 5);
+//		
+//		
+//		
 //
-//		goLadder->SetPosition(posVec[i]);
+//		
 //		scene->Add(goLadder);
 //	}
 //
@@ -153,20 +153,7 @@ void dae::Minigin::Initialize()
 //
 //static void CreatePlatform(std::vector<glm::vec2>& posVec, int tilling) {
 //
-//	auto scene = SceneManager::GetInstance().GetScene("Demo");
-//	for (size_t i = 0; i < posVec.size(); i++)
-//	{
-//		auto goFloor = std::make_shared<dae::GameObject>();
-//		auto texComp = std::make_shared<TextureComponent>("Walkable.png");
-//		auto goBoxColl = std::make_shared<BoxColliderComponent>(texComp->GetDimensions(), "Floor", 2);
-//
-//		goFloor->AddComponent<TextureComponent>(texComp);
-//		goFloor->AddComponent<BoxColliderComponent>(goBoxColl);
-//		texComp->TileTexture(tilling, 0, false);
-//
-//		goFloor->SetPosition(posVec[i]);
-//		scene->Add(goFloor);
-//	}
+
 //
 //}
 //static void CreateBurgerCatcher(std::vector<glm::vec2>& posVec) {
@@ -285,35 +272,35 @@ void dae::Minigin::Initialize()
 //
 //}
 //static void CreateMrHotDogg() {
-//	auto scene = SceneManager::GetInstance().GetScene("Demo");
+//	
 //
-//	auto hotdoggGo = std::make_shared<GameObject>();
-//	auto spriteComponent = std::make_shared<SpriteComponent>("SpiteSheet.png", 15, 11, 0.2f);
-//	auto boxCollider = std::make_shared<BoxColliderComponent>("Enemy", 5);
-//	auto movementComp = std::make_shared<MovementComponent>(55.f);
-//	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper");
-//
-//
-//	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);
-//	spriteComponent->AddAnimation("MoveForward", 0, 2, 2, 3);
-//	spriteComponent->AddAnimation("MoveBackwards", 4, 2, 6, 3);
-//	spriteComponent->AddAnimation("Fried", 4, 3, 6, 4);
-//	spriteComponent->AddAnimation("Death", 0, 3, 4, 4);
+//	
+//	", 15, 11, 0.2f);
+//	
+//	
+//	
 //
 //
-//
-//
-//
-//	hotdoggGo->AddComponent<SpriteComponent>(spriteComponent);
-//	hotdoggGo->AddComponent<BoxColliderComponent>(boxCollider);
-//	hotdoggGo->AddComponent<MovementComponent>(movementComp);
-//	hotdoggGo->AddComponent<AIBehaviourComponent>(hotdogg);
+//	
+//	
+//	
+//	
+//	
 //
 //
 //
 //
-//	hotdoggGo->GetTransform().SetPosition(290, 277, 0);
-//	scene->Add(hotdoggGo);
+//
+//	
+//	
+//	
+//	
+//
+//
+//
+//
+//	
+//	
 //
 //}
 void dae::Minigin::LoadGame() const

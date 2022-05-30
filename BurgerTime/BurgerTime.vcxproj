@@ -181,6 +181,7 @@
     <ClInclude Include="BurgerStructs.h" />
     <ClInclude Include="BurgerTime.h" />
     <ClInclude Include="BurgerTimePCH.h" />
+    <ClInclude Include="EnemySpawning.h" />
     <ClInclude Include="EventType.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="BurgerTimePCH.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="EnemySpawning.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="main.cpp" />
