@@ -40,6 +40,10 @@ void Parser::ParserImpl::ParseLevelFileImpl(std::string path)
 
 	assert(document.IsArray());
 	auto jsonArray = document.GetArray();
+
+	
+
+
 	std::cout << "object amount in array: " << jsonArray.Size() << std::endl;
 	for (SizeType i = 0; i < jsonArray.Size(); i++)
 	{

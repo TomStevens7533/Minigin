@@ -15,9 +15,18 @@ namespace Burger {
 		static std::shared_ptr<dae::GameObject> CreatLettuceBurgerPrefab(point pos);
 		static std::shared_ptr<dae::GameObject> CreatTomatoBurgerPrefab(point pos);
 		static std::shared_ptr<dae::GameObject> CreatLowerBurgerPrefab(point pos);
-		static std::shared_ptr<dae::GameObject> CreatBurgerCathcherPrefab(point pos);
-		static std::shared_ptr<dae::GameObject> CreatWorstEnemyrPrefab(point pos);
 		static std::shared_ptr<dae::GameObject> CreateEnemySpawner(std::vector<point> spawnPoint);
+		static std::shared_ptr<dae::GameObject> CreatBurgerCathcherPrefab(point pos);
+
+
+		//Enemies
+		static std::shared_ptr<dae::GameObject> CreateEggEnemy(point pos);
+		static std::shared_ptr<dae::GameObject> CreatWorstEnemyrPrefab(point pos);
+		static std::shared_ptr<dae::GameObject> CreateSpikey(point pos);
+
+
+
+
 
 
 

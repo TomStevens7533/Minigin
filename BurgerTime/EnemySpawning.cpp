@@ -22,7 +22,7 @@ void Burger::EnemySpawnComponent::onNotify(const BaseComponent* entity, int even
 	switch (event)
 	{
 	case PepperEvent::WORST_DIED:
-		--m_CurrentWorstInStage;
+		--m_CurrentEggInStage;
 		SpawnEnemies();
 		break;
 	default:
@@ -34,11 +34,20 @@ void Burger::EnemySpawnComponent::SpawnEnemies()
 {
 	for (m_CurrentWorstInStage; m_CurrentWorstInStage < m_MaxWorstInStage;)
 	{
-		int spawnPosIndex = (m_CurrentWorstInStage % static_cast<int>(m_SpawnPoints.size()));
+		int spawnPosIndex = (rand() % static_cast<int>(m_SpawnPoints.size()));
 		auto worstGo = PrefabCreator::CreatWorstEnemyrPrefab(m_SpawnPoints[spawnPosIndex]);
 		worstGo->GetComponent<AIBehaviourComponent>()->addObserver(this);
 		GetAttachedGameObject()->GetScene()->Add(worstGo);
 		++m_CurrentWorstInStage;
+	}
+
+	for (m_CurrentEggInStage; m_CurrentEggInStage < m_MaxEggInStage;)
+	{
+		int spawnPosIndex = (rand() % static_cast<int>(m_SpawnPoints.size()));
+		auto egg = PrefabCreator::CreateEggEnemy(m_SpawnPoints[spawnPosIndex]);
+		egg->GetComponent<AIBehaviourComponent>()->addObserver(this);
+		GetAttachedGameObject()->GetScene()->Add(egg);
+		++m_CurrentEggInStage;
 	}
 }
 

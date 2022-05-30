@@ -38,7 +38,7 @@ namespace Burger {
 
 
 	private:
-		float m_MinExitTime = 0.5f;
+		float m_MinExitTime = 1.f;
 		float m_CurrentTime = 0.f;
 	};
 	class VerticalState final : public AIState {
@@ -48,7 +48,7 @@ namespace Burger {
 		virtual void Exit(AIBehaviourComponent&) override;
 
 	private:
-		float m_MinExitTime = 0.5f;
+		float m_MinExitTime = 1.0f;
 		float m_CurrentTime = 0.f;
 
 	};
@@ -109,9 +109,9 @@ namespace Burger {
 
 
 
-		void OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo);
+		void OnCollisionStay (const std::shared_ptr<dae::ColliderInfo> otherInfo);
 		void OnCollisionEnter(const std::shared_ptr<dae::ColliderInfo> otherInfo);
-		void OnCollisionExit(const std::shared_ptr<dae::ColliderInfo> otherInfo);
+		void OnCollisionExit (const std::shared_ptr<dae::ColliderInfo> otherInfo);
 
 	private:
 

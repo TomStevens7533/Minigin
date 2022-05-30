@@ -191,6 +191,7 @@
     <ClInclude Include="PetterPepperComponent.h" />
     <ClInclude Include="PrefabCreator.h" />
     <ClInclude Include="ScoreDisplayComponent.h" />
+    <ClInclude Include="WorstEnemyComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIBehaviourComponent.cpp" />
@@ -209,6 +210,7 @@
     <ClCompile Include="PetterPepperComponent.cpp" />
     <ClCompile Include="PrefabCreator.cpp" />
     <ClCompile Include="ScoreDisplayComponent.cpp" />
+    <ClCompile Include="WorstEnemyComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

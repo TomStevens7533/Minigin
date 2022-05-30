@@ -22,6 +22,57 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateEnemySpawner(std::vector<p
 	return spawner;
 }
 
+std::shared_ptr<dae::GameObject> PrefabCreator::CreateEggEnemy(point pos)
+{
+	auto eggEnemy = std::make_shared<dae::GameObject>();
+	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
+	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
+	auto movementComp = std::make_shared<MovementComponent>(55.f);
+	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper");
+
+
+
+	spriteComponent->AddAnimation("MoveSide", 2, 6, 4, 7);
+	spriteComponent->AddAnimation("MoveForward", 0, 6, 2, 7);
+	spriteComponent->AddAnimation("MoveBackwards", 4, 6, 6, 7);
+	spriteComponent->AddAnimation("Fried", 4, 7, 6, 8);
+	spriteComponent->AddAnimation("Death", 0, 7, 4, 8);
+
+	eggEnemy->AddComponent<dae::SpriteComponent>(spriteComponent);
+	eggEnemy->AddComponent<dae::BoxColliderComponent>(boxCollider);
+	eggEnemy->AddComponent<MovementComponent>(movementComp);
+	eggEnemy->AddComponent<AIBehaviourComponent>(hotdogg);
+
+	eggEnemy->SetPosition(pos.x, pos.y);
+	return eggEnemy;
+}
+
+std::shared_ptr<dae::GameObject> PrefabCreator::CreateSpikey(point pos)
+{
+	auto spikey = std::make_shared<dae::GameObject>();
+
+	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
+	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
+	auto movementComp = std::make_shared<MovementComponent>(55.f);
+	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper");
+
+
+
+	spriteComponent->AddAnimation("MoveSide", 2, 4, 4, 5);
+	spriteComponent->AddAnimation("MoveForward", 0, 4, 2, 5);
+	spriteComponent->AddAnimation("MoveBackwards", 4, 4, 6, 5);
+	spriteComponent->AddAnimation("Fried", 4, 4, 6, 5);
+	spriteComponent->AddAnimation("Death", 0, 4, 4, 5);
+
+	spikey->AddComponent<dae::SpriteComponent>(spriteComponent);
+	spikey->AddComponent<dae::BoxColliderComponent>(boxCollider);
+	spikey->AddComponent<MovementComponent>(movementComp);
+	spikey->AddComponent<AIBehaviourComponent>(hotdogg);
+
+	spikey->SetPosition(pos.x, pos.y);
+	return spikey;
+}
+
 int Burger::PrefabCreator::m_PlayerCount = 0;
 
 std::shared_ptr<dae::GameObject> PrefabCreator::CreatWorstEnemyrPrefab(point pos)

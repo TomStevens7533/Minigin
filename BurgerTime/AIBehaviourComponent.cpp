@@ -131,9 +131,6 @@ void Burger::AIBehaviourComponent::OnCollisionStay(const std::shared_ptr<Collide
 			if (m_CurrState != nullptr) {
 				m_IsOnLadder = true;
 			}
-
-
-
 		}
 		if (otherInfo->tag == "Floor") {
 
@@ -232,7 +229,12 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_IsOnLadder && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
-		return new VerticalState();
+		if (MathHelper::RandomBool(0.2f))
+			return new VerticalState();
+
+		else
+			return new HorizontalState();
+
 	}
 	else {
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
@@ -250,6 +252,7 @@ Burger::AIState* Burger::VerticalState::UpdateState(AIBehaviourComponent& ai)
 	if (ai.m_IsOnFloor && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
 		return new HorizontalState();
+		
 	}
 	else {
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
