@@ -20,13 +20,15 @@ namespace Burger {
 		Parser(std::string path);
 		~Parser();
 		std::map<std::string, std::vector<point>>& GeLevelObject();
+		std::map<std::string, std::vector<point>>& GetEnemyInfo();
+
 	public:
 		Parser(const Parser& other) = delete;
 		Parser(Parser&& other) = delete;
 		Parser& operator=(const Parser& other) = delete;
 		Parser& operator=(Parser&& other) = delete;
 	private:
-		class ParserImpl;
+		friend class ParserImpl;
 		ParserImpl* m_pPimpl;
 	};
 

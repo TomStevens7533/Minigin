@@ -15,10 +15,14 @@ class Parser::ParserImpl
 public:
 	ParserImpl(std::string path);
 	std::map<std::string, std::vector<point>>& GetObjectMapImpl()  { return m_ObjectMap; };
+	std::map<std::string, EnemySpawnInfo>& GetEnemyInfoMap() { return m_EnemyInfoMap; };
+
 private:
 	void ParseLevelFileImpl(std::string path);
 private:
 	std::map<std::string, std::vector<point>> m_ObjectMap;
+	std::map<std::string, EnemySpawnInfo> m_EnemyInfoMap;
+
 };
 
 Parser::ParserImpl::ParserImpl(std::string path)
@@ -40,7 +44,7 @@ void Parser::ParserImpl::ParseLevelFileImpl(std::string path)
 
 	assert(document.IsArray());
 	auto jsonArray = document.GetArray();
-
+	
 	
 
 
@@ -48,33 +52,80 @@ void Parser::ParserImpl::ParseLevelFileImpl(std::string path)
 	for (SizeType i = 0; i < jsonArray.Size(); i++)
 	{
 		GenericObject ElementObj = jsonArray[i].GetObj();
-		std::string objName;
-		std::vector<point> posVec;
+
 		for (auto memIt = ElementObj.MemberBegin(); memIt != ElementObj.MemberEnd(); memIt++)
 		{
-			if (memIt->value.IsArray() == true) {
-				//Read in pos
+			if (memIt->name == "Positions") {
 				GenericArray posArray = memIt->value.GetArray();
-				posVec.reserve(posArray.Size());
 				for (SizeType x = 0; x < posArray.Size(); x++)
 				{
-					if (posArray[x].Size() != 2)
-						throw ParserException("Not correct format for needed positions: size of pos array needs to be 2");
-					
-					point newPos;
-					newPos.x = posArray[x][0].GetFloat();
-					newPos.y = posArray[x][1].GetFloat();
-					posVec.push_back(newPos);
+					std::string objName;
+					std::vector<point> posVec;
+					GenericObject obj = posArray[x].GetObj();
+
+					for (auto memIt = obj.MemberBegin(); memIt != obj.MemberEnd(); memIt++)
+					{
+
+						if (memIt->value.IsArray() == true) {
+							//Read in pos
+							GenericArray posArray = memIt->value.GetArray();
+							posVec.reserve(posArray.Size());
+
+
+							for (SizeType x = 0; x < posArray.Size(); x++)
+							{
+								if (posArray[x].Size() != 2)
+									throw ParserException("Not correct format for needed positions: size of pos array needs to be 2");
+
+								point newPos;
+								newPos.x = posArray[x][0].GetFloat();
+								newPos.y = posArray[x][1].GetFloat();
+								posVec.push_back(newPos);
+							}
+						}
+						else if (memIt->value.IsString() == true) {
+							objName = memIt->value.GetString();
+						}
+						else {
+							throw ParserException("Unsupported type No array found");
+						}
+					}
+					m_ObjectMap.insert(std::make_pair(objName, posVec));
+				}
+
+				
+			}
+			else if (memIt->name == "Enemies") {
+				if (memIt->value.IsArray() == true) {
+					GenericArray enemyArr = memIt->value.GetArray();
+					for (SizeType i = 0; i < enemyArr.Size(); i++)
+					{
+						EnemySpawnInfo inf;
+						std::string name;
+						GenericObject obj = enemyArr[i].GetObj();
+
+						for (auto memIt = obj.MemberBegin(); memIt != obj.MemberEnd(); memIt++)
+						{
+							if (memIt->name == "idx") {
+								inf.id = memIt->value.GetInt();
+							}
+							else if (memIt->name == "maxLevel") {
+								inf.MaxInStage = memIt->value.GetInt();
+							}
+							else if (memIt->name == "name") {
+								name = memIt->value.GetString();
+							}
+						}
+						m_EnemyInfoMap.insert(std::make_pair(name, inf));
+					}
+
+				}
+				else {
+					throw ParserException("Unsupported type No array found");
 				}
 			}
-			else if (memIt->value.IsString() == true) {
-				objName = memIt->value.GetString();
-			}
-			else {
-				throw ParserException("Unsupported type");
-			}
+			
 		}
-		m_ObjectMap.insert(std::make_pair(objName, posVec));
 	}
 }
 
@@ -91,5 +142,10 @@ std::map<std::string, std::vector<point>>& Parser::GeLevelObject()
 Parser::~Parser()
 {
 	delete m_pPimpl;
+}
+
+std::map<std::string, EnemySpawnInfo>& Parser::GetEnemyInfo()
+{
+	return m_pPimpl->GetEnemyInfoMap();
 }
 

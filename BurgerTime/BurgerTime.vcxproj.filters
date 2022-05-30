@@ -66,9 +66,6 @@
     <ClInclude Include="EnemySpawning.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="WorstEnemyComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -117,9 +114,6 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="EnemySpawning.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="WorstEnemyComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
