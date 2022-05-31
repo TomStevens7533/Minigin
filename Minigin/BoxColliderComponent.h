@@ -5,7 +5,9 @@
 #include "structs.h"
 namespace dae {
 
-
+	enum class BoxColliderType {
+		STATIC, DYNAMIC
+	};
 
 	class BoxColliderComponent : public BaseComponent
 	{
@@ -26,6 +28,11 @@ namespace dae {
 		void AddListener(ColliderCallbacks otherComp);
 		void RemoveListender(ColliderCallbacks otherComp);
 
+		void SetNewType(BoxColliderType type);
+		void SetNewWidth(float size);
+		void SetNewHeight(float size);
+		void SetNewPos(glm::vec2 pos);
+
 		inline glm::vec2 GetDimension() const { return m_Dimensions; };
 		const dae::ColliderInfo& GetColliderInfo() const;
 
@@ -45,6 +52,7 @@ namespace dae {
 		glm::vec2 m_Dimensions;
 		std::string m_ColliderTag;
 		int m_Precision{};
+		BoxColliderType m_ColType = BoxColliderType::DYNAMIC;
 		std::shared_ptr<ColliderInfo> m_pColliderInfo{nullptr};
 		std::vector<ColliderCallbacks>m_RegisteredListeners;
 	};

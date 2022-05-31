@@ -184,6 +184,7 @@
     <ClInclude Include="BurgerTimePCH.h" />
     <ClInclude Include="EnemySpawning.h" />
     <ClInclude Include="EventType.h" />
+    <ClInclude Include="FInalBurgerComponent.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="MovementComponent.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="BurgerTimePCH.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="EnemySpawning.cpp" />
+    <ClCompile Include="FInalBurgerComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="main.cpp" />

@@ -14,6 +14,7 @@
 #include "ResourceManager.h"
 #include "PepperDisplayComponent.h"
 #include "LivesDisplayComponent.h"
+#include "FInalBurgerComponent.h"
 
 using namespace Burger;
 
@@ -177,6 +178,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos, Li
 	spriteComponent->AddAnimation("Death", 6, 1, 9, 2);
 
 
+
 	attackComp->addObserver(peppercomp);
 	healthComponent->addObserver(liveComp);
 
@@ -279,11 +281,11 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatBurgerCathcherPrefab(point 
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
 	auto TexComp = std::make_shared<dae::TextureComponent>("BurgerCatcher.png");
 	auto boxComp = std::make_shared<dae::BoxColliderComponent>("BunEnd");
-	auto bunComp = std::make_shared<BunBehaviour>();
+	auto bunComp = std::make_shared<FinalBurgerComponent>(4);
 
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
-	goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
+	goBurgerPiece->AddComponent<FinalBurgerComponent>(bunComp);
 
 	goBurgerPiece->SetPosition(pos.x, pos.y);
 	return goBurgerPiece;

@@ -82,7 +82,7 @@ void Burger::BunBehaviour::OnCollisionEnter(const std::shared_ptr<dae::ColliderI
 			//Notify game sate observer
 		}
 	}
-	else if (info.tag == "Bun" && m_IsFalling == false) {
+	else if (info.tag == "Bun" && m_IsFalling == false  ) {
 		m_IsFalling = true;
 	}
 	else if ((info.tag == "Enemy") && m_IsFalling == true) {

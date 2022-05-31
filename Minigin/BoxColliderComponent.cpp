@@ -73,7 +73,26 @@ void dae::BoxColliderComponent::AddListener(ColliderCallbacks otherComp)
 
 void dae::BoxColliderComponent::RemoveListender(ColliderCallbacks otherComp)
 {
+	//TODO ADD == operator to callback
 	//m_RegisteredListeners.erase(std::remove(m_RegisteredListeners.begin(), m_RegisteredListeners.end(), otherComp));
+}
+
+void dae::BoxColliderComponent::SetNewWidth(float size)
+{
+	m_pColliderInfo->m_ColliderRect.width = size;
+}
+
+void dae::BoxColliderComponent::SetNewHeight(float size)
+{
+	m_pColliderInfo->m_ColliderRect.height = size;
+}
+
+void dae::BoxColliderComponent::SetNewPos(glm::vec2 pos)
+{
+	m_pColliderInfo->m_ColliderRect.x = pos.x;
+	m_pColliderInfo->m_ColliderRect.y = pos.y;
+	//if position is set manually make it static
+	m_ColType = BoxColliderType::STATIC;
 }
 
 const dae::ColliderInfo& dae::BoxColliderComponent::GetColliderInfo() const
@@ -144,7 +163,7 @@ void dae::BoxColliderComponent::Render() const
 
 void dae::BoxColliderComponent::Update()
 {
-	if (m_pColliderInfo != nullptr) {
+	if (m_pColliderInfo != nullptr && m_ColType == BoxColliderType::DYNAMIC) {
 		//Update position of BoxCollider
 		glm::vec3 goPos = GetAttachedGameObject()->RelativePositionToParent();
 		m_pColliderInfo->m_ColliderRect.x = goPos.x - m_Precision;
