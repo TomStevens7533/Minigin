@@ -27,8 +27,8 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateEggEnemy(point pos)
 	auto eggEnemy = std::make_shared<dae::GameObject>();
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
-	auto movementComp = std::make_shared<MovementComponent>(55.f);
-	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper");
+	auto movementComp = std::make_shared<MovementComponent>(40.f);
+	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper", "egg");
 
 
 
@@ -53,8 +53,8 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateSpikey(point pos)
 
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
-	auto movementComp = std::make_shared<MovementComponent>(55.f);
-	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper");
+	auto movementComp = std::make_shared<MovementComponent>(50.f);
+	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper", "Spike");
 
 
 
@@ -80,8 +80,8 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatWorstEnemyrPrefab(point pos
 	auto hotdoggGo = std::make_shared<dae::GameObject>();
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
-	auto movementComp = std::make_shared<MovementComponent>(55.f);
-	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper");
+	auto movementComp = std::make_shared<MovementComponent>(40.f);
+	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper", "worst");
 
 
 	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);

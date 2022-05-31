@@ -19,6 +19,8 @@ namespace dae {
 
 
 		const std::vector <const dae::ColliderInfo* > GetAllCollidersWithTag(std::string tag) const;
+		
+		const std::shared_ptr<ColliderInfo> RectCast(Rectf pos, glm::vec2 dir, float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag, int steps = 10);
 		const std::shared_ptr<ColliderInfo> SceneRaycast(glm::vec2 pos, glm::vec2 dir, float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag, int steps = 10);
 	public:
 		SceneColliders(const SceneColliders& other) = delete;
@@ -26,7 +28,9 @@ namespace dae {
 		SceneColliders& operator=(const SceneColliders& other) = delete;
 		SceneColliders& operator=(SceneColliders&& other) = delete;
 	private:
+		std::shared_ptr<ColliderInfo> IsRectCollidingScene(Rectf lookupRect, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag);
 		std::shared_ptr<ColliderInfo> IsRectCollidingScene(Rectf lookupRect);
+
 		std::shared_ptr<ColliderInfo> IsPointInColliderScene(glm::vec2 point);
 		std::shared_ptr<ColliderInfo> IsPointInColliderScene(glm::vec2 point, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag);
 	private:

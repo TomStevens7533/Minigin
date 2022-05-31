@@ -12,12 +12,6 @@ class BoxColliderComponent;
 namespace Burger {
 
 	class AIBehaviourComponent;
-
-	class VerticalState;
-	class HorizontalState;
-	class DeathState;
-	class HitState;
-
 	class AIState {
 	public:
 		virtual ~AIState() {};
@@ -33,7 +27,7 @@ namespace Burger {
 	public:
 		virtual void Entry(AIBehaviourComponent& ai) override;;
 		virtual AIState* UpdateState(AIBehaviourComponent& ai) override;
-		virtual void Exit(AIBehaviourComponent&) override;
+		virtual void Exit(AIBehaviourComponent&) override {};
 
 
 
@@ -78,12 +72,16 @@ namespace Burger {
 
 	};
 
+	struct EnemyArgs : public dae::EventArgs
+	{
+		std::string name = "";
+	};
 
 	class MovementComponent;
 	class AIBehaviourComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
-		AIBehaviourComponent(std::string tagToFollow);
+		AIBehaviourComponent(std::string tagToFollow, std::string enemyName);
 		~AIBehaviourComponent();
 
 
@@ -114,20 +112,19 @@ namespace Burger {
 		void OnCollisionExit (const std::shared_ptr<dae::ColliderInfo> otherInfo);
 
 	private:
-
-
 		AIState* m_CurrState = nullptr;
 		std::vector < const dae::ColliderInfo* > m_PlayerVec;
 		std::string m_TagToFollow;
 		MovementComponent* m_HotDogMovement = nullptr;
 		dae::SpriteComponent* m_SpriteComponent = nullptr;
 		dae::BoxColliderComponent* m_ColliderComponent = nullptr;
+
 		bool m_IsOnLadder = false;
 		bool m_IsOnFloor = false;
 		bool m_IsDeath = false;
 		bool m_IsSpawning = true;
 
-	
+		std::string m_Name;
 	};
 
 

@@ -52,6 +52,19 @@ std::shared_ptr<ColliderInfo> SceneColliders::IsRectCollidingScene(Rectf lookupR
 	}
 	return nullptr;
 }
+
+std::shared_ptr<dae::ColliderInfo> SceneColliders::IsRectCollidingScene(Rectf lookupRect, const std::shared_ptr<ColliderInfo>, std::string tag)
+{
+	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
+	{
+		if (MathHelper::AreRectsOverlapping(m_SceneColliderVec[i]->m_ColliderRect, lookupRect)) {
+			if (tag == m_SceneColliderVec[i]->tag)
+				return m_SceneColliderVec[i];
+		}
+	}
+	return nullptr;
+}
+
 std::shared_ptr<ColliderInfo> SceneColliders::IsPointInColliderScene(glm::vec2 point)
 {
 	for (size_t i = 0; i < m_SceneColliderVec.size(); i++)
@@ -140,9 +153,11 @@ const std::shared_ptr<dae::ColliderInfo> SceneColliders::SceneRaycast(glm::vec2 
 {
 	assert(steps > 0);
 	float stepPercentage = (length / steps);
-	for (int i = 1; i < (steps + 1); i++)
+	for (int i = 1; i <= (steps); i++)
 	{
-		glm::vec2 newPos = pos + glm::vec2(dir.x * ((stepPercentage)*i), dir.y * ((stepPercentage)*i));
+		float currStepAmount = ((stepPercentage)*static_cast<float>(i));
+		glm::vec2 steppedDir = glm::vec2{ dir.x * currStepAmount, dir.y * currStepAmount };
+		glm::vec2 newPos = pos + steppedDir;
 		auto collInfo = IsPointInColliderScene(newPos, colliderToIgnore, tag);
 
 		if (collInfo)
@@ -152,6 +167,27 @@ const std::shared_ptr<dae::ColliderInfo> SceneColliders::SceneRaycast(glm::vec2 
 	return nullptr;
 }
 
+const std::shared_ptr<dae::ColliderInfo> SceneColliders::RectCast(Rectf pos, glm::vec2 dir, float length, const std::shared_ptr<ColliderInfo> colliderToIgnore, std::string tag, int steps /*= 10*/)
+{
+	assert(steps > 0);
+	float stepPercentage = (length / steps);
+	for (int i = 1; i <= (steps); i++)
+	{
+		Rectf lookupRect = pos;
+		float currStepAmount = ((stepPercentage) * static_cast<float>(i));
+
+		glm::vec2 steppedDir = glm::vec2{ dir.x * currStepAmount, dir.y * currStepAmount };
+		lookupRect.x += steppedDir.x;
+		lookupRect.y += steppedDir.y;
+
+
+		auto collInfo = IsRectCollidingScene(lookupRect, colliderToIgnore, tag);
+		if (collInfo)
+			return collInfo;
+
+	}
+	return nullptr;
+}
 
 
 

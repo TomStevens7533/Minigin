@@ -22,10 +22,18 @@ Burger::EnemySpawnComponent::EnemySpawnComponent(std::vector<point>& vec, std::m
 
 void Burger::EnemySpawnComponent::onNotify(const BaseComponent* entity, int event, dae::EventArgs* args /*= nullptr*/)
 {
+	EnemyArgs* eArgs;
 	switch (event)
 	{
-	case PepperEvent::WORST_DIED:
-		m_MaxSpawnTime += static_cast <float> (rand()) / static_cast <float> (m_RandSpawnTime) + m_BaseSpawnTime;
+	case PepperEvent::Enemy_Died:
+		eArgs = static_cast<EnemyArgs*>(args);
+		m_MaxSpawnTime += (static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / m_RandSpawnTime))) + m_BaseSpawnTime;
+
+		for (auto& element : m_EnemyMap) {
+			if (element.first == eArgs->name) {
+				--element.second.CurrentInStage;
+			}
+		}
 		break;
 	default:
 		break;

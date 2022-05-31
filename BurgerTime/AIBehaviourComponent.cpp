@@ -12,7 +12,8 @@
 
 using namespace dae;
 
-Burger::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow) : m_TagToFollow{tagToFollow}
+Burger::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow, std::string enemyName)
+	: m_TagToFollow{tagToFollow}, m_Name{enemyName}
 {
 
 }
@@ -181,57 +182,58 @@ void Burger::AIBehaviourComponent::OnCollisionExit(const std::shared_ptr<Collide
 
 void Burger::HorizontalState::Entry(AIBehaviourComponent& ai)
 {
-
-	glm::vec2 pos = ai.GetClosestPlayerPos();
-	float currPosx = ai.GetAttachedGameObject()->GetTransform().GetPosition().x;
 	ColliderInfo AiInfo = ai.m_ColliderComponent->GetColliderInfo();
-
 	glm::vec2 searchPos = { AiInfo.m_ColliderRect.x + (ai.m_SpriteComponent->GetFLipState() ? 0.f
 		: AiInfo.m_ColliderRect.width)
 		, AiInfo.m_ColliderRect.y + AiInfo.m_ColliderRect.height };
+	//Check bounds
+	auto rightFloorHit = ai.GetAttachedGameObject()->GetScene()->SceneRectcast(AiInfo.m_ColliderRect
+		, glm::vec2(1, 0), 50.f, "Floor", 1);
+	auto leftFloorHit = ai.GetAttachedGameObject()->GetScene()->SceneRectcast(AiInfo.m_ColliderRect
+		, glm::vec2(-1, 0), 50.f, "Floor", 1);
 
-	if (pos.x < (currPosx)) {
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos
-			, glm::vec2(-1, 0), 35.f, "Floor", 1) || ai.m_IsSpawning) {
+	if (rightFloorHit == nullptr && ai.m_IsSpawning == false) {
+		std::cout << "Right floor hit\n";
+		ai.SetHorizontalDir(HorizontalDirection::LEFT);
+		ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
+		ai.m_SpriteComponent->SetFlipState(false);
+	}
+	if (leftFloorHit == nullptr && ai.m_IsSpawning == false) {
+		std::cout << "left floor hit\n";
+		ai.SetHorizontalDir(HorizontalDirection::RIGHT);
+		ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
+		ai.m_SpriteComponent->SetFlipState(true);
+	}
+
+
+	if (ai.m_HotDogMovement->GetHorizonDir() == HorizontalDirection::NONE) {
+		glm::vec2 pos = ai.GetClosestPlayerPos();
+		float currPosx = ai.GetAttachedGameObject()->GetTransform().GetPosition().x;
+
+		if (pos.x < (currPosx)) {
 			ai.SetHorizontalDir(HorizontalDirection::LEFT);
 			ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
 			ai.m_SpriteComponent->SetFlipState(false);
 		}
-		else {
+		if (pos.x > (currPosx)) {
+			//Floor in sight
 			ai.SetHorizontalDir(HorizontalDirection::RIGHT);
 			ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
 			ai.m_SpriteComponent->SetFlipState(true);
-		}
 
-		//Set anim
-		
-		//Floor in sight
+		}
 	}
-	if (pos.x > (currPosx)) {
-		//Floor in sight
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos
-			, glm::vec2(1, 0), 35.f, "Floor", 1) || ai.m_IsSpawning) {
 
-			ai.SetHorizontalDir(HorizontalDirection::RIGHT);
-			ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
-			ai.m_SpriteComponent->SetFlipState(true);
-		}
-		else {
-			ai.SetHorizontalDir(HorizontalDirection::LEFT);
-			ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
-			ai.m_SpriteComponent->SetFlipState(false);
-		}
-		
-	}
+
+	
 }
 
 Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_IsOnLadder && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
-		if (MathHelper::RandomBool(0.2f))
+		if (MathHelper::RandomBool(0.65f))
 			return new VerticalState();
-
 		else
 			return new HorizontalState();
 
@@ -239,8 +241,6 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 	else {
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
 	}
-
-
 
 	return nullptr;
 }
@@ -265,15 +265,11 @@ void Burger::VerticalState::Exit(AIBehaviourComponent& ai)
 {
 	ai.SetVerticalDir(VerticalDirection::NONE);
 }
-void Burger::HorizontalState::Exit(AIBehaviourComponent& ai)
-{
-	ai.SetHorizontalDir(HorizontalDirection::NONE);
-}
-
 
 
 void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 {
+	ai.SetHorizontalDir(HorizontalDirection::NONE);
 
 	float posY = ai.GetClosestPlayerPos().y;
 	float currPosY = ai.GetAttachedGameObject()->GetTransform().GetPosition().y;
@@ -335,6 +331,10 @@ void Burger::HitState::Entry(AIBehaviourComponent& ai)
 	ai.m_ColliderComponent->DisableCollider();
 }
 
+
+
+
+//HIT
 Burger::AIState* Burger::HitState::UpdateState(AIBehaviourComponent&)
 {
 	if (m_CurrentTime > m_MinExitTime) {
@@ -349,6 +349,8 @@ Burger::AIState* Burger::HitState::UpdateState(AIBehaviourComponent&)
 
 }
 
+
+
 void Burger::HitState::Exit(AIBehaviourComponent& ai)
 {
 	ai.m_ColliderComponent->EnableCollider();
@@ -359,12 +361,17 @@ void Burger::DeathState::Entry(AIBehaviourComponent& ai)
 	ai.m_SpriteComponent->SetActiveAnimation("Death");
 }
 
+
+
+//DEATH
 Burger::AIState* Burger::DeathState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_SpriteComponent->IsActiveInFinalFrame()) {
 		m_IsSpawning = true;
 		//Notify death of enemy
-		ai.notify(&ai, PepperEvent::WORST_DIED);
+		EnemyArgs eArgs;
+		eArgs.name = ai.m_Name;
+		ai.notify(&ai, PepperEvent::Enemy_Died, &eArgs);
 		ai.GetAttachedGameObject()->SetDestroyFlag(true);
 	}
 	return nullptr;

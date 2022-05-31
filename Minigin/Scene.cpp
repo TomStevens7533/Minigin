@@ -49,6 +49,11 @@ void dae::Scene::Start()
 }
 
 
+std::shared_ptr<dae::ColliderInfo> Scene::SceneRectcast(Rectf pos, glm::vec2 dir, float length, std::string tag, int steps /*= 10*/, const std::shared_ptr<ColliderInfo> colliderToIgnore /*= std::make_shared<ColliderInfo>()*/)
+{
+	return m_SceneGrid.RectCast(pos, dir, length, colliderToIgnore, tag, steps);
+}
+
 bool Scene::RemoveCollider(std::shared_ptr<ColliderInfo> colInfo)
 {
 	if (colInfo) {
