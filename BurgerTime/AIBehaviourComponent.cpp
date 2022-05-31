@@ -9,11 +9,12 @@
 #include "MathHelper.h"
 #include "BaseComponent.h"
 #include "EventType.h"
+#include "BurgerEvents.h"
 
 using namespace dae;
 
-Burger::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow, std::string enemyName, int score)
-	: m_TagToFollow{tagToFollow}, m_Name{enemyName}, m_Score{ score }
+Burger::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow, EnemyType type, int score)
+	: m_TagToFollow{tagToFollow}, m_Type{ type }, m_Score{ score }
 {
 
 }
@@ -377,9 +378,9 @@ Burger::AIState* Burger::DeathState::UpdateState(AIBehaviourComponent& ai)
 		m_IsSpawning = true;
 		//Notify death of enemy
 		EnemyArgs eArgs;
-		eArgs.name = ai.m_Name;
+		eArgs.type = ai.m_Type;
 		eArgs.points = ai.m_Score;
-		ai.notify(&ai, PepperEvent::Enemy_Died, &eArgs);
+		ai.notify(&ai, PepperEvent::ENEMY_DIED, &eArgs);
 		ai.GetAttachedGameObject()->SetDestroyFlag(true);
 	}
 	return nullptr;

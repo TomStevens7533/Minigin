@@ -6,6 +6,7 @@
 #include <vector>
 #include "document.h"
 #include "Parser.h"
+#include <vcruntime_typeinfo.h>
 
 using namespace Burger;
 using namespace rapidjson;
@@ -15,13 +16,13 @@ class Parser::ParserImpl
 public:
 	ParserImpl(std::string path);
 	std::map<std::string, std::vector<point>>& GetObjectMapImpl()  { return m_ObjectMap; };
-	std::map<std::string, EnemySpawnInfo>& GetEnemyInfoMap() { return m_EnemyInfoMap; };
+	std::map<EnemyType, EnemySpawnInfo>& GetEnemyInfoMap() { return m_EnemyInfoMap; };
 
 private:
 	void ParseLevelFileImpl(std::string path);
 private:
 	std::map<std::string, std::vector<point>> m_ObjectMap;
-	std::map<std::string, EnemySpawnInfo> m_EnemyInfoMap;
+	std::map<EnemyType, EnemySpawnInfo> m_EnemyInfoMap;
 
 };
 
@@ -101,26 +102,32 @@ void Parser::ParserImpl::ParseLevelFileImpl(std::string path)
 					for (SizeType i = 0; i < enemyArr.Size(); i++)
 					{
 						EnemySpawnInfo inf;
-						std::string name;
+						EnemyType type;
 						GenericObject obj = enemyArr[i].GetObj();
 
 						for (auto memIt = obj.MemberBegin(); memIt != obj.MemberEnd(); memIt++)
 						{
 							if (memIt->name == "idx") {
-								inf.id = memIt->value.GetInt();
+								int id =  memIt->value.GetInt();
+
+
+								//Get Enemy Type
+								if (id >= static_cast<int>(EnemyType::Begin) && id <= static_cast<int>(EnemyType::END)) {
+									type = static_cast<EnemyType>(id);
+								}
+								else
+									throw std::bad_cast();
+
 							}
 							else if (memIt->name == "maxLevel") {
 								inf.MaxInStage = memIt->value.GetInt();
-							}
-							else if (memIt->name == "name") {
-								name = memIt->value.GetString();
 							}
 							else if (memIt->name == "KillScore") {
 								inf.Score = memIt->value.GetInt();
 							}
 							
 						}
-						m_EnemyInfoMap.insert(std::make_pair(name, inf));
+						m_EnemyInfoMap.insert(std::make_pair(type, inf));
 					}
 
 				}
@@ -148,7 +155,7 @@ Parser::~Parser()
 	delete m_pPimpl;
 }
 
-std::map<std::string, EnemySpawnInfo>& Parser::GetEnemyInfo()
+std::map<EnemyType, EnemySpawnInfo>& Parser::GetEnemyInfo()
 {
 	return m_pPimpl->GetEnemyInfoMap();
 }

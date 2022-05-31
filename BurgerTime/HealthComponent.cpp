@@ -2,6 +2,7 @@
 #include "HealthComponent.h"
 #include <iostream>
 #include "EventType.h"
+#include "BurgerEvents.h"
 
 using namespace Burger;
 HealthComponent::HealthComponent(int health, int lives) : m_Health{ health }, m_Lives{ lives } {}

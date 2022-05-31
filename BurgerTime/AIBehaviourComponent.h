@@ -3,6 +3,7 @@
 #include <vector>
 #include "structs.h"
 #include "Subject.h"
+#include "BurgerStructs.h"
 
 namespace dae { 
 class SpriteComponent;
@@ -72,17 +73,12 @@ namespace Burger {
 
 	};
 
-	struct EnemyArgs : public dae::EventArgs
-	{
-		std::string name = "";
-		int points{};
-	};
 
 	class MovementComponent;
 	class AIBehaviourComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
-		AIBehaviourComponent(std::string tagToFollow, std::string enemyName, int score);
+		AIBehaviourComponent(std::string tagToFollow, EnemyType type, int score);
 		~AIBehaviourComponent();
 
 
@@ -126,7 +122,7 @@ namespace Burger {
 		bool m_IsSpawning = true;
 
 		int m_Score{};
-		std::string m_Name;
+		EnemyType m_Type;
 	};
 
 

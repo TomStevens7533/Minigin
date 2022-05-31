@@ -90,19 +90,19 @@
     {
       "name": "ScoreUI",
       "Positions": [
-        [ 60, 20 ]
+        [ 50, 20 ]
       ]
     },
     {
       "name": "LiveUI",
       "Positions": [
-        [ 160, 20 ]
+        [ 200, 20 ]
       ]
     },
     {
       "name": "PepperUI",
       "Positions": [
-        [ 260, 20 ]
+        [ 350, 20 ]
       ]
     }
   ]

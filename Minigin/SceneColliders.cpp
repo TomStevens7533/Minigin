@@ -12,23 +12,6 @@ std::shared_ptr<ColliderInfo> SceneColliders::AddCollider(ColliderInfo info)
 	return newColl;
 }
 
-//void SceneColliders::RemoveCollider(std::string tag, bool deleteAll /*= false*/)
-//{
-//	if (deleteAll == true) {
-//		m_SceneColliderVec.erase(std::remove_if(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), [&tag](std::shared_ptr<ColliderInfo> currInfo) {
-//			return (currInfo->tag == tag);
-//		})
-//		, m_SceneColliderVec.end());
-//	}
-//	else {
-//		auto it = std::remove_if(m_SceneColliderVec.begin(), m_SceneColliderVec.end(), [&tag](std::shared_ptr<ColliderInfo> currInfo) {
-//			return (currInfo->tag == tag);
-//			});
-//		m_SceneColliderVec.erase(it);
-//	}
-//
-//}
-
 bool SceneColliders::RemoveCollider(const std::shared_ptr<ColliderInfo> col)
 {
 	if (m_SceneColliderVec.size() > 0) {

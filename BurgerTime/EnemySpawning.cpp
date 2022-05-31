@@ -5,8 +5,9 @@
 #include "Scene.h"
 #include "EventType.h"
 #include "AIBehaviourComponent.h"
-#include "DeltaTime.h"
 #include "ScoreDisplayComponent.h"
+#include "DeltaTime.h"
+#include "BurgerEvents.h"
 
 void Burger::EnemySpawnComponent::Start()
 {
@@ -14,8 +15,8 @@ void Burger::EnemySpawnComponent::Start()
 
 }
 
-Burger::EnemySpawnComponent::EnemySpawnComponent(std::vector<point>& vec, std::map<std::string, EnemySpawnInfo>& enemyMap)
-	: m_SpawnPoints{vec}, m_EnemyMap{enemyMap}
+Burger::EnemySpawnComponent::EnemySpawnComponent(std::vector<point>& vec, std::map<EnemyType, EnemySpawnInfo>& enemyMap , ScoreDisplayComponent* scoreDis)
+	: m_SpawnPoints{vec}, m_EnemyMap{enemyMap}, m_pScoreUI{scoreDis}
 {
 
 }
@@ -26,13 +27,15 @@ void Burger::EnemySpawnComponent::onNotify(const BaseComponent* entity, int even
 	EnemyArgs* eArgs;
 	switch (event)
 	{
-	case PepperEvent::Enemy_Died:
+	case PepperEvent::ENEMY_DIED:
 		eArgs = static_cast<EnemyArgs*>(args);
+
+		//Get random extra spawn time
 		m_MaxSpawnTime += (static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / m_RandSpawnTime))) + m_BaseSpawnTime;
 
 		//-1 current in stage
 		for (auto& element : m_EnemyMap) {
-			if (element.first == eArgs->name) {
+			if (element.first == eArgs->type) {
 				--element.second.CurrentInStage;
 			}
 		}
@@ -47,15 +50,23 @@ void Burger::EnemySpawnComponent::LateUpdate()
 }
 
 
-std::shared_ptr<dae::GameObject> Burger::EnemySpawnComponent::GetEnemyPrefab(const std::string& name, const point pos, int points)
+std::shared_ptr<dae::GameObject> Burger::EnemySpawnComponent::GetEnemyPrefab(const EnemyType type, const point pos, int points)
 {
-	if (name == "worst") {
-		return PrefabCreator::CreatWorstEnemyrPrefab(pos, points);
-	}
-	else if (name == "egg") {
+	switch (type)
+	{
+	case EnemyType::EGG:
 		return PrefabCreator::CreateEggEnemy(pos, points);
+		break;
+	case EnemyType::WORST:
+		return PrefabCreator::CreatWorstEnemyrPrefab(pos, points);
+		break;
+	case EnemyType::SPIKE:
+		return PrefabCreator::CreateSpikey(pos, points);
+		break;
+	default:
+		return nullptr;
+		break;
 	}
-	return nullptr;
 }
 
 void Burger::EnemySpawnComponent::SpawnEnemy()

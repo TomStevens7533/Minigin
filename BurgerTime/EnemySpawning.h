@@ -5,12 +5,13 @@
 #include <map>
 namespace Burger {
 
+
 	class GameObject;
 	class ScoreDisplayComponent;
 	class EnemySpawnComponent final : public dae::BaseComponent, public dae::Observer
 	{
 	public:
-		EnemySpawnComponent(std::vector<point>& vec, std::map<std::string, EnemySpawnInfo>& enemyMap);
+		EnemySpawnComponent(std::vector<point>& vec, std::map<EnemyType, EnemySpawnInfo>& enemyMap, ScoreDisplayComponent* scoreDis);
 		void Render() const override {};
 		void Update() override { };
 		void LateUpdate() override;
@@ -23,12 +24,12 @@ namespace Burger {
 
 		void onNotify(const BaseComponent* entity, int event, dae::EventArgs* args = nullptr) override;
 	private:
-		std::shared_ptr<dae::GameObject> GetEnemyPrefab(const std::string& name, const point pos, int points);
+		std::shared_ptr<dae::GameObject> GetEnemyPrefab(EnemyType type, const point pos, int points);
 		void SpawnEnemy();
 
 	private:
 		std::vector<point> m_SpawnPoints;
-		std::map<std::string, EnemySpawnInfo> m_EnemyMap;
+		std::map<EnemyType, EnemySpawnInfo> m_EnemyMap;
 		ScoreDisplayComponent* m_pScoreUI = nullptr;
 		float m_MaxSpawnTime = 0.f;
 		float m_RandSpawnTime = 0.5f;

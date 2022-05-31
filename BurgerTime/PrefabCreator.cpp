@@ -19,10 +19,10 @@ using namespace Burger;
 
 
 
-std::shared_ptr<dae::GameObject> PrefabCreator::CreateEnemySpawner(std::vector<point> spawnPoint, std::map<std::string, EnemySpawnInfo>& enemyMap)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreateEnemySpawner(std::vector<point> spawnPoint, std::map<EnemyType, EnemySpawnInfo>& enemyMap, ScoreDisplayComponent* score)
 {
 	auto spawner = std::make_shared<dae::GameObject>();
-	auto EnemyComp = std::make_shared<EnemySpawnComponent>(spawnPoint, enemyMap);
+	auto EnemyComp = std::make_shared<EnemySpawnComponent>(spawnPoint, enemyMap, score);
 	spawner->AddComponent<EnemySpawnComponent>(EnemyComp);
 	return spawner;
 }
@@ -33,7 +33,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateEggEnemy(point pos, int m_
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
 	auto movementComp = std::make_shared<MovementComponent>(40.f);
-	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper", "egg", m_Score);
+	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper", EnemyType::EGG, m_Score);
 
 
 
@@ -59,7 +59,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateSpikey(point pos, int m_Sc
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
 	auto movementComp = std::make_shared<MovementComponent>(50.f);
-	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper", "Spike", m_Score);
+	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper", EnemyType::SPIKE, m_Score);
 
 
 
@@ -77,7 +77,29 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateSpikey(point pos, int m_Sc
 	spikey->SetPosition(pos.x, pos.y);
 	return spikey;
 }
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatWorstEnemyrPrefab(point pos, int m_Score)
+{
+	auto hotdoggGo = std::make_shared<dae::GameObject>();
+	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
+	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
+	auto movementComp = std::make_shared<MovementComponent>(40.f);
+	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper", EnemyType::EGG, m_Score);
 
+
+	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);
+	spriteComponent->AddAnimation("MoveForward", 0, 2, 2, 3);
+	spriteComponent->AddAnimation("MoveBackwards", 4, 2, 6, 3);
+	spriteComponent->AddAnimation("Fried", 4, 3, 6, 4);
+	spriteComponent->AddAnimation("Death", 0, 3, 4, 4);
+
+	hotdoggGo->AddComponent<dae::SpriteComponent>(spriteComponent);
+	hotdoggGo->AddComponent<dae::BoxColliderComponent>(boxCollider);
+	hotdoggGo->AddComponent<MovementComponent>(movementComp);
+	hotdoggGo->AddComponent<AIBehaviourComponent>(hotdogg);
+
+	hotdoggGo->SetPosition(pos.x, pos.y);
+	return hotdoggGo;
+}
 std::shared_ptr<dae::GameObject> PrefabCreator::CreateScoreUI(point pos)
 {
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 22);
@@ -120,29 +142,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateLivesUI(point pos)
 
 int Burger::PrefabCreator::m_PlayerCount = 0;
 
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatWorstEnemyrPrefab(point pos, int m_Score)
-{
-	auto hotdoggGo = std::make_shared<dae::GameObject>();
-	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
-	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
-	auto movementComp = std::make_shared<MovementComponent>(40.f);
-	auto hotdogg = std::make_shared<AIBehaviourComponent>("Pepper", "worst", m_Score);
 
-
-	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);
-	spriteComponent->AddAnimation("MoveForward", 0, 2, 2, 3);
-	spriteComponent->AddAnimation("MoveBackwards", 4, 2, 6, 3);
-	spriteComponent->AddAnimation("Fried", 4, 3, 6, 4);
-	spriteComponent->AddAnimation("Death", 0, 3, 4, 4);
-
-	hotdoggGo->AddComponent<dae::SpriteComponent>(spriteComponent);
-	hotdoggGo->AddComponent<dae::BoxColliderComponent>(boxCollider);
-	hotdoggGo->AddComponent<MovementComponent>(movementComp);
-	hotdoggGo->AddComponent<AIBehaviourComponent>(hotdogg);
-
-	hotdoggGo->SetPosition(pos.x, pos.y);
-	return hotdoggGo;
-}
 std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlatformPrefab(point pos, int tilling)
 {
 	
@@ -160,7 +160,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlatformPrefab(point pos, 
 
 
 
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos, LivesDisplayComponent* liveComp, PepperDisplayComponent* peppercomp)
 {
 	auto PeterPepper = std::make_shared<dae::GameObject>();
 	auto healthComponent = std::make_shared<HealthComponent>();
@@ -171,19 +171,14 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos)
 	auto attackComp = std::make_shared<AttackComponent>();
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Pepper", 5);
 
-	///*	attackComp->addObserver(pepperDisplaycomp);
-	//	healthComponent->addObserver(liveDisplaycomp)*/;
-	//
-	//
-	//	m_PlayerCount++;
-	//	//Anims
-
-
 	spriteComponent->AddAnimation("MoveForward", 6, 0, 9, 1);
 	spriteComponent->AddAnimation("Move", 3, 0, 6, 1);
 	spriteComponent->AddAnimation("MoveBackwards", 0, 0, 3, 1);
 	spriteComponent->AddAnimation("Death", 6, 1, 9, 2);
 
+
+	attackComp->addObserver(peppercomp);
+	healthComponent->addObserver(liveComp);
 
 	PeterPepper->AddComponent<AttackComponent>(attackComp);
 	PeterPepper->AddComponent<HealthComponent>(healthComponent);
@@ -191,7 +186,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos)
 	PeterPepper->AddComponent<dae::SpriteComponent>(spriteComponent);
 	PeterPepper->AddComponent<PetterPepperComponent>(peterPepperComp);
 	PeterPepper->AddComponent<MovementComponent>(movementComp);
-	PeterPepper->AddComponent <dae::BoxColliderComponent >(boxCollider);
+	PeterPepper->AddComponent<dae::BoxColliderComponent >(boxCollider);
 
 
 	PeterPepper->SetPosition(pos.x, pos.y);
@@ -218,12 +213,13 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateLadderPrefab(point pos, in
 
 }
 // Burger pieces
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatTopBurgerPrefab(point pos)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatTopBurgerPrefab(point pos, ScoreDisplayComponent* scoreDisplay)
 {
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
 	auto TexComp = std::make_shared<dae::TextureComponent>("TopBun.png");
 	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
 	auto bunComp = std::make_shared<BunBehaviour>();
+	bunComp->addObserver(scoreDisplay);
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
 	goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
@@ -231,13 +227,14 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatTopBurgerPrefab(point pos)
 	goBurgerPiece->SetPosition(pos.x, pos.y);
 	return goBurgerPiece;
 }
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatLettuceBurgerPrefab(point pos)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatLettuceBurgerPrefab(point pos, ScoreDisplayComponent* scoreDisplay)
 {
 
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
 	auto TexComp = std::make_shared<dae::TextureComponent>("Lettuce.png");
 	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
 	auto bunComp = std::make_shared<BunBehaviour>();
+	bunComp->addObserver(scoreDisplay);
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
 	goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
@@ -248,12 +245,13 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatLettuceBurgerPrefab(point p
 
 
 
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatTomatoBurgerPrefab(point pos)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatTomatoBurgerPrefab(point pos, ScoreDisplayComponent* scoreDisplay)
 {
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
 	auto TexComp = std::make_shared<dae::TextureComponent>("Tomato.png");
 	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
 	auto bunComp = std::make_shared<BunBehaviour>();
+	bunComp->addObserver(scoreDisplay);
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
 	goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
@@ -261,12 +259,13 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatTomatoBurgerPrefab(point po
 	goBurgerPiece->SetPosition(pos.x, pos.y);
 	return goBurgerPiece;
 }
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatLowerBurgerPrefab(point pos)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatLowerBurgerPrefab(point pos, ScoreDisplayComponent* scoreDisplay)
 {
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
 	auto TexComp = std::make_shared<dae::TextureComponent>("LowerBun.png");
 	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
 	auto bunComp = std::make_shared<BunBehaviour>();
+	bunComp->addObserver(scoreDisplay);
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
 	goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
@@ -281,6 +280,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatBurgerCathcherPrefab(point 
 	auto TexComp = std::make_shared<dae::TextureComponent>("BurgerCatcher.png");
 	auto boxComp = std::make_shared<dae::BoxColliderComponent>("BunEnd");
 	auto bunComp = std::make_shared<BunBehaviour>();
+
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
 	goBurgerPiece->AddComponent<BunBehaviour>(bunComp);

@@ -5,11 +5,6 @@
 
 namespace Burger {
 
-	struct ScoreArgs : public dae::EventArgs
-	{
-		int scoreIncrease;
-	};
-
 	class ScoreDisplayComponent final : public dae::BaseComponent, public dae::Observer {
 	public:
 		ScoreDisplayComponent(std::string newString);

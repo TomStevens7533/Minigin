@@ -3,9 +3,16 @@ struct point {
 	float x;
 	float y;
 };
+	
+enum class EnemyType {
+	Begin = 0,
+	WORST,
+	EGG,
+	SPIKE,
+	END = 4 
+};
 struct EnemySpawnInfo {
-	int id;
 	int MaxInStage;
 	int Score;
 	int CurrentInStage = 0;
-};	
+};

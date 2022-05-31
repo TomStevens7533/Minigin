@@ -4,10 +4,10 @@
 #include "BoxColliderComponent.h"
 #include "Scene.h"
 #include "DeltaTime.h"
-#include "ScoreDisplayComponent.h"
 #include "ServiceLocator.h"
 #include "MathHelper.h"
 #include "EventType.h"
+#include "BurgerEvents.h"
 
 
 void Burger::BunBehaviour::Render() const

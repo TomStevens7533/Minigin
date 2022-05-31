@@ -3,11 +3,7 @@
 
 namespace Burger {
 
-	struct HealthArgs : public dae::EventArgs
-	{
-		int health;
-		int lives;
-	};
+
 
 	class HealthComponent final : public dae::BaseComponent, public dae::Subject
 	{

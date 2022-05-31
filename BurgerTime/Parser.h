@@ -20,7 +20,7 @@ namespace Burger {
 		Parser(std::string path);
 		~Parser();
 		std::map<std::string, std::vector<point>>& GeLevelObject();
-		std::map<std::string, EnemySpawnInfo>& GetEnemyInfo();
+		std::map<EnemyType, EnemySpawnInfo>& GetEnemyInfo();
 
 	public:
 		Parser(const Parser& other) = delete;

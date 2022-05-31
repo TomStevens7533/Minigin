@@ -6,7 +6,7 @@
 namespace Burger {
 	enum PepperEvent
 	{	//TODO Change to customizable system
-		ENTITY_DIED, SCORE_INCREASE, WIN_GAME, HEALTH_SET, PEPPER_FIRED, Enemy_Died
+		ENTITY_DIED, SCORE_INCREASE, WIN_GAME, HEALTH_SET, PEPPER_FIRED, ENEMY_DIED
 	};
 
 	

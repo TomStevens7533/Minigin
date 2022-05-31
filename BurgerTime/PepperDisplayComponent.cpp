@@ -2,8 +2,8 @@
 #include "GameObject.h"
 #include "TextComponent.h"
 #include "PepperDisplayComponent.h"
-#include "AttackComponent.h"
 #include "EventType.h"
+#include "AttackComponent.h"
 
 Burger::PepperDisplayComponent::PepperDisplayComponent(std::string newString) : m_BaseString{ newString }
 {
@@ -17,10 +17,11 @@ void Burger::PepperDisplayComponent::Start()
 void Burger::PepperDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* args)
 {
 	//Unsafe
-	AttackArgs* hargs = static_cast<AttackArgs*>(args);
+	AttackArgs* hargs;
 	switch (event)
 	{
 	case Burger::PepperEvent::PEPPER_FIRED:
+		hargs = static_cast<AttackArgs*>(args);
 		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(hargs->pepperShots));
 		break;
 	}

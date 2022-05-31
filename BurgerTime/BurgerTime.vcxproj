@@ -178,6 +178,7 @@
     <ClInclude Include="AIBehaviourComponent.h" />
     <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="BunBehaviour.h" />
+    <ClInclude Include="BurgerEvents.h" />
     <ClInclude Include="BurgerStructs.h" />
     <ClInclude Include="BurgerTime.h" />
     <ClInclude Include="BurgerTimePCH.h" />

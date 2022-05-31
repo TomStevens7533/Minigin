@@ -19,7 +19,8 @@ namespace dae
 
 		void SetScene(Scene* currsScene) { m_CurrentScene = currsScene; };
 		Scene* GetScene() { return m_CurrentScene; };
-
+	protected:
+		friend class Scene;
 		bool GetDestroyFlag() { return m_DestoryFlag; }
 		void SetDestroyFlag(bool isDestroy) { m_DestoryFlag = isDestroy; }
 		bool GetInitState() { return m_IsInitialized; }

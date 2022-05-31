@@ -12,6 +12,7 @@
 #include "AttackComponent.h"
 #include "LivesDisplayComponent.h"
 #include "PepperDisplayComponent.h"
+#include "ScoreDisplayComponent.h"
 
 using namespace Burger;
 void BurgerTime::Initialize()
@@ -36,11 +37,12 @@ void BurgerTime::CreateLevel1()
 	go->SetPosition({ 0,0 });
 	go->AddComponent<dae::TextureComponent>(texComp);
 	scene.Add(go);
+
 	std::shared_ptr<dae::GameObject> m_ScoreUI;
 	std::shared_ptr<dae::GameObject> m_HealthUI;
 	std::shared_ptr<dae::GameObject> m_PepperUI;
 	for (auto& mapElement : pr.GeLevelObject()) {
-		//Player Creation
+		//Create UI Elements
 
 
 		if (mapElement.first == "ScoreUI") {
@@ -57,7 +59,7 @@ void BurgerTime::CreateLevel1()
 			for (point elementPos : mapElement.second)
 			{
 				auto liveUi = PrefabCreator::CreateLivesUI(elementPos);
-				m_HealthUI= (liveUi);
+				m_HealthUI = (liveUi);
 				scene.Add(liveUi);
 
 			}
@@ -76,17 +78,15 @@ void BurgerTime::CreateLevel1()
 
 
 
-
-
+	}
+	for (auto& mapElement : pr.GeLevelObject()) {
+		//Create prefabs
 
 		if (mapElement.first == "PeterPepperPrefab") {
 			for (point elementPos : mapElement.second)
 			{
-				auto pepper = PrefabCreator::CreatePlayerPrefab(elementPos);
+				auto pepper = PrefabCreator::CreatePlayerPrefab(elementPos, m_HealthUI->GetComponent<LivesDisplayComponent>(), m_PepperUI->GetComponent<PepperDisplayComponent>());
 				//Set Score UI
-				pepper->GetComponent<HealthComponent>()->addObserver(m_HealthUI->GetComponent<LivesDisplayComponent>());
-				pepper->GetComponent<AttackComponent>()->addObserver(m_PepperUI->GetComponent<PepperDisplayComponent>());
-
 
 				scene.Add(pepper);
 			}
@@ -124,28 +124,28 @@ void BurgerTime::CreateLevel1()
 		else if (mapElement.first == "TopBun") {
 			for (point elementPos : mapElement.second)
 			{
-				auto topBurger = PrefabCreator::CreatTopBurgerPrefab(elementPos);
+				auto topBurger = PrefabCreator::CreatTopBurgerPrefab(elementPos, m_ScoreUI->GetComponent<ScoreDisplayComponent>());
 				scene.Add(topBurger);
 			}
 		}
 		else if (mapElement.first == "Lettuce") {
 			for (point elementPos : mapElement.second)
 			{
-				auto letuce = PrefabCreator::CreatLettuceBurgerPrefab(elementPos);
+				auto letuce = PrefabCreator::CreatLettuceBurgerPrefab(elementPos, m_ScoreUI->GetComponent<ScoreDisplayComponent>());
 				scene.Add(letuce);
 			}
 		}
 		else if (mapElement.first == "Tomato") {
 			for (point elementPos : mapElement.second)
 			{
-				auto tomato = PrefabCreator::CreatTomatoBurgerPrefab(elementPos);
+				auto tomato = PrefabCreator::CreatTomatoBurgerPrefab(elementPos, m_ScoreUI->GetComponent<ScoreDisplayComponent>());
 				scene.Add(tomato);
 			}
 		}
 		else if (mapElement.first == "LowerBun") {
 			for (point elementPos : mapElement.second)
 			{
-				auto lowerbun = PrefabCreator::CreatLowerBurgerPrefab(elementPos);
+				auto lowerbun = PrefabCreator::CreatLowerBurgerPrefab(elementPos, m_ScoreUI->GetComponent<ScoreDisplayComponent>());
 				scene.Add(lowerbun);
 			}
 		}
@@ -158,38 +158,18 @@ void BurgerTime::CreateLevel1()
 		}
 		else if (mapElement.first == "EnemySpawnPoints") {
 
-			auto spawner = PrefabCreator::CreateEnemySpawner(mapElement.second, pr.GetEnemyInfo());
+			auto spawner = PrefabCreator::CreateEnemySpawner(mapElement.second, pr.GetEnemyInfo(), m_ScoreUI->GetComponent<ScoreDisplayComponent>());
 			scene.Add(spawner);
 		}
-		
-
-		//Create UI
-		
 
 
-		//els
-		// 
-		// e if (mapElement.first == "Lettuce") {
-		//	CreateLettuce(mapElement.second);
-
-		//}
-		//else if (mapElement.first == "Tomato") {
-		//	CreateTomato(mapElement.second);
-
-		//}
-		//else if (mapElement.first == "LowerBun") {
-		//	CreateLowerBun(mapElement.second);
-
-		//}
-		//else if (mapElement.first == "BurgerCatcher") {
-		//	CreateBurgerCatcher(mapElement.second);
-
-		//}
 	}
+		
+	scene.Start();
 
 
  
-	scene.Start();
+	
 
 }
 

@@ -2,8 +2,8 @@
 #include "LivesDisplayComponent.h"
 #include "GameObject.h"
 #include "TextComponent.h"
-#include "HealthComponent.h"
 #include "EventType.h"
+#include "BurgerEvents.h"
 
 Burger::LivesDisplayComponent::LivesDisplayComponent(std::string newString) : m_BaseString{newString} {}
 
