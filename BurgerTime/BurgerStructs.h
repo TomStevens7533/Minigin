@@ -6,4 +6,6 @@ struct point {
 struct EnemySpawnInfo {
 	int id;
 	int MaxInStage;
-};
+	int Score;
+	int CurrentInStage = 0;
+};	

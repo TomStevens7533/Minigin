@@ -1,6 +1,8 @@
 #pragma once
 #include <random>
 #include "structs.h"
+#include <functional>
+#include <string>
 
 namespace MathHelper
 {
@@ -41,4 +43,9 @@ namespace MathHelper
 		static auto dist = std::uniform_real_distribution<float>(0, 1);
 		return (dist(gen) < probabilty);
 	}
+
+	//constexpr inline size_t hashString(std::string const& inString) {
+	//	auto hash = std::hash<std::string>()(inString);
+	//	return hash;
+	//}
 }

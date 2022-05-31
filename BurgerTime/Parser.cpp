@@ -115,6 +115,10 @@ void Parser::ParserImpl::ParseLevelFileImpl(std::string path)
 							else if (memIt->name == "name") {
 								name = memIt->value.GetString();
 							}
+							else if (memIt->name == "KillScore") {
+								inf.Score = memIt->value.GetInt();
+							}
+							
 						}
 						m_EnemyInfoMap.insert(std::make_pair(name, inf));
 					}

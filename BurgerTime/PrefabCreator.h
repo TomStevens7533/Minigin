@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include <memory>
 #include <vector>
+#include <map>
+
 
 namespace Burger {
 	class PrefabCreator {
@@ -15,7 +17,7 @@ namespace Burger {
 		static std::shared_ptr<dae::GameObject> CreatLettuceBurgerPrefab(point pos);
 		static std::shared_ptr<dae::GameObject> CreatTomatoBurgerPrefab(point pos);
 		static std::shared_ptr<dae::GameObject> CreatLowerBurgerPrefab(point pos);
-		static std::shared_ptr<dae::GameObject> CreateEnemySpawner(std::vector<point> spawnPoint);
+		static std::shared_ptr<dae::GameObject> CreateEnemySpawner(std::vector<point> spawnPoint, std::map<std::string, EnemySpawnInfo>& enemyMap);
 		static std::shared_ptr<dae::GameObject> CreatBurgerCathcherPrefab(point pos);
 
 

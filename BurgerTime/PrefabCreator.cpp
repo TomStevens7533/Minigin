@@ -14,10 +14,10 @@ using namespace Burger;
 
 
 
-std::shared_ptr<dae::GameObject> PrefabCreator::CreateEnemySpawner(std::vector<point> spawnPoint)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreateEnemySpawner(std::vector<point> spawnPoint, std::map<std::string, EnemySpawnInfo>& enemyMap)
 {
 	auto spawner = std::make_shared<dae::GameObject>();
-	auto EnemyComp = std::make_shared<EnemySpawnComponent>(spawnPoint);
+	auto EnemyComp = std::make_shared<EnemySpawnComponent>(spawnPoint, enemyMap);
 	spawner->AddComponent<EnemySpawnComponent>(EnemyComp);
 	return spawner;
 }

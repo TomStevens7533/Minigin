@@ -14,6 +14,8 @@ void BurgerTime::Initialize()
 	// tell the resource manager where he can find the game data
 	dae::ResourceManager::GetInstance().Init("Resources/");
 
+	//SEED
+	srand(static_cast<int>(time(NULL)));
 
 	CreateLevel1();
 }
@@ -106,7 +108,7 @@ void BurgerTime::CreateLevel1()
 		}
 		else if (mapElement.first == "EnemySpawnPoints") {
 
-			auto spawner = PrefabCreator::CreateEnemySpawner(mapElement.second);
+			auto spawner = PrefabCreator::CreateEnemySpawner(mapElement.second, pr.GetEnemyInfo());
 			scene.Add(spawner);
 		}
 
