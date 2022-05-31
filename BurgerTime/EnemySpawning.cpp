@@ -6,6 +6,7 @@
 #include "EventType.h"
 #include "AIBehaviourComponent.h"
 #include "DeltaTime.h"
+#include "ScoreDisplayComponent.h"
 
 void Burger::EnemySpawnComponent::Start()
 {
@@ -13,7 +14,7 @@ void Burger::EnemySpawnComponent::Start()
 
 }
 
-Burger::EnemySpawnComponent::EnemySpawnComponent(std::vector<point>& vec, std::map<std::string, EnemySpawnInfo>& enemyMap) 
+Burger::EnemySpawnComponent::EnemySpawnComponent(std::vector<point>& vec, std::map<std::string, EnemySpawnInfo>& enemyMap)
 	: m_SpawnPoints{vec}, m_EnemyMap{enemyMap}
 {
 
@@ -29,6 +30,7 @@ void Burger::EnemySpawnComponent::onNotify(const BaseComponent* entity, int even
 		eArgs = static_cast<EnemyArgs*>(args);
 		m_MaxSpawnTime += (static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / m_RandSpawnTime))) + m_BaseSpawnTime;
 
+		//-1 current in stage
 		for (auto& element : m_EnemyMap) {
 			if (element.first == eArgs->name) {
 				--element.second.CurrentInStage;
@@ -45,13 +47,13 @@ void Burger::EnemySpawnComponent::LateUpdate()
 }
 
 
-std::shared_ptr<dae::GameObject> Burger::EnemySpawnComponent::GetEnemyPrefab(const std::string& name, const point pos)
+std::shared_ptr<dae::GameObject> Burger::EnemySpawnComponent::GetEnemyPrefab(const std::string& name, const point pos, int points)
 {
 	if (name == "worst") {
-		return PrefabCreator::CreatWorstEnemyrPrefab(pos);
+		return PrefabCreator::CreatWorstEnemyrPrefab(pos, points);
 	}
 	else if (name == "egg") {
-		return PrefabCreator::CreateEggEnemy(pos);
+		return PrefabCreator::CreateEggEnemy(pos, points);
 	}
 	return nullptr;
 }
@@ -69,8 +71,12 @@ void Burger::EnemySpawnComponent::SpawnEnemy()
 			for (element.second.CurrentInStage; element.second.CurrentInStage < element.second.MaxInStage;)
 			{
 				int spawnPosIndex = (rand() % static_cast<int>(m_SpawnPoints.size()));
-				auto enemyGO = GetEnemyPrefab(element.first, m_SpawnPoints[spawnPosIndex]);
-				enemyGO->GetComponent<AIBehaviourComponent>()->addObserver(this);
+				auto enemyGO = GetEnemyPrefab(element.first, m_SpawnPoints[spawnPosIndex], element.second.Score);
+				auto comp = enemyGO->GetComponent<AIBehaviourComponent>();
+				comp->addObserver(this);
+				if (m_pScoreUI != nullptr) {
+					comp->addObserver(m_pScoreUI);
+				}
 				GetAttachedGameObject()->GetScene()->Add(enemyGO);
 				++element.second.CurrentInStage;
 				break;

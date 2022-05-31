@@ -81,6 +81,7 @@ void Burger::AttackComponent::Fire()
 
 		AttackArgs args;
 		args.pepperShots = m_PepperShots;
+		notify(this, PepperEvent::PEPPER_FIRED, &args);
 
 
 	}

@@ -12,8 +12,8 @@
 
 using namespace dae;
 
-Burger::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow, std::string enemyName)
-	: m_TagToFollow{tagToFollow}, m_Name{enemyName}
+Burger::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow, std::string enemyName, int score)
+	: m_TagToFollow{tagToFollow}, m_Name{enemyName}, m_Score{ score }
 {
 
 }
@@ -247,6 +247,13 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 
 
 
+void Burger::HorizontalState::Exit(AIBehaviourComponent& ai)
+{
+	ai.SetHorizontalDir(HorizontalDirection::NONE);
+
+
+}
+
 Burger::AIState* Burger::VerticalState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_IsOnFloor && m_CurrentTime > m_MinExitTime) {
@@ -371,6 +378,7 @@ Burger::AIState* Burger::DeathState::UpdateState(AIBehaviourComponent& ai)
 		//Notify death of enemy
 		EnemyArgs eArgs;
 		eArgs.name = ai.m_Name;
+		eArgs.points = ai.m_Score;
 		ai.notify(&ai, PepperEvent::Enemy_Died, &eArgs);
 		ai.GetAttachedGameObject()->SetDestroyFlag(true);
 	}

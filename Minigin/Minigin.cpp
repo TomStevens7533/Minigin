@@ -206,13 +206,7 @@ void dae::Minigin::Initialize()
 //
 //	uiPos.x += 100.f;
 //
-//	auto pepperDisplayGO = std::make_shared<GameObject>();
-//	textComp = std::make_shared<TextComponent>(" ", font, color);
-//	auto pepperDisplaycomp = std::make_shared<PepperDisplayComponent>("Pepper: ");
-//
-//	pepperDisplayGO->AddComponent<TextComponent>(textComp);
-//	pepperDisplayGO->AddComponent<PepperDisplayComponent>(pepperDisplaycomp);
-//	scene->Add(pepperDisplayGO);
+//	
 //	pepperDisplayGO->SetPosition(uiPos);
 //
 //

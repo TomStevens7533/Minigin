@@ -27,7 +27,7 @@ namespace Burger {
 	public:
 		virtual void Entry(AIBehaviourComponent& ai) override;;
 		virtual AIState* UpdateState(AIBehaviourComponent& ai) override;
-		virtual void Exit(AIBehaviourComponent&) override {};
+		virtual void Exit(AIBehaviourComponent&) override;
 
 
 
@@ -75,13 +75,14 @@ namespace Burger {
 	struct EnemyArgs : public dae::EventArgs
 	{
 		std::string name = "";
+		int points{};
 	};
 
 	class MovementComponent;
 	class AIBehaviourComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
-		AIBehaviourComponent(std::string tagToFollow, std::string enemyName);
+		AIBehaviourComponent(std::string tagToFollow, std::string enemyName, int score);
 		~AIBehaviourComponent();
 
 
@@ -124,6 +125,7 @@ namespace Burger {
 		bool m_IsDeath = false;
 		bool m_IsSpawning = true;
 
+		int m_Score{};
 		std::string m_Name;
 	};
 

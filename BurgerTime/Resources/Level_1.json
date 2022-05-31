@@ -86,6 +86,24 @@
         [ 640, 37 ],
         [ 640, 348 ]
       ]
+    },
+    {
+      "name": "ScoreUI",
+      "Positions": [
+        [ 60, 20 ]
+      ]
+    },
+    {
+      "name": "LiveUI",
+      "Positions": [
+        [ 160, 20 ]
+      ]
+    },
+    {
+      "name": "PepperUI",
+      "Positions": [
+        [ 260, 20 ]
+      ]
     }
   ]
  
