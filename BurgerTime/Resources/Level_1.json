@@ -1,127 +1,125 @@
 [
-  { "Positions" : [
-    {
-      "name": "PeterPepperPrefab",
-      "Positions": [ [ 100, 346 ] ]
-    },
-    {
-      "name": "PlatformLongPrefab",
-      "Positions": [
-        [ 55, 54 ],
-        [ 177, 54 ],
-        [ 336, 54 ],
-        [ 435, 54 ],
-        [ 55, 365 ],
-        [ 55, 296 ],
-        [ 55, 192 ],
-        [ 55, 123 ],
-        [ 300, 123 ],
-        [ 430, 123 ],
-        [ 426, 192 ],
-        [ 426, 261 ],
-        [ 308, 296 ],
-        [ 308, 227 ],
-        [ 211, 296 ],
-        [ 177, 227 ],
-        [ 177, 157 ],
-        [ 211, 365 ],
-        [ 280, 365 ],
-        [ 440, 365 ]
-      ]
-    },
-    {
-      "name": "LadderLongPrefab",
-      "Positions": [
-        [ 62, 192 ],
-        [ 184, 192 ],
-        [ 309, 192 ],
-        [ 435, 192 ],
-        [ 558, 53 ],
-        [ 558, 100 ],
-        [ 558, 262 ],
-        [ 558, 272 ]
-      ]
-    },
-    {
-      "name": "LadderShortPrefab",
-      "Positions": [
-        [ 62, 290 ],
-        [ 62, 53 ],
-        [ 184, 290 ],
-        [ 184, 112 ],
-        [ 184, 53 ],
-        [ 309, 290 ],
-        [ 309, 112 ],
-        [ 309, 53 ],
-        [ 435, 290 ],
-        [ 435, 112 ],
-        [ 435, 53 ]
-      ]
-    },
-    {
-      "name": "TopBun",
-      "Positions": [ [ 245, 45 ] ]
-    },
-    {
-      "name": "Lettuce",
-      "Positions": [ [ 245, 145 ] ]
-    },
-    {
-      "name": "Tomato",
-      "Positions": [ [ 245, 215 ] ]
-    },
-    {
-      "name": "LowerBun",
-      "Positions": [ [ 245, 355 ] ]
-    },
-    {
-      "name": "BurgerCatcher",
-      "Positions": [ [ 245, 455 ] ]
-    },
-    {
-      "name": "EnemySpawnPoints",
-      "Positions": [
-        [ 0, 37 ],
-        [ 0, 348 ],
-        [ 640, 37 ],
-        [ 640, 348 ]
-      ]
-    },
-    {
-      "name": "ScoreUI",
-      "Positions": [
-        [ 50, 20 ]
-      ]
-    },
-    {
-      "name": "LiveUI",
-      "Positions": [
-        [ 200, 20 ]
-      ]
-    },
-    {
-      "name": "PepperUI",
-      "Positions": [
-        [ 350, 20 ]
-      ]
-    }
-  ]
- 
-  },
   {
-    "Enemies" : [
+    "Positions": [
       {
-        "name" : "worst",
-        "idx" : 1,
-        "maxLevel" : 4,
-        "KillScore" : 500
+        "name": "LadderLongPrefab",
+        "Positions": [
+          [ 62, 192 ],
+          [ 184, 192 ],
+          [ 309, 192 ],
+          [ 435, 192 ],
+          [ 558, 53 ],
+          [ 558, 100 ],
+          [ 558, 262 ],
+          [ 558, 272 ]
+        ]
       },
       {
-        "name" : "egg",
-        "idx" : 2,
-        "maxLevel" : 1,
-        "KillScore" : 600
+        "name": "LadderShortPrefab",
+        "Positions": [
+          [ 62, 290 ],
+          [ 62, 53 ],
+          [ 184, 290 ],
+          [ 184, 112 ],
+          [ 184, 53 ],
+          [ 309, 290 ],
+          [ 309, 112 ],
+          [ 309, 53 ],
+          [ 435, 290 ],
+          [ 435, 112 ],
+          [ 435, 53 ]
+        ]
+      },
+      {
+        "name": "PeterPepperPrefab",
+        "Positions": [ [ 100, 346 ] ]
+      },
+      {
+        "name": "PlatformLongPrefab",
+        "Positions": [
+          [ 55, 54 ],
+          [ 177, 54 ],
+          [ 336, 54 ],
+          [ 435, 54 ],
+          [ 55, 365 ],
+          [ 55, 296 ],
+          [ 55, 192 ],
+          [ 55, 123 ],
+          [ 300, 123 ],
+          [ 430, 123 ],
+          [ 426, 192 ],
+          [ 426, 261 ],
+          [ 308, 296 ],
+          [ 308, 227 ],
+          [ 211, 296 ],
+          [ 177, 227 ],
+          [ 177, 157 ],
+          [ 211, 365 ],
+          [ 280, 365 ],
+          [ 440, 365 ]
+        ]
+      },
+      {
+        "name": "TopBun",
+        "Positions": [ [ 245, 45 ] ]
+      },
+      {
+        "name": "Lettuce",
+        "Positions": [ [ 245, 145 ] ]
+      },
+      {
+        "name": "Tomato",
+        "Positions": [ [ 245, 215 ] ]
+      },
+      {
+        "name": "LowerBun",
+        "Positions": [ [ 245, 355 ] ]
+      },
+      {
+        "name": "BurgerCatcher",
+        "Positions": [ [ 245, 455 ] ]
+      },
+      {
+        "name": "EnemySpawnPoints",
+        "Positions": [
+          [ 0, 37 ],
+          [ 0, 348 ],
+          [ 640, 37 ],
+          [ 640, 348 ]
+        ],
+        "EnemyInfo": [
+            {
+              "idx": 1,
+              "maxLevel": 4,
+              "KillScore": 500
+            },
+            {
+              "idx": 2,
+              "maxLevel": 1,
+              "KillScore": 600
+            }
+          ]
+        
+      },
+      {
+        "name": "ScoreUI",
+        "Positions": [
+          [ 50, 20 ]
+        ]
+      },
+      {
+        "name": "LiveUI",
+        "Positions": [
+          [ 200, 20 ]
+        ]
+      },
+      {
+        "name": "PepperUI",
+        "Positions": [
+          [ 350, 20 ]
+        ]
       }
     ]
+
   }
 ]

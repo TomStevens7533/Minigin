@@ -17,7 +17,7 @@ namespace Burger {
 		AttackComponent() = default;
 		void Render() const override;
 		void Update() override;
-		void LateUpdate() override;
+		void LateUpdate() override; 
 		virtual void Start() override;
 		void Fire();
 

@@ -5,5 +5,7 @@ namespace Burger {
 	public:
 		void Initialize();
 		void CreateLevel1();
+	private:
+		void LoadLevel(const std::string& path);
 	};
 }

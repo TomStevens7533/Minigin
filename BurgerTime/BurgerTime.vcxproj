@@ -187,7 +187,7 @@
     <ClInclude Include="FInalBurgerComponent.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="MovementComponent.h" />
-    <ClInclude Include="Parser.h" />
+    <ClInclude Include="LevelCreator.h" />
     <ClInclude Include="PepperDisplayComponent.h" />
     <ClInclude Include="PetterPepperComponent.h" />
     <ClInclude Include="PrefabCreator.h" />
@@ -205,7 +205,7 @@
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
-    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="LevelCreator.cpp" />
     <ClCompile Include="PepperDisplayComponent.cpp" />
     <ClCompile Include="PetterPepperComponent.cpp" />
     <ClCompile Include="PrefabCreator.cpp" />

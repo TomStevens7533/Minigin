@@ -24,7 +24,7 @@
     <ClInclude Include="BurgerTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Parser.h">
+    <ClInclude Include="LevelCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BurgerStructs.h">
@@ -74,7 +74,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Parser.cpp">
+    <ClCompile Include="LevelCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PrefabCreator.cpp">
