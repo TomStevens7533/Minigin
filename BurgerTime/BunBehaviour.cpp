@@ -8,6 +8,8 @@
 #include "MathHelper.h"
 #include "EventType.h"
 #include "BurgerEvents.h"
+#include "BaseComponent.h"
+#include "AIBehaviourComponent.h"
 
 
 void Burger::BunBehaviour::Render() const
@@ -51,16 +53,21 @@ void Burger::BunBehaviour::Start()
 
 	colliderComponent->AddListener(colBack);
 }
-
-void Burger::BunBehaviour::SetFalling()
-{
-		
-
-}
-
 void Burger::BunBehaviour::OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo)
 {
+	dae::ColliderInfo info = *otherInfo;
+	if ((info.tag == "Enemy") && m_IsFalling == true) {
+		point enemyPos = point(info.m_ColliderRect.x, info.m_ColliderRect.y - info.m_ColliderRect.height);
 
+		if (enemyPos.y < GetAttachedGameObject()->GetTransform().GetPosition().y) {
+			//TODO DECOUPLE if possible
+			auto enemyBeh = otherInfo->m_pAttachedGameObject->GetComponent<AIBehaviourComponent>();
+			if (enemyBeh != nullptr) {
+				enemyBeh->SetFallState(m_Velocity);
+			}
+			m_EnemyOnBun = true;
+		}
+	}
 }
 
 void Burger::BunBehaviour::OnCollisionEnter(const std::shared_ptr<dae::ColliderInfo> otherInfo)
@@ -74,18 +81,19 @@ void Burger::BunBehaviour::OnCollisionEnter(const std::shared_ptr<dae::ColliderI
 		m_IsPeterInCollFirst = true;
 		m_EnterPeterPosX = info.m_ColliderRect.x;
 	}
-	else if ((info.tag == "BunEnd" || info.tag == "Floor") && m_IsFalling == true) {
+	else if (info.tag == "Floor" && m_IsFalling == true && m_EnemyOnBun == false) {
 		m_IsFalling = false;
 		m_ScoreToThrow += 50;
-		if (info.tag == "BunEnd") {
-			m_IsInFinalPos = true;
-			//Notify game sate observer
-		}
+	}
+	else if ((info.tag == "BunEnd") && m_IsFalling == true) {
+		m_IsFalling = false;
+		m_ScoreToThrow += 50;
 	}
 	else if (info.tag == "Bun" && m_IsFalling == false  ) {
 		m_IsFalling = true;
 	}
 	else if ((info.tag == "Enemy") && m_IsFalling == true) {
+		point enemyPos = point(info.m_ColliderRect.x, info.m_ColliderRect.y);
 
 		if (m_ScoreToThrow == 0)
 			m_ScoreToThrow = 500;
@@ -93,6 +101,14 @@ void Burger::BunBehaviour::OnCollisionEnter(const std::shared_ptr<dae::ColliderI
 			m_ScoreToThrow = m_ScoreToThrow * 2;
 	}
 	 
+	else if ((info.tag == "Enemy") && m_IsFalling == true) {
+		point enemyPos = point(info.m_ColliderRect.x, info.m_ColliderRect.y);
+
+		if (m_ScoreToThrow == 0)
+			m_ScoreToThrow = 500;
+		else
+			m_ScoreToThrow = m_ScoreToThrow * 2;
+	}
 }
 
 void Burger::BunBehaviour::OnCollisionExit(const std::shared_ptr<dae::ColliderInfo> otherInfo)

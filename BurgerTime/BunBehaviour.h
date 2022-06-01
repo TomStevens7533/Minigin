@@ -14,7 +14,6 @@ namespace Burger {
 		void LateUpdate() override;
 		virtual void Start() override;
 
-		void SetFalling();
 		bool GetFinalPos() { return m_IsInFinalPos; };
 		BunBehaviour(const BunBehaviour& other) = delete;
 		BunBehaviour(BunBehaviour&& other) = delete;
@@ -34,5 +33,6 @@ namespace Burger {
 		bool m_IsInFinalPos = false;
 		float m_EnterPeterPosX;
 		int m_ScoreToThrow = 0;
+		bool m_EnemyOnBun = false;
 	};
 }

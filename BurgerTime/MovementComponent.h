@@ -25,6 +25,9 @@ namespace Burger {
 		const inline bool GetIsMovingHorizontally() const { return m_IsMovingHorizontally; }
 
 		glm::vec2 GetCenterPos() const;
+		inline void SetNewVelocity(float newVelocity) {
+			m_Velocity = newVelocity;
+		}
 
 	private:
 		dae::HorizontalDirection m_CurrentHorizonDirection = dae::HorizontalDirection::NONE;

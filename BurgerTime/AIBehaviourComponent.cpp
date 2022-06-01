@@ -43,6 +43,7 @@ void Burger::AIBehaviourComponent::Start()
 
 	m_ColliderComponent->AddListener(colBack);
 
+	m_PlayerVec = GetAttachedGameObject()->GetScene()->GetGameObjectsWithTag(m_TagToFollow);
 }
 
 void Burger::AIBehaviourComponent::Render() const
@@ -52,9 +53,6 @@ void Burger::AIBehaviourComponent::Render() const
 
 void Burger::AIBehaviourComponent::Update()
 {
-	if(m_PlayerVec.size() == 0)
-		m_PlayerVec = GetAttachedGameObject()->GetScene()->GetGameObjectsWithTag(m_TagToFollow);
-
 	if (m_CurrState != nullptr) {
 		AIState* newState = m_CurrState->UpdateState(*this);
 		if (newState != nullptr)
@@ -90,14 +88,20 @@ void Burger::AIBehaviourComponent::SetVerticalDir(VerticalDirection vertical)
 
 }
 
+void Burger::AIBehaviourComponent::SetFallState(float velocity)
+{
+	m_HotDogMovement->SetNewVelocity(velocity);
+	m_CurrState->Exit(*this);
+	delete m_CurrState;
+	m_CurrState = new FallingState();
+	m_CurrState->Entry(*this);
+}
+
 glm::vec2 Burger::AIBehaviourComponent::GetClosestPlayerPos() const
 {
 	glm::vec2 closestPos;
 	glm::vec3 HotDoggPos = GetAttachedGameObject()->GetTransform().GetPosition();
 	float distance = FLT_MAX;
-	//if no player return
-
-
 	assert(m_PlayerVec.size() != 0);
 
 	//Find closest Player
@@ -171,8 +175,13 @@ void Burger::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<Collid
 			m_CurrState->Entry(*this);
 			//Death State
 		}
-
-
+	}
+	else if (otherInfo->tag == "BunEnd") {
+		m_IsDeath = true;
+		m_CurrState->Exit(*this);
+		delete m_CurrState;
+		m_CurrState = new DeathState();
+		m_CurrState->Entry(*this);
 	}
 
 }
@@ -195,16 +204,16 @@ void Burger::HorizontalState::Entry(AIBehaviourComponent& ai)
 		, glm::vec2(-1, 0), 50.f, "Floor", 1);
 
 	if (rightFloorHit == nullptr && ai.m_IsSpawning == false) {
-		std::cout << "Right floor hit\n";
 		ai.SetHorizontalDir(HorizontalDirection::LEFT);
 		ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
 		ai.m_SpriteComponent->SetFlipState(false);
+		return;
 	}
 	if (leftFloorHit == nullptr && ai.m_IsSpawning == false) {
-		std::cout << "left floor hit\n";
 		ai.SetHorizontalDir(HorizontalDirection::RIGHT);
 		ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
 		ai.m_SpriteComponent->SetFlipState(true);
+		return;
 	}
 
 
@@ -236,8 +245,9 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 		m_CurrentTime = 0.f;
 		if (MathHelper::RandomBool(0.65f))
 			return new VerticalState();
-		else
+		else 
 			return new HorizontalState();
+		
 
 	}
 	else {
@@ -251,7 +261,6 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 
 void Burger::HorizontalState::Exit(AIBehaviourComponent& ai)
 {
-	ai.SetHorizontalDir(HorizontalDirection::NONE);
 
 
 }
@@ -273,6 +282,7 @@ Burger::AIState* Burger::VerticalState::UpdateState(AIBehaviourComponent& ai)
 void Burger::VerticalState::Exit(AIBehaviourComponent& ai)
 {
 	ai.SetVerticalDir(VerticalDirection::NONE);
+	ai.SetHorizontalDir(HorizontalDirection::NONE);
 }
 
 
@@ -347,7 +357,6 @@ void Burger::HitState::Entry(AIBehaviourComponent& ai)
 Burger::AIState* Burger::HitState::UpdateState(AIBehaviourComponent&)
 {
 	if (m_CurrentTime > m_MinExitTime) {
-		std::cout << "Enemy hit\n";
 		m_CurrentTime = 0.f;
 		return new HorizontalState();
 	}
@@ -368,6 +377,7 @@ void Burger::HitState::Exit(AIBehaviourComponent& ai)
 void Burger::DeathState::Entry(AIBehaviourComponent& ai)
 {
 	ai.m_SpriteComponent->SetActiveAnimation("Death");
+	ai.m_ColliderComponent->DisableCollider();
 }
 
 
@@ -387,7 +397,18 @@ Burger::AIState* Burger::DeathState::UpdateState(AIBehaviourComponent& ai)
 	return nullptr;
 }
 
-void Burger::DeathState::Exit(AIBehaviourComponent&)
+void Burger::DeathState::Exit(AIBehaviourComponent& ai)
 {
+	ai.m_ColliderComponent->DisableCollider();
+}
 
+void Burger::FallingState::Entry(AIBehaviourComponent& ai)
+{
+	ai.SetHorizontalDir(HorizontalDirection::NONE);
+	ai.SetVerticalDir(VerticalDirection::DOWN);
+}
+
+Burger::AIState* Burger::FallingState::UpdateState(AIBehaviourComponent& ai)
+{
+	return nullptr;
 }

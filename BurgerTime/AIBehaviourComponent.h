@@ -26,7 +26,7 @@ namespace Burger {
 
 	class HorizontalState final : public AIState {
 	public:
-		virtual void Entry(AIBehaviourComponent& ai) override;;
+		virtual void Entry(AIBehaviourComponent& ai) override;
 		virtual AIState* UpdateState(AIBehaviourComponent& ai) override;
 		virtual void Exit(AIBehaviourComponent&) override;
 
@@ -70,9 +70,13 @@ namespace Burger {
 		float m_MinExitTime = 5.f;
 		float m_CurrentTime = 0.f;
 		bool m_IsSpawning = false;
-
 	};
-
+	class FallingState final : public AIState {
+	public:
+		virtual void Entry(AIBehaviourComponent&) override;
+		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
+		virtual void Exit(AIBehaviourComponent&) override {};
+	};
 
 	class GameObject;
 	class MovementComponent;
@@ -96,6 +100,7 @@ namespace Burger {
 
 		void SetHorizontalDir(dae::HorizontalDirection horizon);
 		void SetVerticalDir(dae::VerticalDirection vertical);
+		void SetFallState(float velocity);
 		glm::vec2 GetClosestPlayerPos() const;
 
 		friend class HorizontalState;
