@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 #include "Observer.h"
+#include "Subject.h"
 #include "BurgerStructs.h"
 #include <map>
 namespace Burger {
@@ -8,10 +9,10 @@ namespace Burger {
 
 	class GameObject;
 	class ScoreDisplayComponent;
-	class EnemySpawnComponent final : public dae::BaseComponent, public dae::Observer
+	class EnemySpawnComponent final : public dae::BaseComponent, public dae::Observer, public dae::Subject
 	{
 	public:
-		EnemySpawnComponent(std::vector<point>& vec, std::map<EnemyType, EnemySpawnInfo>& enemyMap, ScoreDisplayComponent* scoreDis);
+		EnemySpawnComponent(std::vector<point>& vec, std::map<EnemyType, EnemySpawnInfo>& enemyMap);
 		void Render() const override {};
 		void Update() override { };
 		void LateUpdate() override;
@@ -30,7 +31,6 @@ namespace Burger {
 	private:
 		std::vector<point> m_SpawnPoints;
 		std::map<EnemyType, EnemySpawnInfo> m_EnemyMap;
-		ScoreDisplayComponent* m_pScoreUI = nullptr;
 		float m_MaxSpawnTime = 0.f;
 		float m_RandSpawnTime = 0.5f;
 		float m_BaseSpawnTime = 0.5f;

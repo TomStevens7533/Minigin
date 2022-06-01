@@ -19,10 +19,11 @@ using namespace Burger;
 
 
 
-std::shared_ptr<dae::GameObject> PrefabCreator::CreateEnemySpawner(std::vector<point> spawnPoint, std::map<EnemyType, EnemySpawnInfo>& enemyMap, ScoreDisplayComponent* score)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreateEnemySpawner(std::vector<point> spawnPoint, std::map<EnemyType, EnemySpawnInfo>& enemyMap)
 {
 	auto spawner = std::make_shared<dae::GameObject>();
-	auto EnemyComp = std::make_shared<EnemySpawnComponent>(spawnPoint, enemyMap, score);
+	spawner->SetName("StageEnemySpawner");
+	auto EnemyComp = std::make_shared<EnemySpawnComponent>(spawnPoint, enemyMap);
 	spawner->AddComponent<EnemySpawnComponent>(EnemyComp);
 	return spawner;
 }
@@ -142,7 +143,6 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateLivesUI(point pos)
 
 int Burger::PrefabCreator::m_PlayerCount = 0;
 
-
 std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlatformPrefab(point pos, int tilling)
 {
 	
@@ -209,13 +209,13 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateLadderPrefab(point pos, in
 
 }
 // Burger pieces
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatTopBurgerPrefab(point pos, ScoreDisplayComponent* scoreDisplay)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatTopBurgerPrefab(point pos)
 {
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
+	goBurgerPiece->SetName("Bun");
 	auto TexComp = std::make_shared<dae::TextureComponent>("TopBun.png");
 	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
 	auto bunComp = std::make_shared<BunBehaviour>();
-	bunComp->addObserver(scoreDisplay);
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
 	goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
@@ -223,14 +223,14 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatTopBurgerPrefab(point pos, 
 	goBurgerPiece->SetPosition(pos.x, pos.y);
 	return goBurgerPiece;
 }
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatLettuceBurgerPrefab(point pos, ScoreDisplayComponent* scoreDisplay)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatLettuceBurgerPrefab(point pos)
 {
 
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
+	goBurgerPiece->SetName("Bun");
 	auto TexComp = std::make_shared<dae::TextureComponent>("Lettuce.png");
 	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
 	auto bunComp = std::make_shared<BunBehaviour>();
-	bunComp->addObserver(scoreDisplay);
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
 	goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
@@ -241,13 +241,13 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatLettuceBurgerPrefab(point p
 
 
 
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatTomatoBurgerPrefab(point pos, ScoreDisplayComponent* scoreDisplay)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatTomatoBurgerPrefab(point pos)
 {
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
+	goBurgerPiece->SetName("Bun");
 	auto TexComp = std::make_shared<dae::TextureComponent>("Tomato.png");
 	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
 	auto bunComp = std::make_shared<BunBehaviour>();
-	bunComp->addObserver(scoreDisplay);
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
 	goBurgerPiece->AddComponent<BunBehaviour>(bunComp);
@@ -255,13 +255,13 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatTomatoBurgerPrefab(point po
 	goBurgerPiece->SetPosition(pos.x, pos.y);
 	return goBurgerPiece;
 }
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatLowerBurgerPrefab(point pos, ScoreDisplayComponent* scoreDisplay)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatLowerBurgerPrefab(point pos)
 {
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
+	goBurgerPiece->SetName("Bun");
 	auto TexComp = std::make_shared<dae::TextureComponent>("LowerBun.png");
 	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
 	auto bunComp = std::make_shared<BunBehaviour>();
-	bunComp->addObserver(scoreDisplay);
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
 	goBurgerPiece->AddComponent<BunBehaviour>(bunComp);

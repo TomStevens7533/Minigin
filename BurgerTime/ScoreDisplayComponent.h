@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
 #include "Observer.h"
-#include <string>
 
 namespace Burger {
 

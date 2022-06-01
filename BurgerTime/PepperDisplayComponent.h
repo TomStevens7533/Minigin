@@ -17,7 +17,7 @@ namespace Burger {
 		virtual void onNotify(const BaseComponent* entity, int event, dae::EventArgs* args) override;
 
 	private:
-		int m_Lives{};
+		int m_PepperShots{};
 		std::string m_BaseString{};
 
 	};

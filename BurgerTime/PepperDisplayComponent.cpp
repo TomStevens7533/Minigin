@@ -7,11 +7,18 @@
 
 Burger::PepperDisplayComponent::PepperDisplayComponent(std::string newString) : m_BaseString{ newString }
 {
+
 }
 
 void Burger::PepperDisplayComponent::Start()
 {
 	m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString);
+
+	//Find all petter pepper go and add itself as observer
+	auto inf = GetAttachedGameObject()->GetScene()->GetGameObjectsWithTag("Player");
+
+	for (size_t i = 0; i < inf.size(); i++)
+		inf[i]->GetComponent<AttackComponent>()->addObserver(this);
 }
 
 void Burger::PepperDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* args)

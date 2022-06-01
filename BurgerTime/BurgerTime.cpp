@@ -123,28 +123,28 @@ void BurgerTime::CreateLevel1()
 		else if (mapElement.first == "TopBun") {
 			for (point elementPos : mapElement.second)
 			{
-				auto topBurger = PrefabCreator::CreatTopBurgerPrefab(elementPos, m_ScoreUI->GetComponent<ScoreDisplayComponent>());
+				auto topBurger = PrefabCreator::CreatTopBurgerPrefab(elementPos);
 				scene.Add(topBurger);
 			}
 		}
 		else if (mapElement.first == "Lettuce") {
 			for (point elementPos : mapElement.second)
 			{
-				auto letuce = PrefabCreator::CreatLettuceBurgerPrefab(elementPos, m_ScoreUI->GetComponent<ScoreDisplayComponent>());
+				auto letuce = PrefabCreator::CreatLettuceBurgerPrefab(elementPos);
 				scene.Add(letuce);
 			}
 		}
 		else if (mapElement.first == "Tomato") {
 			for (point elementPos : mapElement.second)
 			{
-				auto tomato = PrefabCreator::CreatTomatoBurgerPrefab(elementPos, m_ScoreUI->GetComponent<ScoreDisplayComponent>());
+				auto tomato = PrefabCreator::CreatTomatoBurgerPrefab(elementPos);
 				scene.Add(tomato);
 			}
 		}
 		else if (mapElement.first == "LowerBun") {
 			for (point elementPos : mapElement.second)
 			{
-				auto lowerbun = PrefabCreator::CreatLowerBurgerPrefab(elementPos, m_ScoreUI->GetComponent<ScoreDisplayComponent>());
+				auto lowerbun = PrefabCreator::CreatLowerBurgerPrefab(elementPos);
 				scene.Add(lowerbun);
 			}
 		}
@@ -157,7 +157,7 @@ void BurgerTime::CreateLevel1()
 		}
 		else if (mapElement.first == "EnemySpawnPoints") {
 
-			auto spawner = PrefabCreator::CreateEnemySpawner(mapElement.second, pr.GetEnemyInfo(), m_ScoreUI->GetComponent<ScoreDisplayComponent>());
+			auto spawner = PrefabCreator::CreateEnemySpawner(mapElement.second, pr.GetEnemyInfo());
 			scene.Add(spawner);
 		}
 

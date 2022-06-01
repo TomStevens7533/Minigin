@@ -15,8 +15,8 @@ void Burger::EnemySpawnComponent::Start()
 
 }
 
-Burger::EnemySpawnComponent::EnemySpawnComponent(std::vector<point>& vec, std::map<EnemyType, EnemySpawnInfo>& enemyMap , ScoreDisplayComponent* scoreDis)
-	: m_SpawnPoints{vec}, m_EnemyMap{enemyMap}, m_pScoreUI{scoreDis}
+Burger::EnemySpawnComponent::EnemySpawnComponent(std::vector<point>& vec, std::map<EnemyType, EnemySpawnInfo>& enemyMap)
+	: m_SpawnPoints{vec}, m_EnemyMap{enemyMap}
 {
 
 }
@@ -24,11 +24,15 @@ Burger::EnemySpawnComponent::EnemySpawnComponent(std::vector<point>& vec, std::m
 
 void Burger::EnemySpawnComponent::onNotify(const BaseComponent* entity, int event, dae::EventArgs* args /*= nullptr*/)
 {
-	EnemyArgs* eArgs;
+	
 	switch (event)
 	{
 	case PepperEvent::ENEMY_DIED:
-		eArgs = static_cast<EnemyArgs*>(args);
+	{
+		//Score to throw
+		ScoreArgs sArgs;
+
+		EnemyArgs* eArgs = static_cast<EnemyArgs*>(args);
 
 		//Get random extra spawn time
 		m_MaxSpawnTime += (static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / m_RandSpawnTime))) + m_BaseSpawnTime;
@@ -37,8 +41,13 @@ void Burger::EnemySpawnComponent::onNotify(const BaseComponent* entity, int even
 		for (auto& element : m_EnemyMap) {
 			if (element.first == eArgs->type) {
 				--element.second.CurrentInStage;
+				sArgs.scoreIncrease = element.second.Score;
 			}
 		}
+
+		//throw score
+		notify(this, PepperEvent::SCORE_INCREASE, &sArgs);
+	}
 		break;
 	default:
 		break;
@@ -85,9 +94,6 @@ void Burger::EnemySpawnComponent::SpawnEnemy()
 				auto enemyGO = GetEnemyPrefab(element.first, m_SpawnPoints[spawnPosIndex], element.second.Score);
 				auto comp = enemyGO->GetComponent<AIBehaviourComponent>();
 				comp->addObserver(this);
-				if (m_pScoreUI != nullptr) {
-					comp->addObserver(m_pScoreUI);
-				}
 				GetAttachedGameObject()->GetScene()->Add(enemyGO);
 				++element.second.CurrentInStage;
 				break;

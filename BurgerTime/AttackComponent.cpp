@@ -60,7 +60,6 @@ void Burger::AttackComponent::Fire()
 {
 	if (m_IsFiring == false && m_PepperShots > 0) {
 		--m_PepperShots;
-		std::cout << "Fire\n";
 		SpriteComponent* comp = GetAttachedGameObject()->GetComponent<SpriteComponent>();
 		bool isFlipped = comp->GetFLipState();
 		glm::vec2 animDim = comp->GetCurrentAnimDimensions();
