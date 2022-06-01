@@ -25,8 +25,6 @@ void Burger::FinalBurgerComponent::Start()
 	assert(m_BoxColliderComp);
 	dae::ColliderCallbacks colBack;
 	colBack.OverlapEnterFunc = std::bind(&FinalBurgerComponent::OnCollisionEnter, this, std::placeholders::_1);
-	colBack.OverlopExitFunc = std::bind(&FinalBurgerComponent::OnCollisionExit, this, std::placeholders::_1);
-	colBack.OverlapStayFunc = std::bind(&FinalBurgerComponent::OnCollisionStay, this, std::placeholders::_1);
 
 	m_BoxColliderComp->AddListener(colBack);
 }
@@ -36,10 +34,6 @@ Burger::FinalBurgerComponent::FinalBurgerComponent(int fullBurger) :m_MaxBunPiec
 
 }
 
-void Burger::FinalBurgerComponent::OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo)
-{
-
-}
 
 void Burger::FinalBurgerComponent::OnCollisionEnter(const std::shared_ptr<dae::ColliderInfo> otherInfo)
 {
@@ -56,8 +50,4 @@ void Burger::FinalBurgerComponent::OnCollisionEnter(const std::shared_ptr<dae::C
 	}
 }
 
-void Burger::FinalBurgerComponent::OnCollisionExit(const std::shared_ptr<dae::ColliderInfo> otherInfo)
-{
-
-}
 
