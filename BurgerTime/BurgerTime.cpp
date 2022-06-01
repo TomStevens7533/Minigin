@@ -43,6 +43,10 @@ void BurgerTime::LoadLevel(const std::string& path)
 	{
 		std::cerr << "PARSER EXCEPTION: " << e.what() << std::endl;
 	}
+	catch (const std::bad_cast& e)
+	{
+		std::cout << e.what() << '\n';
+	}
 	scene.Start();
 
 }
