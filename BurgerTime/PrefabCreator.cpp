@@ -84,7 +84,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatWorstEnemyrPrefab(point pos
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
 	auto movementComp = std::make_shared<MovementComponent>(40.f);
-	auto hotdogg = std::make_shared<AIBehaviourComponent>("Player", EnemyType::EGG, m_Score);
+	auto hotdogg = std::make_shared<AIBehaviourComponent>("Player", EnemyType::WORST, m_Score);
 
 
 	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);
