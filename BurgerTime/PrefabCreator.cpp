@@ -163,6 +163,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlatformPrefab(point pos, 
 std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos)
 {
 	auto PeterPepper = std::make_shared<dae::GameObject>();
+	PeterPepper->SetName("Player");
 	auto inputComponent = std::make_shared<dae::InputComponent>(m_PlayerCount);
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto peterPepperComp = std::make_shared<PetterPepperComponent>();

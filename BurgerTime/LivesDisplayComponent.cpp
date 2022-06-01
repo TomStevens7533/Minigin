@@ -16,10 +16,13 @@ Burger::LivesDisplayComponent::LivesDisplayComponent(std::string newString) : m_
 void Burger::LivesDisplayComponent::Start()
 {
 	//Find all petter pepper go and add itself as observer
-	/*auto inf = GetAttachedGameObject()->GetScene()->GetAllCollidersWithTag("Pepper");
+	auto inf = GetAttachedGameObject()->GetScene()->GetGameObjects("Player");
 
 	for (size_t i = 0; i < inf.size(); i++)
-		inf[i]->m_pAttachedGameObject->GetComponent<PetterPepperComponent>();*/
+		inf[i]->GetComponent<PetterPepperComponent>()->addObserver(this);
+
+	//set text
+	m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(m_CurrentLives));
 }
 
 void Burger::LivesDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* args)
@@ -27,7 +30,7 @@ void Burger::LivesDisplayComponent::onNotify(const BaseComponent*, int event, da
 	//GetComponent
 	switch (event)
 	{
-	case Burger::PepperEvent::SCORE_INCREASE:
+	case Burger::PepperEvent::HEALTH_DECREASE:
 		--m_CurrentLives;
 		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(m_CurrentLives));
 		break;

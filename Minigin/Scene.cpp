@@ -49,6 +49,18 @@ void dae::Scene::Start()
 }
 
 
+const std::vector<std::shared_ptr<GameObject>> Scene::GetGameObjects(std::string lookupName)
+{
+	std::vector<std::shared_ptr<GameObject>> lookupVec;
+	for (auto& element :  m_Objects)
+	{
+		if (element->GetName() == lookupName) {
+			lookupVec.push_back(element);
+		}
+	}
+	return lookupVec;
+}
+
 std::shared_ptr<dae::ColliderInfo> Scene::SceneRectcast(Rectf pos, glm::vec2 dir, float length, std::string tag, int steps /*= 10*/, const std::shared_ptr<ColliderInfo> colliderToIgnore /*= std::make_shared<ColliderInfo>()*/)
 {
 	return m_SceneGrid.RectCast(pos, dir, length, colliderToIgnore, tag, steps);

@@ -1,5 +1,4 @@
 #pragma once
-#include "SceneObject.h"
 #include "Singleton.h"
 #include <map>
 #include "BaseComponent.h"

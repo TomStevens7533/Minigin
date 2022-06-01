@@ -1,7 +1,7 @@
 #pragma once
 #include "Transform.h"
-#include "SceneObject.h"
 #include "EntityManager.h"
+#include "Scene.h"
 
 namespace dae
 {
@@ -11,11 +11,12 @@ namespace dae
 	class GameObject final
 	{
 	public:
-
 		void Start();
 		void Update();
 		void LateUpdate();
 		void Render() const;
+		void SetName(std::string name);
+		inline std::string GetName() { return m_GameobjectName; }
 
 		template<class TComponent>
 		bool AddComponent(std::shared_ptr<BaseComponent> component) {
@@ -78,7 +79,7 @@ namespace dae
 
 		bool m_DestoryFlag = false;
 		bool m_IsInitialized = false;
-		std::string name{};
+		std::string m_GameobjectName{};
 		Scene* m_CurrentScene = nullptr;
 
 		

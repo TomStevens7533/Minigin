@@ -30,6 +30,8 @@ namespace dae
 		std::shared_ptr<ColliderInfo> SceneRectcast(Rectf pos, glm::vec2 dir, float length, std::string tag, int steps = 10, const std::shared_ptr<ColliderInfo> colliderToIgnore = std::make_shared<ColliderInfo>());
 
 		const std::vector < const dae::ColliderInfo* >  GetAllCollidersWithTag(std::string tag) const;
+		
+		const std::vector<std::shared_ptr<GameObject>> GetGameObjects(std::string lookupName);
 
 		~Scene();
 		Scene(const Scene& other) = delete;

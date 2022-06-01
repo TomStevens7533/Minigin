@@ -4,8 +4,6 @@
 #include "InputComponent.h"
 #include "GameObject.h"
 #include "Command.cpp"
-#include "SceneObject.h"
-#include "Scene.h"
 #include "AttackComponent.h"
 #include "BoxColliderComponent.h"
 #include "structs.h"

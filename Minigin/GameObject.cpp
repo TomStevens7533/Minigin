@@ -136,6 +136,12 @@ namespace dae {
 		}
 
 	}
+
+	void GameObject::SetName(std::string name)
+	{
+		m_GameobjectName = name;
+	}
+
 	void GameObject::SetPosition(float x, float y)
 	{
 		m_Transform.SetPosition(x, y, 0.0f);
