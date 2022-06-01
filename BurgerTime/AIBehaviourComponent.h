@@ -116,7 +116,7 @@ namespace Burger {
 
 	private:
 		AIState* m_CurrState = nullptr;
-		std::vector <std::shared_ptr<dae::GameObject>> m_PlayerVec;
+		std::vector <dae::GameObject*> m_PlayerVec;
 		std::string m_TagToFollow;
 		MovementComponent* m_HotDogMovement = nullptr;
 		dae::SpriteComponent* m_SpriteComponent = nullptr;

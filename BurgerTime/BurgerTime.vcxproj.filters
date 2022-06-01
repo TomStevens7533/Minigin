@@ -69,6 +69,9 @@
     <ClInclude Include="FInalBurgerComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BurgerTimeManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -117,6 +120,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="FInalBurgerComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BurgerTimeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,6 +6,7 @@
 #include "BurgerEvents.h"
 #include "Scene.h"
 #include "PetterPepperComponent.h"
+#include "BurgerTimeManager.h"
 
 Burger::LivesDisplayComponent::LivesDisplayComponent(std::string newString) : m_BaseString{newString} 
 {
@@ -33,6 +34,7 @@ void Burger::LivesDisplayComponent::onNotify(const BaseComponent*, int event, da
 	case Burger::PepperEvent::HEALTH_DECREASE:
 		--m_CurrentLives;
 		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(m_CurrentLives));
+		GameManager::GetInstance().ResetCurrentLevel();
 		break;
 	}
 }

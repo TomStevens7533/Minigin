@@ -4,7 +4,6 @@
 
 using namespace dae;
 
-unsigned int Scene::m_IdCounter = 0;
 
 Scene::Scene(const std::string& name) : m_Name(name) {}
 
@@ -49,13 +48,13 @@ void dae::Scene::Start()
 }
 
 
-const std::vector<std::shared_ptr<GameObject>> Scene::GetGameObjectsWithTag(std::string lookupName)
+const std::vector<GameObject*> Scene::GetGameObjectsWithTag(std::string lookupName)
 {
-	std::vector<std::shared_ptr<GameObject>> lookupVec;
+	std::vector<GameObject*> lookupVec;
 	for (auto& element :  m_Objects)
 	{
 		if (element->GetName() == lookupName) {
-			lookupVec.push_back(element);
+			lookupVec.push_back(element.get());
 		}
 	}
 	return lookupVec;

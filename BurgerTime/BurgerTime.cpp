@@ -12,32 +12,36 @@
 #include "PepperDisplayComponent.h"
 #include "ScoreDisplayComponent.h"
 #include "LevelCreator.h"
+#include "BurgerTimeManager.h"
 
 using namespace Burger;
 void BurgerTime::Initialize()
 {
 	// tell the resource manager where he can find the game data
 	dae::ResourceManager::GetInstance().Init("Resources/");
-
 	//SEED
 	srand(static_cast<int>(time(NULL)));
 
 	CreateLevel1();
+	GameManager::GetInstance().SetBurgerGame(this);
 }
 
 void BurgerTime::CreateLevel1()
 {
-	LoadLevel("Resources/Level_1.json");
+	dae::SceneManager::GetInstance().DestroyScene("Level1");
 	
+	m_currentLevelIdx = 1;
+	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene("Level1");
+	CreateLevel("Resources/Level_1.json", &scene);
+	//dae::SceneManager::GetInstance().QueueNewScene(&scene);
+	scene.Start();
 }
 
-void BurgerTime::LoadLevel(const std::string& path)
+void BurgerTime::CreateLevel(const std::string& path, dae::Scene* currScene)
 {
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
-
 	try
 	{
-		LevelCreator::CreateLevel(path, &scene);
+		LevelCreator::CreateLevel(path, currScene);
 	}
 	catch (const ParserException& e)
 	{
@@ -47,7 +51,23 @@ void BurgerTime::LoadLevel(const std::string& path)
 	{
 		std::cout << e.what() << '\n';
 	}
-	scene.Start();
 
+}
+
+unsigned int BurgerTime::GetCurrentStage()
+{
+	return m_currentLevelIdx;
+}
+
+void BurgerTime::LoadStage(unsigned int level)
+{
+	switch (level)
+	{
+	case 1:
+		CreateLevel1();
+		break;
+	default:
+		break;
+	}
 }
 

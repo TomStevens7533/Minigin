@@ -9,13 +9,15 @@ namespace dae
 	public:
 		Scene& CreateScene(const std::string& name);
 		std::shared_ptr<dae::Scene> GetScene(const std::string& name);
+		void DestroyScene(const std::string& name);
+
 
 
 		void Update();
 		void LateUpdate();
 		void Render();
 
-		void SetActiveScene(const std::string& name);
+		//void SetActiveScene(const std::string& name);
 
 	private:
 		friend class Singleton<SceneManager>;

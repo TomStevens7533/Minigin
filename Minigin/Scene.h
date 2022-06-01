@@ -29,7 +29,10 @@ namespace dae
 		std::shared_ptr<ColliderInfo> SceneRaycast(glm::vec2 pos, glm::vec2 dir, float length, std::string tag, int steps = 10, const std::shared_ptr<ColliderInfo> colliderToIgnore = std::make_shared<ColliderInfo>());
 		std::shared_ptr<ColliderInfo> SceneRectcast(Rectf pos, glm::vec2 dir, float length, std::string tag, int steps = 10, const std::shared_ptr<ColliderInfo> colliderToIgnore = std::make_shared<ColliderInfo>());
 
-		const std::vector<std::shared_ptr<GameObject>> GetGameObjectsWithTag(std::string lookupName);
+		const std::vector<GameObject*> GetGameObjectsWithTag(std::string lookupName);
+		inline void SetDestoryFlag() { m_DestroyNeeded = true; }
+		inline bool GetDestroyFlag() const { return m_DestroyNeeded; }
+
 
 		~Scene();
 		Scene(const Scene& other) = delete;
@@ -44,8 +47,8 @@ namespace dae
 		std::string m_Name;
 		std::vector < std::shared_ptr<GameObject>> m_Objects{};
 		SceneColliders m_SceneGrid;
-		static unsigned int m_IdCounter;
 		bool m_IsStarted = false;
+		bool m_DestroyNeeded = false;
 	};
 
 }
