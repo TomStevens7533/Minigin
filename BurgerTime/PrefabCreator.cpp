@@ -1,5 +1,4 @@
 #include "PrefabCreator.h"
-#include "HealthComponent.h"
 #include "InputComponent.h"
 #include "SpriteComponent.h"
 #include "PetterPepperComponent.h"
@@ -149,7 +148,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlatformPrefab(point pos, 
 	
 	auto goFloor = std::make_shared<dae::GameObject>();
 	auto texComp = std::make_shared<dae::TextureComponent>("Walkable.png");
-	auto goBoxColl = std::make_shared<dae::BoxColliderComponent>(texComp->GetDimensions(), "Floor", 2);
+	auto goBoxColl = std::make_shared<dae::BoxColliderComponent>("Floor", 2);
 
 	goFloor->AddComponent<dae::TextureComponent>(texComp);
 	goFloor->AddComponent<BoxColliderComponent>(goBoxColl);
@@ -161,10 +160,9 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlatformPrefab(point pos, 
 
 
 
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos, LivesDisplayComponent* liveComp, PepperDisplayComponent* peppercomp)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos)
 {
 	auto PeterPepper = std::make_shared<dae::GameObject>();
-	auto healthComponent = std::make_shared<HealthComponent>();
 	auto inputComponent = std::make_shared<dae::InputComponent>(m_PlayerCount);
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto peterPepperComp = std::make_shared<PetterPepperComponent>();
@@ -178,12 +176,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos, Li
 	spriteComponent->AddAnimation("Death", 6, 1, 9, 2);
 
 
-
-	attackComp->addObserver(peppercomp);
-	healthComponent->addObserver(liveComp);
-
 	PeterPepper->AddComponent<AttackComponent>(attackComp);
-	PeterPepper->AddComponent<HealthComponent>(healthComponent);
 	PeterPepper->AddComponent<dae::InputComponent>(inputComponent);
 	PeterPepper->AddComponent<dae::SpriteComponent>(spriteComponent);
 	PeterPepper->AddComponent<PetterPepperComponent>(peterPepperComp);
@@ -202,7 +195,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateLadderPrefab(point pos, in
 {
 	auto goLadder = std::make_shared<dae::GameObject>();
 	auto texComp = std::make_shared<dae::TextureComponent>("ladder.png");
-	auto goBoxColl = std::make_shared<dae::BoxColliderComponent>(texComp->GetDimensions(), "Ladder", 6);
+	auto goBoxColl = std::make_shared<dae::BoxColliderComponent>("Ladder", 6);
 
 
 	goLadder->AddComponent<dae::TextureComponent>(texComp);

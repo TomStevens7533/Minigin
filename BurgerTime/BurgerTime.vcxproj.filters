@@ -33,9 +33,6 @@
     <ClInclude Include="PrefabCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HealthComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="LivesDisplayComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -99,9 +96,6 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="HealthComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="LivesDisplayComponent.cpp">

@@ -13,7 +13,7 @@ Scene::~Scene() {
 	std::cout << "fered\n";
 };
 
-void Scene::Add(const std::shared_ptr<SceneObject>& object)
+void Scene::Add(const std::shared_ptr<GameObject>& object)
 {
 	m_Objects.push_back(object);
 	object->SetScene(this);
@@ -63,7 +63,7 @@ bool Scene::RemoveCollider(std::shared_ptr<ColliderInfo> colInfo)
 	return false;
 }
 
-void Scene::DestroySceneObject(std::shared_ptr<SceneObject> go)
+void Scene::DestroySceneObject(std::shared_ptr<GameObject> go)
 {
 	auto it = std::find(m_Objects.begin(), m_Objects.end(), go);
 	m_Objects.erase(it);

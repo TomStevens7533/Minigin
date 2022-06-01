@@ -8,7 +8,6 @@
 #include "TextureComponent.h"
 #include "GameObject.h"
 #include "PetterPepperComponent.h"
-#include "HealthComponent.h"
 #include "AttackComponent.h"
 #include "LivesDisplayComponent.h"
 #include "PepperDisplayComponent.h"
@@ -85,7 +84,7 @@ void BurgerTime::CreateLevel1()
 		if (mapElement.first == "PeterPepperPrefab") {
 			for (point elementPos : mapElement.second)
 			{
-				auto pepper = PrefabCreator::CreatePlayerPrefab(elementPos, m_HealthUI->GetComponent<LivesDisplayComponent>(), m_PepperUI->GetComponent<PepperDisplayComponent>());
+				auto pepper = PrefabCreator::CreatePlayerPrefab(elementPos);
 				//Set Score UI
 
 				scene.Add(pepper);

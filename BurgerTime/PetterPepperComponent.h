@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
-#include "Observer.h"
+#include "Subject.h"
 
 namespace dae {
 	class InputComponent;
@@ -15,7 +15,7 @@ namespace Burger {
 	//
 
 
-	class PetterPepperComponent final : public dae::BaseComponent
+	class PetterPepperComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
 		virtual void Start() override;
@@ -59,7 +59,7 @@ namespace Burger {
 		bool m_IsOnFloorLeft = false;
 
 		bool m_IsHit = false;
-
+		bool m_IsDeath = false;
 	};
 
 }

@@ -8,14 +8,14 @@ namespace dae
 	class Texture2D;
 
 	// todo: this should become final.
-	class GameObject final : public SceneObject
+	class GameObject final
 	{
 	public:
 
-		void Start() override;
-		void Update() override;
-		void LateUpdate() override;
-		void Render() const override;
+		void Start();
+		void Update();
+		void LateUpdate();
+		void Render() const;
 
 		template<class TComponent>
 		bool AddComponent(std::shared_ptr<BaseComponent> component) {
@@ -57,7 +57,13 @@ namespace dae
 		inline Transform& GetTransform() { return m_Transform; }
 		glm::vec3 RelativePositionToParent();
 
+		//functionality
+		void SetScene(Scene* currsScene) { m_CurrentScene = currsScene; };
+		Scene* GetScene() { return m_CurrentScene; };
 
+		bool GetDestroyFlag() { return m_DestoryFlag; }
+		void SetDestroyFlag(bool isDestroy) { m_DestoryFlag = isDestroy; }
+		bool GetInitState() { return m_IsInitialized; }
 
 	private:
 		Transform m_Transform;
@@ -69,6 +75,12 @@ namespace dae
 		int m_PositionFromRoot = 0;
 		//Entities
 		EntityManager m_EntityManager;
+
+		bool m_DestoryFlag = false;
+		bool m_IsInitialized = false;
+		std::string name{};
+		Scene* m_CurrentScene = nullptr;
+
 		
 	};
 }

@@ -6,7 +6,9 @@
 #include "TextureComponent.h"
 #include "Renderer.h"
 
-void dae::BoxColliderComponent::LateUpdate()
+
+dae::BoxColliderComponent::BoxColliderComponent(std::string tag, int precision /*= 0*/) :
+	m_ColliderTag{ tag }, m_Precision{ precision }
 {
 
 }
@@ -39,8 +41,6 @@ void dae::BoxColliderComponent::Start()
 	info.OverlapStayFunc = std::bind(&BoxColliderComponent::OnOverlapStay, this, std::placeholders::_1);
 	info.OverlopExitFunc = std::bind(&BoxColliderComponent::OnOverlaExit, this, std::placeholders::_1);
 
-
-	ColliderCallbacks callbacks;
 
 
 	glm::vec3 goPos = GetAttachedGameObject()->RelativePositionToParent();
@@ -131,13 +131,6 @@ void dae::BoxColliderComponent::OnOverlaExit(const std::shared_ptr<ColliderInfo>
 			m_RegisteredListeners[i].OverlopExitFunc(otherCollider);
 	}
 }
-
-dae::BoxColliderComponent::BoxColliderComponent(int width, int height, std::string tag, int precision)
-	: m_Dimensions{width, height}, m_ColliderTag{ tag }, m_Precision{precision}
-{
-
-}
-
 dae::BoxColliderComponent::~BoxColliderComponent()
 {
 	GetAttachedGameObject()->GetScene()->RemoveCollider(m_pColliderInfo);
@@ -171,14 +164,3 @@ void dae::BoxColliderComponent::Update()
 	}
 }
 
-dae::BoxColliderComponent::BoxColliderComponent(std::string tag, int precision /*= 0*/) : 
-	m_ColliderTag{ tag }, m_Precision{ precision }
-{
-
-}
-
-dae::BoxColliderComponent::BoxColliderComponent(glm::vec2 dimensions, std::string tag, int precision)
-	: m_Dimensions{dimensions}, m_ColliderTag{tag}, m_Precision{ precision }
-{
-
-}

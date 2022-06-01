@@ -9,7 +9,7 @@ namespace Burger {
 		LivesDisplayComponent(std::string newString);
 		~LivesDisplayComponent() = default;
 
-		virtual void Start() override{};
+		virtual void Start() override;
 		virtual void Update() override {};
 		virtual void LateUpdate() override {};
 		virtual void Render() const override {};
@@ -17,5 +17,6 @@ namespace Burger {
 
 	private:
 		std::string m_BaseString{};
+		int m_CurrentLives = 5;
 	};
 }

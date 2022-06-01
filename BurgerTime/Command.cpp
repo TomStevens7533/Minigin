@@ -1,6 +1,5 @@
 #include "MiniginPCH.h"
 
-#include "HealthComponent.h"
 #include "MovementComponent.h"
 #include "SpriteComponent.h"
 #include "GameObject.h"

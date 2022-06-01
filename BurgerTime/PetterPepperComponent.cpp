@@ -11,6 +11,7 @@
 #include "structs.h"
 #include "MathHelper.h"
 #include "MovementComponent.h"
+#include "EventType.h"
 
 namespace Burger {
 
@@ -67,10 +68,9 @@ namespace Burger {
 		m_IsOnFloorRight = false;
 		m_IsOnFloorLeft = false;
 
-		if (m_IsHit && m_SpriteComponent->IsActiveInFinalFrame()) {
-			auto healthComp = GetAttachedGameObject()->GetComponent<HealthComponent>();
-			if (healthComp != nullptr)
-				healthComp->DecreaseHealth(1);
+		if (m_IsHit && m_SpriteComponent->IsActiveInFinalFrame()) {		
+
+			notify(this, PepperEvent::HEALTH_DECREASE);
 			m_IsHit = false;
 		}
 	}
