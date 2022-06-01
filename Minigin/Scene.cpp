@@ -49,7 +49,7 @@ void dae::Scene::Start()
 }
 
 
-const std::vector<std::shared_ptr<GameObject>> Scene::GetGameObjects(std::string lookupName)
+const std::vector<std::shared_ptr<GameObject>> Scene::GetGameObjectsWithTag(std::string lookupName)
 {
 	std::vector<std::shared_ptr<GameObject>> lookupVec;
 	for (auto& element :  m_Objects)
@@ -86,12 +86,6 @@ std::shared_ptr<ColliderInfo> Scene::SceneRaycast(glm::vec2 pos, glm::vec2 dir, 
 	return m_SceneGrid.SceneRaycast(pos, dir, length, colliderToIgnore, tag, steps);
 
 }
-
-const std::vector < const dae::ColliderInfo* > Scene::GetAllCollidersWithTag(std::string tag) const
-{
-	return m_SceneGrid.GetAllCollidersWithTag(tag);
-}
-
 
 void Scene::Render() const
 {

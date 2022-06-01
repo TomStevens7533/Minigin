@@ -74,6 +74,7 @@ namespace Burger {
 	};
 
 
+	class GameObject;
 	class MovementComponent;
 	class AIBehaviourComponent final : public dae::BaseComponent, public dae::Subject
 	{
@@ -110,7 +111,7 @@ namespace Burger {
 
 	private:
 		AIState* m_CurrState = nullptr;
-		std::vector < const dae::ColliderInfo* > m_PlayerVec;
+		std::vector <std::shared_ptr<dae::GameObject>> m_PlayerVec;
 		std::string m_TagToFollow;
 		MovementComponent* m_HotDogMovement = nullptr;
 		dae::SpriteComponent* m_SpriteComponent = nullptr;

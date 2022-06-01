@@ -16,7 +16,7 @@ Burger::LivesDisplayComponent::LivesDisplayComponent(std::string newString) : m_
 void Burger::LivesDisplayComponent::Start()
 {
 	//Find all petter pepper go and add itself as observer
-	auto inf = GetAttachedGameObject()->GetScene()->GetGameObjects("Player");
+	auto inf = GetAttachedGameObject()->GetScene()->GetGameObjectsWithTag("Player");
 
 	for (size_t i = 0; i < inf.size(); i++)
 		inf[i]->GetComponent<PetterPepperComponent>()->addObserver(this);

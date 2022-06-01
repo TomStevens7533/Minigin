@@ -53,7 +53,7 @@ void Burger::AIBehaviourComponent::Render() const
 void Burger::AIBehaviourComponent::Update()
 {
 	if(m_PlayerVec.size() == 0)
-		m_PlayerVec = GetAttachedGameObject()->GetScene()->GetAllCollidersWithTag(m_TagToFollow);
+		m_PlayerVec = GetAttachedGameObject()->GetScene()->GetGameObjectsWithTag(m_TagToFollow);
 
 	if (m_CurrState != nullptr) {
 		AIState* newState = m_CurrState->UpdateState(*this);
@@ -103,13 +103,14 @@ glm::vec2 Burger::AIBehaviourComponent::GetClosestPlayerPos() const
 	//Find closest Player
 	for (size_t i = 0; i < m_PlayerVec.size(); i++)
 	{
+		glm::vec3 playerPos = m_PlayerVec[i]->GetTransform().GetPosition();
 		//Calculate distance with center point of player
-		float xDiff = HotDoggPos.x - (m_PlayerVec[i]->m_ColliderRect.x + ((m_PlayerVec[i]->m_ColliderRect.width / 2.f)));
-		float yDiff = HotDoggPos.y - (m_PlayerVec[i]->m_ColliderRect.y + (m_PlayerVec[i]->m_ColliderRect.height / 2.f));
+		float xDiff = HotDoggPos.x - (playerPos.x);
+		float yDiff = HotDoggPos.y - (playerPos.y);
 		float currDistance = std::sqrt(xDiff * xDiff + yDiff * yDiff);
 		if (currDistance < distance) {
-			closestPos.x = m_PlayerVec[i]->m_ColliderRect.x + ((m_PlayerVec[i]->m_ColliderRect.width / 2.f));
-			closestPos.y = m_PlayerVec[i]->m_ColliderRect.y + (m_PlayerVec[i]->m_ColliderRect.height);
+			closestPos.x = playerPos.x;
+			closestPos.y = playerPos.y;
 			currDistance = distance;
 		}
 	}
