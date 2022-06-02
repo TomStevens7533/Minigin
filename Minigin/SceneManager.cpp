@@ -31,6 +31,16 @@ void dae::SceneManager::Render()
 	}
 }
 
+void dae::SceneManager::DestroyFlaggedScenes()
+{
+	for (size_t i = 0; i < m_Scenes.size(); i++)
+	{
+		if (m_Scenes[i]->GetDestroyFlag()) {
+			m_Scenes.erase(std::remove(m_Scenes.begin(), m_Scenes.end(), m_Scenes[i]), m_Scenes.end());
+		}
+	}
+}
+
 //void dae::SceneManager::SetActiveScene(const std::string& name)
 //{
 //	m_ActiveScene = *std::find_if(m_Scenes.begin(), m_Scenes.end(), [&name](std::shared_ptr<Scene>& currentLookupScene)

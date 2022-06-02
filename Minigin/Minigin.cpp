@@ -368,7 +368,7 @@ void dae::Minigin::Run()
 			}
 			renderer.Render();
 
-
+			sceneManager.DestroyFlaggedScenes();
 		}
 	}
 

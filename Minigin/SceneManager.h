@@ -17,6 +17,7 @@ namespace dae
 		void LateUpdate();
 		void Render();
 
+		void DestroyFlaggedScenes();
 		//void SetActiveScene(const std::string& name);
 
 	private:
