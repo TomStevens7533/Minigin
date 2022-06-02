@@ -348,6 +348,8 @@ void Burger::HitState::Entry(AIBehaviourComponent& ai)
 
 	//Disable enemy collider
 	ai.m_ColliderComponent->DisableCollider();
+	ai.SetVerticalDir(VerticalDirection::NONE);
+	ai.SetHorizontalDir(HorizontalDirection::NONE);
 }
 
 
@@ -378,6 +380,8 @@ void Burger::DeathState::Entry(AIBehaviourComponent& ai)
 {
 	ai.m_SpriteComponent->SetActiveAnimation("Death");
 	ai.m_ColliderComponent->DisableCollider();
+	ai.SetVerticalDir(VerticalDirection::NONE);
+	ai.SetHorizontalDir(HorizontalDirection::NONE);
 }
 
 

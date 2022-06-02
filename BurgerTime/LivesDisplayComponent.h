@@ -17,6 +17,5 @@ namespace Burger {
 
 	private:
 		std::string m_BaseString{};
-		int m_CurrentLives = 5;
 	};
 }

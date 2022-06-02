@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "DeltaTime.h"
 #include "EventType.h"
+#include "BurgerTimeManager.h"
 
 int Burger::AttackComponent::m_PepperShots = 5;
 
@@ -59,7 +60,7 @@ void Burger::AttackComponent::Start()
 void Burger::AttackComponent::Fire()
 {
 	if (m_IsFiring == false && m_PepperShots > 0) {
-		--m_PepperShots;
+		GameManager::GetInstance().SubtractPepperShots();
 		SpriteComponent* comp = GetAttachedGameObject()->GetComponent<SpriteComponent>();
 		bool isFlipped = comp->GetFLipState();
 		glm::vec2 animDim = comp->GetCurrentAnimDimensions();

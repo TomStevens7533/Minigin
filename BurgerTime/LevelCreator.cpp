@@ -9,6 +9,7 @@
 #include <vcruntime_typeinfo.h>
 #include "Scene.h"
 #include "PrefabCreator.h"
+#include "BurgerTimeManager.h"
 
 
 using namespace rapidjson;
@@ -36,7 +37,26 @@ void Burger::LevelCreator::CreateLevel(std::string path, dae::Scene* currSceneTo
 
 		for (auto memIt = ElementObj.MemberBegin(); memIt != ElementObj.MemberEnd(); memIt++)
 		{
-			if (memIt->name == "Positions") {
+			if (memIt->name == "LevelInfo") {
+				LevelInfo currLevelInfo;
+				GenericObject obj = memIt->value.GetObj();
+				for (auto levelIt = obj.MemberBegin(); levelIt != obj.MemberEnd(); levelIt++)
+				{
+					if (levelIt->name == "MaxLives") {
+						currLevelInfo.MaxLives = levelIt->value.GetInt();
+					}
+					else if (levelIt->name == "MaxPepper") {
+						currLevelInfo.MaxPepper = levelIt->value.GetInt();
+					}
+					else if (levelIt->name == "BunsToWin") {
+						currLevelInfo.BunWinCoun = levelIt->value.GetInt();
+					}
+				}
+				GameManager::GetInstance().SetNewLevelInfo(currLevelInfo);
+
+			}
+
+			else if (memIt->name == "Positions") {
 				GenericArray posArray = memIt->value.GetArray();
 				for (SizeType x = 0; x < posArray.Size(); x++)
 				{
@@ -46,6 +66,7 @@ void Burger::LevelCreator::CreateLevel(std::string path, dae::Scene* currSceneTo
 
 					for (auto memIt = obj.MemberBegin(); memIt != obj.MemberEnd(); memIt++)
 					{
+						
 
 						if (memIt->name == "Positions") {
 							//Read in pos

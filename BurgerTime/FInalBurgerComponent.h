@@ -20,9 +20,7 @@ namespace Burger {
 		FinalBurgerComponent& operator=(const FinalBurgerComponent& other) = delete;
 		FinalBurgerComponent& operator=(FinalBurgerComponent&& other) = delete;
 
-		void OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo);
 		void OnCollisionEnter(const std::shared_ptr<dae::ColliderInfo> otherInfo);
-		void OnCollisionExit(const std::shared_ptr<dae::ColliderInfo> otherInfo);
 	private:
 		dae::BoxColliderComponent* m_BoxColliderComp;
 		int m_CurrentBunPieces = 0;

@@ -2,6 +2,7 @@
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "EventType.h"
+#include "BurgerTimeManager.h"
 
 void Burger::FinalBurgerComponent::Render() const
 {
@@ -27,6 +28,10 @@ void Burger::FinalBurgerComponent::Start()
 	colBack.OverlapEnterFunc = std::bind(&FinalBurgerComponent::OnCollisionEnter, this, std::placeholders::_1);
 
 	m_BoxColliderComp->AddListener(colBack);
+
+	addObserver(&GameManager::GetInstance());
+	
+
 }
 
 Burger::FinalBurgerComponent::FinalBurgerComponent(int fullBurger) :m_MaxBunPieces{fullBurger}

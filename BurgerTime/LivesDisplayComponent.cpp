@@ -23,7 +23,7 @@ void Burger::LivesDisplayComponent::Start()
 		inf[i]->GetComponent<PetterPepperComponent>()->addObserver(this);
 
 	//set text
-	m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(m_CurrentLives));
+	m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(GameManager::GetInstance().GetLives()));
 }
 
 void Burger::LivesDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* args)
@@ -32,8 +32,8 @@ void Burger::LivesDisplayComponent::onNotify(const BaseComponent*, int event, da
 	switch (event)
 	{
 	case Burger::PepperEvent::HEALTH_DECREASE:
-		--m_CurrentLives;
-		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(m_CurrentLives));
+		GameManager::GetInstance().SubtractLive();
+		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(GameManager::GetInstance().GetLives()));
 		GameManager::GetInstance().ResetCurrentLevel();
 		break;
 	}

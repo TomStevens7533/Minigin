@@ -26,6 +26,7 @@ namespace Burger {
 
 	private:
 
+		bool m_IsInEndPos = false;
 		bool m_IsFalling = false;
 		float m_Velocity = 60.f;
 		int m_IncreaseScore = 50;

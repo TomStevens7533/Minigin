@@ -10,6 +10,8 @@
 #include "MathHelper.h"
 #include "MovementComponent.h"
 #include "EventType.h"
+#include "DeltaTime.h"
+#include "BurgerTimeManager.h"
 
 namespace Burger {
 
@@ -23,9 +25,9 @@ namespace Burger {
 		m_MovementComp = GetAttachedGameObject()->GetComponent<MovementComponent>();
 		auto attackComp = GetAttachedGameObject()->GetComponent<AttackComponent>();
 
+		GameManager::GetInstance().addObserver(this);
 
-
-
+		//addObserver(GameManager::GetInstance());
 
 		m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 'A', new AttackCommand(attackComp), dae::KeyState::PRESSED);
 		m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftEnterCommand(this), dae::KeyState::DOWN);
@@ -51,11 +53,17 @@ namespace Burger {
 			m_ColliderComponent->AddListener(colBack);
 		}
 
-	}
+	} 
 
 	void PetterPepperComponent::Update()
 	{
-
+		if (m_IsVictory) {
+		
+			if (m_CurrentVictroyDance < m_MaxVictoryDance)
+				m_CurrentVictroyDance += dae::Time::GetInstance().GetDeltaTime();
+			else
+				GameManager::GetInstance().GoToNextLevel();
+		}
 	}
 
 	void PetterPepperComponent::LateUpdate()
@@ -209,7 +217,7 @@ namespace Burger {
 	void PetterPepperComponent::OnCollisionEnter(const std::shared_ptr<dae::ColliderInfo> otherInfo)
 	{
 		//Check enemy hit
-		if (otherInfo->tag == "Enemy") {
+		if (otherInfo->tag == "Enemy" && m_IsVictory == false) {
 			m_IsHit = true;
 			m_SpriteComponent->SetActiveAnimation("Death");
 			m_SpriteComponent->SetFlipState(false);
@@ -219,6 +227,21 @@ namespace Burger {
 	void PetterPepperComponent::OnCollisionExit(const std::shared_ptr<dae::ColliderInfo> otherInfo)
 	{
 
+	}
+
+	void PetterPepperComponent::onNotify(const BaseComponent* entity, int event, dae::EventArgs* args /*= nullptr*/)
+	{
+		switch (event)
+		{
+		case Burger::PepperEvent::LEVEL_COMPLETE:
+			//Start dance
+			m_SpriteComponent->SetActiveAnimation("Victory");
+			std::cout << "Dance\n";
+			m_IsVictory = true;
+			break;
+		default:
+			break;
+		}
 	}
 
 }

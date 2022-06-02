@@ -17,3 +17,4 @@ namespace Burger {
 		unsigned int m_currentLevelIdx{};
 	};
 }
+

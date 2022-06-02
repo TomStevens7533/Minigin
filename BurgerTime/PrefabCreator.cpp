@@ -175,6 +175,8 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos)
 	spriteComponent->AddAnimation("Move", 3, 0, 6, 1);
 	spriteComponent->AddAnimation("MoveBackwards", 0, 0, 3, 1);
 	spriteComponent->AddAnimation("Death", 6, 1, 9, 2);
+	spriteComponent->AddAnimation("Victory", 0, 1, 5, 2);
+
 
 
 	PeterPepper->AddComponent<AttackComponent>(attackComp);

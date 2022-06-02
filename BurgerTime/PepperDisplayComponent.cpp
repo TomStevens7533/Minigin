@@ -4,6 +4,7 @@
 #include "PepperDisplayComponent.h"
 #include "EventType.h"
 #include "AttackComponent.h"
+#include "BurgerTimeManager.h"
 
 Burger::PepperDisplayComponent::PepperDisplayComponent(std::string newString) : m_BaseString{ newString }
 {
@@ -19,17 +20,18 @@ void Burger::PepperDisplayComponent::Start()
 
 	for (size_t i = 0; i < inf.size(); i++)
 		inf[i]->GetComponent<AttackComponent>()->addObserver(this);
+
+	m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(GameManager::GetInstance().GetPepperShots()));
+
 }
 
 void Burger::PepperDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* args)
 {
 	//Unsafe
-	AttackArgs* hargs;
 	switch (event)
 	{
 	case Burger::PepperEvent::PEPPER_FIRED:
-		hargs = static_cast<AttackArgs*>(args);
-		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(hargs->pepperShots));
+		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(GameManager::GetInstance().GetPepperShots()));
 		break;
 	}
 }

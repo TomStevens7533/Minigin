@@ -88,8 +88,10 @@ void Burger::BunBehaviour::OnCollisionEnter(const std::shared_ptr<dae::ColliderI
 	else if ((info.tag == "BunEnd") && m_IsFalling == true) {
 		m_IsFalling = false;
 		m_ScoreToThrow += 50;
+		m_IsInEndPos = true;
 	}
-	else if (info.tag == "Bun" && m_IsFalling == false  ) {
+	else if (info.tag == "Bun" && m_IsFalling == false &&  m_IsInEndPos == false ) {
+		//only if bun is on top
 		m_IsFalling = true;
 	}
 	else if ((info.tag == "Enemy") && m_IsFalling == true) {

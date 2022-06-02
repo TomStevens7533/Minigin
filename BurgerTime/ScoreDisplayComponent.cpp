@@ -6,6 +6,7 @@
 #include "TextComponent.h"
 #include "BunBehaviour.h"
 #include "EnemySpawning.h"
+#include "BurgerTimeManager.h"
 Burger::ScoreDisplayComponent::ScoreDisplayComponent(std::string newString) : m_BaseString{newString} {}
 
 void Burger::ScoreDisplayComponent::Start()
@@ -24,7 +25,7 @@ void Burger::ScoreDisplayComponent::Start()
 		inf[i]->GetComponent<EnemySpawnComponent>()->addObserver(this);
 
 
-	m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(m_Score));
+	m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(GameManager::GetInstance().GetScore()));
 }
 
 void Burger::ScoreDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* args)
@@ -34,8 +35,8 @@ void Burger::ScoreDisplayComponent::onNotify(const BaseComponent*, int event, da
 	case Burger::PepperEvent::SCORE_INCREASE:
 	{
 		ScoreArgs* sargs = static_cast<ScoreArgs*>(args);
-		m_Score += sargs->scoreIncrease;
-		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(m_Score));
+		GameManager::GetInstance().AddToScore(sargs->scoreIncrease);
+		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(GameManager::GetInstance().GetScore()));
 		break;
 	}
 	

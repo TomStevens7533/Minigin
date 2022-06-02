@@ -18,7 +18,6 @@ namespace Burger {
 
 
 	private:
-		int m_Score{0};
 		std::string m_BaseString{};
 
 	};

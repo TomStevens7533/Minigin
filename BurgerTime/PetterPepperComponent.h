@@ -1,3 +1,4 @@
+ 
 #pragma once
 #include "BaseComponent.h"
 #include "Subject.h"
@@ -15,7 +16,7 @@ namespace Burger {
 	//
 
 
-	class PetterPepperComponent final : public dae::BaseComponent, public dae::Subject
+	class PetterPepperComponent final : public dae::BaseComponent, public dae::Subject, public dae::Observer
 	{
 	public:
 		virtual void Start() override;
@@ -40,6 +41,8 @@ namespace Burger {
 		void OnCollisionEnter(const std::shared_ptr<dae::ColliderInfo> otherInfo);
 		void OnCollisionExit(const std::shared_ptr<dae::ColliderInfo> otherInfo);
 
+		void onNotify(const BaseComponent* entity, int event, dae::EventArgs* args = nullptr) override;
+
 
 	protected:
 
@@ -51,6 +54,10 @@ namespace Burger {
 		dae::SpriteComponent* m_SpriteComponent;
 		dae::BoxColliderComponent* m_ColliderComponent = nullptr;
 		MovementComponent* m_MovementComp = nullptr;
+		
+		bool m_IsVictory = false;
+		float m_MaxVictoryDance = 2.f;
+		float m_CurrentVictroyDance = 0.f;
 
 		bool m_IsOnLadderUp = false;
 		bool m_IsOnLadderDown = false;
