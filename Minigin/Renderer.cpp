@@ -4,6 +4,7 @@
 #include "Texture2D.h"
 #include "SDL_opengl.h"
 
+
 int GetOpenGLDriverIndex()
 {
 	auto openglIndex = -1;
@@ -18,23 +19,45 @@ int GetOpenGLDriverIndex()
 	return openglIndex;
 }
 
-void dae::Renderer::Init(SDL_Window * window)
+void dae::Renderer::Init(int width, int height)
 {
-	m_Window = window;
-	m_Renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	SDL_Window* win = SDL_CreateWindow(
+		"Programming 4 assignment",
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
+		width,
+		height,
+		SDL_WINDOW_OPENGL
+	);
+	if (win == nullptr)
+	{
+		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
+	}
+
+	m_Window = win;
+	m_Renderer = SDL_CreateRenderer(m_Window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (m_Renderer == nullptr) 
 	{
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 		
 	}
+	m_ImguiRender.Init(m_Window);
+
+
 }
 
-void dae::Renderer::Render() const
+void dae::Renderer::Render()
 {
+	m_ImguiRender.NewFrame(m_Window);
+
 	const auto& color = GetBackgroundColor();
 	SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_Renderer);
 	SceneManager::GetInstance().Render();
+
+	//Render IMGUI
+	m_ImguiRender.Render();
+
 	SDL_RenderPresent(m_Renderer);
 }
 
@@ -45,6 +68,8 @@ void dae::Renderer::Destroy()
 		SDL_DestroyRenderer(m_Renderer);
 		m_Renderer = nullptr;
 	}
+	m_ImguiRender.Destroy();
+	SDL_DestroyWindow(m_Window);
 }
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const

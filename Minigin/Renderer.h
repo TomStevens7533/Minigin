@@ -1,5 +1,6 @@
 #pragma once
 #include "Singleton.h"
+#include "ImguiRenderer.h"
 
 namespace dae
 {
@@ -7,14 +8,22 @@ namespace dae
 	/**
 	 * Simple RAII wrapper for the SDL renderer
 	 */
+	struct WindowInformation
+	{
+		int width;
+		int height;
+	};
+
 	class Renderer final : public Singleton<Renderer>
 	{
 		SDL_Renderer* m_Renderer{};
 		SDL_Window* m_Window{};
-		SDL_Color m_clearColor{};	
+		SDL_Color m_clearColor{};
+		ImguiRenderer m_ImguiRender;
+		WindowInformation m_WindowInfo;
 	public:
-		void Init(SDL_Window* window);
-		void Render() const;
+		void Init(int width, int height);
+		void Render();
 		void Destroy();
 
 		void RenderTexture(const Texture2D& texture, float x, float y) const;

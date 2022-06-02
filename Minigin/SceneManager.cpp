@@ -40,16 +40,6 @@ void dae::SceneManager::DestroyFlaggedScenes()
 		}
 	}
 }
-
-//void dae::SceneManager::SetActiveScene(const std::string& name)
-//{
-//	m_ActiveScene = *std::find_if(m_Scenes.begin(), m_Scenes.end(), [&name](std::shared_ptr<Scene>& currentLookupScene)
-//		{
-//			return currentLookupScene->GetSceneName() == name;
-//		}
-//	);
-//}
-
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));

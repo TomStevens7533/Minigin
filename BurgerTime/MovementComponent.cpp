@@ -25,7 +25,6 @@ void Burger::MovementComponent::Update()
 	Transform& tr = m_pParent->GetTransform();
 	glm::vec2 newPos;
 	newPos = tr.GetPosition();
-	std::shared_ptr<ColliderInfo> info;
 	glm::vec2 lookUpPos = newPos;
 	//Horizontal
 	switch (m_CurrentHorizonDirection) {

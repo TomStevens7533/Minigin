@@ -35,13 +35,13 @@ void dae::BoxColliderComponent::Start()
 
 
 	}
-	ColliderInfo info;
+	ColliderCallbacks callback;
 
-	info.OverlapEnterFunc = std::bind(&BoxColliderComponent::OnOverlapEnter, this, std::placeholders::_1);
-	info.OverlapStayFunc = std::bind(&BoxColliderComponent::OnOverlapStay, this, std::placeholders::_1);
-	info.OverlopExitFunc = std::bind(&BoxColliderComponent::OnOverlaExit, this, std::placeholders::_1);
+	callback.OverlapEnterFunc = std::bind(&BoxColliderComponent::OnOverlapEnter, this, std::placeholders::_1);
+	callback.OverlapStayFunc = std::bind(&BoxColliderComponent::OnOverlapStay, this, std::placeholders::_1);
+	callback.OverlopExitFunc = std::bind(&BoxColliderComponent::OnOverlaExit, this, std::placeholders::_1);
 
-
+	ColliderInfo info{callback};
 
 	glm::vec3 goPos = GetAttachedGameObject()->RelativePositionToParent();
 	info.m_ColliderRect = Rectf{ goPos.x - m_Precision, goPos.y - m_Precision, m_Dimensions.x, m_Dimensions.y };
