@@ -57,7 +57,7 @@ void Burger::BunBehaviour::OnCollisionStay(const std::shared_ptr<dae::ColliderIn
 {
 	dae::ColliderInfo info = *otherInfo;
 	if ((info.tag == "Enemy") && m_IsFalling == true) {
-		point enemyPos = point(info.m_ColliderRect.x, info.m_ColliderRect.y - info.m_ColliderRect.height);
+		point enemyPos = point{ info.m_ColliderRect.x, info.m_ColliderRect.y - info.m_ColliderRect.height };
 
 		if (enemyPos.y < GetAttachedGameObject()->GetTransform().GetPosition().y) {
 			//TODO DECOUPLE if possible
@@ -95,7 +95,7 @@ void Burger::BunBehaviour::OnCollisionEnter(const std::shared_ptr<dae::ColliderI
 		m_IsFalling = true;
 	}
 	else if ((info.tag == "Enemy") && m_IsFalling == true) {
-		point enemyPos = point(info.m_ColliderRect.x, info.m_ColliderRect.y);
+		point enemyPos = point{info.m_ColliderRect.x, info.m_ColliderRect.y};
 
 		if (m_ScoreToThrow == 0)
 			m_ScoreToThrow = 500;
@@ -104,7 +104,7 @@ void Burger::BunBehaviour::OnCollisionEnter(const std::shared_ptr<dae::ColliderI
 	}
 	 
 	else if ((info.tag == "Enemy") && m_IsFalling == true) {
-		point enemyPos = point(info.m_ColliderRect.x, info.m_ColliderRect.y);
+		point enemyPos = point{ info.m_ColliderRect.x, info.m_ColliderRect.y };
 
 		if (m_ScoreToThrow == 0)
 			m_ScoreToThrow = 500;

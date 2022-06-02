@@ -18,8 +18,6 @@ namespace dae
 		void Render();
 
 		void DestroyFlaggedScenes();
-		//void SetActiveScene(const std::string& name);
-
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;

@@ -38,7 +38,7 @@ namespace MathHelper
 
 	//https://stackoverflow.com/a/56072726
 	inline bool RandomBool(const float probabilty = 0.5f) {
-		static auto dev = std::random_device();
+		static std::random_device dev{};
 		static auto gen = std::mt19937{ dev() };
 		static auto dist = std::uniform_real_distribution<float>(0, 1);
 		return (dist(gen) < probabilty);

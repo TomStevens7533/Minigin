@@ -1,5 +1,8 @@
 #pragma once
 #include <functional>
+#include <memory>
+#include <vector>
+#include <string>
 namespace dae {
 	struct Rectf
 	{

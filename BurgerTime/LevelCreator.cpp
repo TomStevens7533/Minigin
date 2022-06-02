@@ -33,6 +33,7 @@ void Burger::LevelCreator::CreateLevel(std::string path, dae::Scene* currSceneTo
 
 	for (SizeType i = 0; i < jsonArray.Size(); i++)
 	{
+		
 		GenericObject ElementObj = jsonArray[i].GetObj();
 
 		for (auto memIt = ElementObj.MemberBegin(); memIt != ElementObj.MemberEnd(); memIt++)
