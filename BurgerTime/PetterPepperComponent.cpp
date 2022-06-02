@@ -146,23 +146,37 @@ namespace Burger {
 	void PetterPepperComponent::MoveLeftExit()
 	{
 		m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::NONE);
+		if (m_MovementComp->GetVerticalDir() == dae::VerticalDirection::NONE) {
+			m_SpriteComponent->SetActiveAnimation("Idle");
+
+		}
 	}
 
 	void PetterPepperComponent::MoveRightExit()
 	{
 		m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::NONE);
+		if (m_MovementComp->GetVerticalDir() == dae::VerticalDirection::NONE) {
+			m_SpriteComponent->SetActiveAnimation("Idle");
 
+		}
 	}
 
 	void PetterPepperComponent::MoveUpExit()
 	{
 		m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
+		if (m_MovementComp->GetHorizonDir() == dae::HorizontalDirection::NONE) {
+			m_SpriteComponent->SetActiveAnimation("Idle");
 
+		}
 	}
 
 	void PetterPepperComponent::MoveDownExit()
 	{
 		m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
+		if (m_MovementComp->GetHorizonDir() == dae::HorizontalDirection::NONE) {
+			m_SpriteComponent->SetActiveAnimation("Idle");
+
+		}
 	}
 
 	void PetterPepperComponent::OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo)

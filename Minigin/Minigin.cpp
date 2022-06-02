@@ -37,12 +37,12 @@ void dae::Minigin::Initialize()
 	PrintSDLVersion();
 	Renderer::GetInstance().Init(640, 480);
 
-
+	//Init Sound
+	ServiceLocator::RegisterSoundSystem(new LogginSoundSystem(new SDL_Sound_System()));
 }
 void dae::Minigin::LoadGame() const
 {	
-	//Init Sound
-	ServiceLocator::RegisterSoundSystem(new LogginSoundSystem(new SDL_Sound_System()));
+	
 	
 }
 

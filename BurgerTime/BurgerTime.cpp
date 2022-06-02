@@ -4,15 +4,11 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "PrefabCreator.h"
-#include "TextureComponent.h"
 #include "GameObject.h"
-#include "PetterPepperComponent.h"
-#include "AttackComponent.h"
-#include "LivesDisplayComponent.h"
-#include "PepperDisplayComponent.h"
-#include "ScoreDisplayComponent.h"
 #include "LevelCreator.h"
 #include "BurgerTimeManager.h"
+#include "ServiceLocator.h"
+
 
 using namespace Burger;
 void BurgerTime::Initialize()
@@ -81,6 +77,8 @@ void BurgerTime::CreateMainMenu()
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene("MainMenu");
 	scene.Add(menu);
 	scene.Start();
+	ServiceLocator::GetSoundSystem().play(
+		ServiceLocator::GetSoundSystem().load("Resources/Music/MainMenuSong.mp3"), 1.f);
 
 
 }

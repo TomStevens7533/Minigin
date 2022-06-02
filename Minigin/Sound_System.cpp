@@ -45,6 +45,8 @@ SDL_Sound_System::SDL_SoundSystemImpl::~SDL_SoundSystemImpl()
 	std::unique_lock lock(m_Mutex);
 	m_Cv.notify_all();
 	m_IsRunning = false;
+	if (m_Thread.joinable())
+		m_Thread.join();
 }
 void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 {

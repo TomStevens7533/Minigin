@@ -2,6 +2,12 @@
 #include "../Imgui/imgui.h"
 #include "BurgerTimeManager.h"
 
+void Burger::MainMenuComp::Start()
+{
+
+
+}
+
 void Burger::MainMenuComp::Render() const
 {
 
@@ -25,4 +31,3 @@ void Burger::MainMenuComp::Render() const
 	ImGui::End();
 }
 
- 
