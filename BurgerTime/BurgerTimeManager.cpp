@@ -18,8 +18,8 @@ void GameManager::SetBurgerGame(Burger::BurgerTime* pgame)
 void GameManager::ResetCurrentLevel()
 {
 	if (m_pGame != nullptr) {
+		m_pGame->RemoveStage(m_pGame->GetCurrentStage());
 		m_pGame->LoadStage(m_pGame->GetCurrentStage());
-		m_Score = 0;
 	}
 }
 
@@ -27,7 +27,8 @@ void GameManager::GoToNextLevel()
 {
 	if (m_pGame != nullptr) {
 		m_IsLoadingLevel = true;
-		m_pGame->LoadStage(m_pGame->GetCurrentStage());
+		m_pGame->RemoveStage(m_pGame->GetCurrentStage());
+		m_pGame->LoadNextStage(m_pGame->GetCurrentStage());
 	}
 }
 
@@ -60,6 +61,11 @@ int GameManager::GetLives() const
 void GameManager::SubtractLive()
 {
 	--m_CurrentInfo.MaxLives;
+	if (m_CurrentInfo.MaxLives <= 0) {
+		m_IsLoadingLevel = true;
+		m_pGame->RemoveStage(m_pGame->GetCurrentStage());
+		m_pGame->LoadStage(Burger::Level::GAME_OVER);
+	}
 }
 
 void GameManager::onNotify(const dae::BaseComponent* entity, int event, dae::EventArgs* args /*= nullptr*/)

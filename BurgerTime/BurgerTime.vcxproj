@@ -188,7 +188,9 @@
     <ClInclude Include="EnemySpawning.h" />
     <ClInclude Include="EventType.h" />
     <ClInclude Include="FInalBurgerComponent.h" />
+    <ClInclude Include="GameOverComponent.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
+    <ClInclude Include="MainMenuComponent.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="LevelCreator.h" />
     <ClInclude Include="PepperDisplayComponent.h" />
@@ -206,8 +208,10 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="EnemySpawning.cpp" />
     <ClCompile Include="FInalBurgerComponent.cpp" />
+    <ClCompile Include="GameOverComponent.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenuComponent.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="LevelCreator.cpp" />
     <ClCompile Include="PepperDisplayComponent.cpp" />

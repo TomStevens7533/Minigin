@@ -14,6 +14,8 @@
 #include "PepperDisplayComponent.h"
 #include "LivesDisplayComponent.h"
 #include "FInalBurgerComponent.h"
+#include "MainMenuComponent.h"
+#include "GameOverComponent.h"
 
 using namespace Burger;
 
@@ -141,6 +143,21 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateLivesUI(point pos)
 	return liveDisplayGO;
 }
 
+std::shared_ptr<dae::GameObject> PrefabCreator::CreateMainMenu()
+{
+	auto menu = std::make_shared<dae::GameObject>();
+	auto menuComp = std::make_shared<MainMenuComp>();
+	menu->AddComponent<MainMenuComp>(menuComp);
+	return menu;
+}
+std::shared_ptr<dae::GameObject> PrefabCreator::CreateGameOver()
+{
+	auto menu = std::make_shared<dae::GameObject>();
+	auto menuComp = std::make_shared<GameoverComp>();
+	menu->AddComponent<GameoverComp>(menuComp);
+	return menu;
+}
+
 int Burger::PrefabCreator::m_PlayerCount = 0;
 
 std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlatformPrefab(point pos, int tilling)
@@ -165,10 +182,11 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos)
 	auto PeterPepper = std::make_shared<dae::GameObject>();
 	PeterPepper->SetName("Player");
 	auto inputComponent = std::make_shared<dae::InputComponent>(m_PlayerCount);
-	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
+	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.15f);
 	auto peterPepperComp = std::make_shared<PetterPepperComponent>();
 	auto movementComp = std::make_shared<MovementComponent>(70.f);
 	auto attackComp = std::make_shared<AttackComponent>();
+
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Pepper", 5);
 
 	spriteComponent->AddAnimation("MoveForward", 6, 0, 9, 1);
@@ -185,6 +203,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos)
 	PeterPepper->AddComponent<PetterPepperComponent>(peterPepperComp);
 	PeterPepper->AddComponent<MovementComponent>(movementComp);
 	PeterPepper->AddComponent<dae::BoxColliderComponent >(boxCollider);
+
 
 
 	PeterPepper->SetPosition(pos.x, pos.y);

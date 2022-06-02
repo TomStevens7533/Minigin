@@ -4,6 +4,7 @@
 #include  <windows.h>
 #include <Xinput.h>
 #include <algorithm>
+#include "imgui_impl_sdl.h"
 #pragma comment(lib, "xinput.lib")
 
 using namespace dae;
@@ -173,9 +174,19 @@ int InputManager::GetDeviceAmount()
 	return static_cast<int>(m_CommandContainer.size());
 }
 
-void InputManager::ProcessInput()
+bool InputManager::ProcessInput()
 {
 	m_pPimpl->ProcessInputImpl();
+
+	SDL_Event e;
+	while (SDL_PollEvent(&e))
+	{
+		if (e.type == SDL_QUIT) {
+			return false;
+		}
+		ImGui_ImplSDL2_ProcessEvent(&e);
+	}
+	return true;
 }
 void InputManager::AddCommand(ControllerButton button, unsigned char key, Command* command, KeyState state, int playerIdx)
 {	//Add command

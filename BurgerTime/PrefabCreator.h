@@ -28,6 +28,9 @@ namespace Burger {
 		static std::shared_ptr<dae::GameObject> CreateScoreUI(point pos);
 		static std::shared_ptr<dae::GameObject> CreatePepperUI(point pos);
 		static std::shared_ptr<dae::GameObject> CreateLivesUI(point pos);
+		static std::shared_ptr<dae::GameObject> CreateMainMenu();
+		static std::shared_ptr<dae::GameObject> CreateGameOver();
+
 
 		//Enemies
 		static std::shared_ptr<dae::GameObject> CreateEggEnemy(point pos, int score);

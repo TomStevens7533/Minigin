@@ -72,19 +72,16 @@ void dae::Minigin::Run()
 
 		float lag = 0.f;
 
-		SDL_Event e;
 		while (doContinue)
 		{
 
 			//TODO add proper event system to catch user events
-			SDL_PollEvent(&e);
 			
-			if (e.type == SDL_QUIT) {
-				doContinue = false;
-			}
+			doContinue = input.ProcessInput();
+		
 
 
-			input.ProcessInput();
+			
 			sceneManager.Update();
 			time.Update();
 

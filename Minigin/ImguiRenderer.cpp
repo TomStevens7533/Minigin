@@ -27,7 +27,7 @@ void dae::ImguiRenderer::Destroy()
 void dae::ImguiRenderer::Render() const
 {
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 }

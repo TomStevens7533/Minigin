@@ -36,7 +36,7 @@ namespace dae
 		InputManager();
 		~InputManager();
 
-		void ProcessInput();
+		bool ProcessInput();
 		void AddCommand(ControllerButton button, unsigned char key, Command* command, KeyState state, int playerIdx);
 		bool RemoveCommand(ControllerButton button, unsigned char key, KeyState state, int playerIdx);
 		bool HandleCommands(int playerIdx);
