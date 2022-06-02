@@ -35,11 +35,6 @@ void dae::Minigin::Initialize()
 	std::cout << std::endl;
 
 	PrintSDLVersion();
-
-
-
-	
-
 	Renderer::GetInstance().Init(640, 480);
 
 

@@ -10,8 +10,8 @@ namespace dae
 	 */
 	struct WindowInformation
 	{
-		int width;
-		int height;
+		int width{};
+		int height{};
 	};
 
 	class Renderer final : public Singleton<Renderer>
@@ -31,6 +31,7 @@ namespace dae
 		void RenderTexture(const Texture2D& texture, const SDL_Rect dstRect, const SDL_Rect srcRect, bool isFlipped = false) const;
 		void DrawPoint(float x, float y);
 		SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
+		WindowInformation GetInfo() { return m_WindowInfo; }
 
 		const SDL_Color& GetBackgroundColor() const { return m_clearColor; }
 		void SetBackgroundColor(const SDL_Color& color) { m_clearColor = color; }
