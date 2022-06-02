@@ -77,8 +77,7 @@ void BurgerTime::CreateMainMenu()
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene("MainMenu");
 	scene.Add(menu);
 	scene.Start();
-	ServiceLocator::GetSoundSystem().play(
-		ServiceLocator::GetSoundSystem().load("Resources/Music/MainMenuSong.mp3"), 1.f);
+
 
 
 }

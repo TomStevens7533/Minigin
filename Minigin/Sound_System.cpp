@@ -14,6 +14,7 @@ public:
 	//void loadImpl(std::string path);
 	unsigned int RegisterSoundImpl(const std::string& path);
 	void AddToQueue(const unsigned int id, float volume);
+	void StopImpl();
 private:
 	std::jthread m_Thread;
 	std::condition_variable m_Variable;
@@ -42,34 +43,24 @@ SDL_Sound_System::SDL_SoundSystemImpl::SDL_SoundSystemImpl() {
 }
 SDL_Sound_System::SDL_SoundSystemImpl::~SDL_SoundSystemImpl()
 {
-	std::unique_lock lock(m_Mutex);
-	m_Cv.notify_all();
+	m_Cv.notify_one();
 	m_IsRunning = false;
 	if (m_Thread.joinable())
 		m_Thread.join();
+
+	Mix_HaltChannel(-1);
 }
 void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 {
 
-	std::unique_lock lock(m_Mutex);
 	while (m_IsRunning) {
+		std::unique_lock lock(m_Mutex);
 		while (!m_SoundQueue.empty())
 		{
-			lock.unlock();
 			SoundEffect& currChunk = m_SoundQueue.front();
-			if (!currChunk.IsLoaded() && !currChunk.GetIsPlaying()) {
-				currChunk.load();
-				currChunk.Play();
-			}
-
-			lock.lock();
-			if (!currChunk.GetIsPlaying()) {
-				currChunk.ReleaseSound();
-				m_SoundQueue.pop_front();
-			}
-			else
-				std::swap(m_SoundQueue.front(), m_SoundQueue.back());
-
+			currChunk.load();
+			currChunk.Play();
+			m_SoundQueue.pop_front();
 
 		}
 		m_Cv.wait(lock);
@@ -116,6 +107,11 @@ void SDL_Sound_System::SDL_SoundSystemImpl::AddToQueue(const unsigned int id, fl
 	
 }
 
+void SDL_Sound_System::SDL_SoundSystemImpl::StopImpl()
+{
+	Mix_HaltChannel(-1);
+}
+
 SDL_Sound_System::SDL_Sound_System() 
 	: m_pPimpl{ std::make_unique<SDL_SoundSystemImpl>() }
 {
@@ -131,6 +127,11 @@ SDL_Sound_System::~SDL_Sound_System()
 void SDL_Sound_System::play(const unsigned int id, const float volume)
 {
 	m_pPimpl->AddToQueue(id, volume);
+}
+
+void SDL_Sound_System::stop()
+{
+	m_pPimpl->StopImpl();
 }
 
 unsigned int SDL_Sound_System::load(const std::string path)

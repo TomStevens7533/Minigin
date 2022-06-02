@@ -1,10 +1,14 @@
 #include "MainMenuComponent.h"
 #include "../Imgui/imgui.h"
 #include "BurgerTimeManager.h"
+#include "ServiceLocator.h"
 
 void Burger::MainMenuComp::Start()
 {
-
+	m_currIdx = ServiceLocator::GetSoundSystem().load("Resources/Music/MainMenuSong.mp3");
+		
+		
+	ServiceLocator::GetSoundSystem().play( m_currIdx, 100.f);
 
 }
 
@@ -27,6 +31,8 @@ void Burger::MainMenuComp::Render() const
 	}
 	if (ImGui::Button("PLAY!")) {
 		GameManager::GetInstance().GoToNextLevel();
+
+		ServiceLocator::GetSoundSystem().stop();
 	}
 	ImGui::End();
 }

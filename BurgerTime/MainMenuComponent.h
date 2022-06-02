@@ -16,6 +16,6 @@ namespace Burger {
 		MainMenuComp& operator=(const MainMenuComp& other) = delete;
 		MainMenuComp& operator=(MainMenuComp&& other) = delete;
 	private:
-
+		unsigned int m_currIdx;
 	};
 }
