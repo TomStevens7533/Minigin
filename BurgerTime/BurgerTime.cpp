@@ -17,14 +17,19 @@ void BurgerTime::Initialize()
 	dae::ResourceManager::GetInstance().Init("Resources/");
 	//SEED
 	srand(static_cast<int>(time(NULL)));
+	ServiceLocator::GetSoundSystem().SetGlobalVolumeLevel(10.f);
 
 	CreateMainMenu();
 	GameManager::GetInstance().SetBurgerGame(this);
+
+
 }
 
 void BurgerTime::CreateLevel1()
 {
-	
+	ServiceLocator::GetSoundSystem().StopAll();
+	ServiceLocator::GetSoundSystem().play("Resources/Music/LEVEL1.mp3");
+
 	m_CurrentLevel = Level::LEVEL1;
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene("Level1");
 	CreateLevel("Resources/Level_1.json", &scene);
@@ -72,6 +77,8 @@ void BurgerTime::LoadNextStage(Level level)
 
 void BurgerTime::CreateMainMenu()
 {
+
+	ServiceLocator::GetSoundSystem().play("Resources/Music/MainMenuSong.mp3");
 	m_CurrentLevel = Level::MAIN_MENU;
 	auto menu = PrefabCreator::CreateMainMenu();
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene("MainMenu");
@@ -104,6 +111,9 @@ void BurgerTime::RemoveStage(Level level)
 
 void BurgerTime::CreateGameOver()
 {
+	ServiceLocator::GetSoundSystem().StopAll();
+	ServiceLocator::GetSoundSystem().play("Resources/Music/GamOverSong.mp3");
+
 	m_CurrentLevel = Level::GAME_OVER;
 
 	auto menu = PrefabCreator::CreateGameOver();

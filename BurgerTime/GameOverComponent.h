@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 namespace Burger {
-	class GameoverComp : public dae::BaseComponent
+	class GameoverComp final : public dae::BaseComponent
 	{
 	public:
 		GameoverComp() = default;

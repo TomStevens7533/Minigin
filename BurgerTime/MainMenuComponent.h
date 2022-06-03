@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 namespace Burger {
-	class MainMenuComp : public dae::BaseComponent
+	class MainMenuComp final : public dae::BaseComponent
 	{
 	public:
 		MainMenuComp() = default;

@@ -2,7 +2,7 @@
 #include "SoundEffect.h"
 #include <iostream>
 
-SoundEffect::SoundEffect(std::string path, float volume, int channel) : m_path{path}, m_Volume{volume}, m_Channel{ channel }
+SoundEffect::SoundEffect(std::string path, float volume, int) : m_path{path}, m_Volume{volume}
 {
 	m_Channel = Mix_ReserveChannels(1);
 }

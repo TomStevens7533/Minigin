@@ -13,7 +13,7 @@ namespace dae {
 		void Render() const override;
 		void Update() override;
 		void LateUpdate() override;
-		const int GetFpsCount() const { return m_fps; }
+		inline const int GetFpsCount() const { return m_fps; }
 
 
 	private:

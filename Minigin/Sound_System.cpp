@@ -13,18 +13,17 @@ public:
 	void PlaySoundQueue();
 	//void loadImpl(std::string path);
 	unsigned int RegisterSoundImpl(const std::string& path);
-	void AddToQueue(const unsigned int id, float volume);
-	void StopImpl();
+	void AddToQueue(const std::string& path, float volume = 0.f);
+	void StopAllImpl();
+	void SetGlobalVolumeLevel(float volume);
 private:
 	std::jthread m_Thread;
 	std::condition_variable m_Variable;
-	Mix_Chunk* losPollos;
 	std::deque<SoundEffect> m_SoundQueue;
-	std::deque<SoundEffect> m_DeletionQueue;
 	std::mutex m_Mutex;
 	std::condition_variable m_Cv;
 	int m_Channels = 4;
-
+	float m_GlobalVolume{};
 	std::atomic<bool> m_IsRunning;
 	std::vector<std::string> m_PathMap;
 };
@@ -89,27 +88,24 @@ unsigned int SDL_Sound_System::SDL_SoundSystemImpl::RegisterSoundImpl(const std:
 
 }
 
-void SDL_Sound_System::SDL_SoundSystemImpl::AddToQueue(const unsigned int id, float volume)
+void SDL_Sound_System::SDL_SoundSystemImpl::AddToQueue(const std::string& path, float volume)
 {
-	if (id < m_PathMap.size()) {
-		//Contains ID
-		std::unique_lock lock(m_Mutex);
-		int channel = id % m_PathMap.size();
-		if (!Mix_Playing(channel)) {
-			SoundEffect curr(m_PathMap[id], volume, channel);
-			m_SoundQueue.push_back(curr);
-			m_Cv.notify_one();
-			std::cout << "aq\n";
+	std::unique_lock lock(m_Mutex);
+	SoundEffect curr(path, volume == 0.f ? m_GlobalVolume : volume);
+	m_SoundQueue.push_back(curr);
+	m_Cv.notify_one();
 
-		}
-
-	}
 	
 }
 
-void SDL_Sound_System::SDL_SoundSystemImpl::StopImpl()
+void SDL_Sound_System::SDL_SoundSystemImpl::StopAllImpl()
 {
 	Mix_HaltChannel(-1);
+}
+
+void SDL_Sound_System::SDL_SoundSystemImpl::SetGlobalVolumeLevel(float volume)
+{
+	m_GlobalVolume = volume;
 }
 
 SDL_Sound_System::SDL_Sound_System() 
@@ -124,14 +120,19 @@ SDL_Sound_System::~SDL_Sound_System()
 }
 
 
-void SDL_Sound_System::play(const unsigned int id, const float volume)
+void SDL_Sound_System::play(const std::string& path, const float volume)
 {
-	m_pPimpl->AddToQueue(id, volume);
+	m_pPimpl->AddToQueue(path, volume);
 }
 
-void SDL_Sound_System::stop()
+void SDL_Sound_System::SetGlobalVolumeLevel(float volume)
 {
-	m_pPimpl->StopImpl();
+	m_pPimpl->SetGlobalVolumeLevel(volume);
+}
+
+void SDL_Sound_System::StopAll()
+{
+	m_pPimpl->StopAllImpl();
 }
 
 unsigned int SDL_Sound_System::load(const std::string path)
