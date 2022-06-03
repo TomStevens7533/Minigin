@@ -17,5 +17,4 @@ private:
 	float m_Volume{};
 	Mix_Chunk* m_SoundEffect{};
 	int m_Channel = 0;
-
 };

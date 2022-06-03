@@ -77,7 +77,7 @@ void BurgerTime::LoadNextStage(Level level)
 
 void BurgerTime::CreateMainMenu()
 {
-
+	ServiceLocator::GetSoundSystem().StopAll();
 	ServiceLocator::GetSoundSystem().play("Resources/Music/MainMenuSong.mp3");
 	m_CurrentLevel = Level::MAIN_MENU;
 	auto menu = PrefabCreator::CreateMainMenu();

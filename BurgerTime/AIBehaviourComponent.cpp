@@ -10,6 +10,8 @@
 #include "BaseComponent.h"
 #include "EventType.h"
 #include "BurgerEvents.h"
+#include "ServiceLocator.h"
+
 
 using namespace dae;
 
@@ -90,11 +92,15 @@ void Burger::AIBehaviourComponent::SetVerticalDir(VerticalDirection vertical)
 
 void Burger::AIBehaviourComponent::SetFallState(float velocity)
 {
-	m_HotDogMovement->SetNewVelocity(velocity);
-	m_CurrState->Exit(*this);
-	delete m_CurrState;
-	m_CurrState = new FallingState();
-	m_CurrState->Entry(*this);
+	if (!m_IsFalling) {
+		m_HotDogMovement->SetNewVelocity(velocity);
+		m_CurrState->Exit(*this);
+		delete m_CurrState;
+		m_CurrState = new FallingState();
+		m_CurrState->Entry(*this);
+		m_IsFalling = true;
+
+	}
 }
 
 glm::vec2 Burger::AIBehaviourComponent::GetClosestPlayerPos() const
@@ -346,6 +352,10 @@ void Burger::HitState::Entry(AIBehaviourComponent& ai)
 	ai.m_SpriteComponent->SetActiveAnimation("Fried");
 	ai.m_SpriteComponent->SetFlipState(false);
 
+	//play fx
+	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyStun.mp3");
+	
+
 	//Disable enemy collider
 	ai.m_ColliderComponent->DisableCollider();
 	ai.SetVerticalDir(VerticalDirection::NONE);
@@ -378,6 +388,10 @@ void Burger::HitState::Exit(AIBehaviourComponent& ai)
 
 void Burger::DeathState::Entry(AIBehaviourComponent& ai)
 {
+
+	//play fx
+	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDeath.mp3");
+
 	ai.m_SpriteComponent->SetActiveAnimation("Death");
 	ai.m_ColliderComponent->DisableCollider();
 	ai.SetVerticalDir(VerticalDirection::NONE);
@@ -410,6 +424,10 @@ void Burger::FallingState::Entry(AIBehaviourComponent& ai)
 {
 	ai.SetHorizontalDir(HorizontalDirection::NONE);
 	ai.SetVerticalDir(VerticalDirection::DOWN);
+
+	//Play fx
+	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDrop.mp3");
+
 }
 
 Burger::AIState* Burger::FallingState::UpdateState(AIBehaviourComponent& ai)

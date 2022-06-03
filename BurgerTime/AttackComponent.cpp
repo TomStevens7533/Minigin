@@ -9,6 +9,7 @@
 #include "DeltaTime.h"
 #include "EventType.h"
 #include "BurgerTimeManager.h"
+#include "ServiceLocator.h"
 
 int Burger::AttackComponent::m_PepperShots = 5;
 
@@ -60,6 +61,10 @@ void Burger::AttackComponent::Start()
 void Burger::AttackComponent::Fire()
 {
 	if (m_IsFiring == false && m_PepperShots > 0) {
+
+
+		ServiceLocator::GetSoundSystem().play("Resources/FX/Pepper.mp3");
+
 		GameManager::GetInstance().SubtractPepperShots();
 		SpriteComponent* comp = GetAttachedGameObject()->GetComponent<SpriteComponent>();
 		bool isFlipped = comp->GetFLipState();

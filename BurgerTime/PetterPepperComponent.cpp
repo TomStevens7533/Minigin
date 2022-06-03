@@ -250,7 +250,7 @@ namespace Burger {
 		case Burger::PepperEvent::LEVEL_COMPLETE:
 			//Start dance
 			m_SpriteComponent->SetActiveAnimation("Victory");
-			std::cout << "Dance\n";
+			ServiceLocator::GetSoundSystem().play("Resources/FX/Victory.mp3");
 			m_IsVictory = true;
 			break;
 		default:

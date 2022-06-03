@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "EventType.h"
 #include "BurgerTimeManager.h"
+#include "ServiceLocator.h"
 
 void Burger::FinalBurgerComponent::Render() const
 {
@@ -46,6 +47,7 @@ void Burger::FinalBurgerComponent::OnCollisionEnter(const std::shared_ptr<dae::C
 		m_CurrentBunPieces++;
 		if (m_CurrentBunPieces >= m_MaxBunPieces) {
 			notify(this, PepperEvent::BURGER_COMPLETE);
+			ServiceLocator::GetSoundSystem().play("Resources/FX/BurgerComplete.mp3");
 			return;
 		}
 		float x = m_BoxColliderComp->GetColliderInfo().m_ColliderRect.x;

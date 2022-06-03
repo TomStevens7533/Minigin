@@ -126,6 +126,7 @@ namespace Burger {
 		bool m_IsOnFloor = false;
 		bool m_IsDeath = false;
 		bool m_IsSpawning = true;
+		bool m_IsFalling = false;
 
 		int m_Score{};
 		EnemyType m_Type;

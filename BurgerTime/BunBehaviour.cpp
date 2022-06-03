@@ -60,6 +60,7 @@ void Burger::BunBehaviour::OnCollisionStay(const std::shared_ptr<dae::ColliderIn
 		point enemyPos = point{ info.m_ColliderRect.x, info.m_ColliderRect.y - info.m_ColliderRect.height };
 
 		if (enemyPos.y < GetAttachedGameObject()->GetTransform().GetPosition().y) {
+
 			//TODO DECOUPLE if possible
 			auto enemyBeh = otherInfo->m_pAttachedGameObject->GetComponent<AIBehaviourComponent>();
 			if (enemyBeh != nullptr) {
@@ -84,11 +85,13 @@ void Burger::BunBehaviour::OnCollisionEnter(const std::shared_ptr<dae::ColliderI
 	else if (info.tag == "Floor" && m_IsFalling == true && m_EnemyOnBun == false) {
 		m_IsFalling = false;
 		m_ScoreToThrow += 50;
+		ServiceLocator::GetSoundSystem().play("Resources/FX/BunDrop.mp3");
 	}
 	else if ((info.tag == "BunEnd") && m_IsFalling == true) {
 		m_IsFalling = false;
 		m_ScoreToThrow += 50;
 		m_IsInEndPos = true;
+		ServiceLocator::GetSoundSystem().play("Resources/FX/BunDrop.mp3");
 	}
 	else if (info.tag == "Bun" && m_IsFalling == false &&  m_IsInEndPos == false ) {
 		//only if bun is on top
