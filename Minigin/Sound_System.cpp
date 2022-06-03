@@ -5,21 +5,29 @@
 #include <mutex>
 #include "SoundEffect.h"
 #include <map>
+#include <memory>
 
 class SDL_Sound_System::SDL_SoundSystemImpl {
 public:
 	SDL_SoundSystemImpl();
 	~SDL_SoundSystemImpl();
-	void PlaySoundQueue();
 	//void loadImpl(std::string path);
 	unsigned int RegisterSoundImpl(const std::string& path);
 	void AddToQueue(const std::string& path, float volume = 0.f);
 	void StopAllImpl();
 	void SetGlobalVolumeLevel(float volume);
 private:
-	std::jthread m_Thread;
+	void PlaySoundQueue();
+	void RemoveSoundQueue();
+
+private:
+	std::jthread m_PlayThread;
+	std::jthread m_StopThread;
+
 	std::condition_variable m_Variable;
 	std::deque<SoundEffect> m_SoundQueue;
+	std::deque<SoundEffect> m_DeleteionQueue;
+
 	std::mutex m_Mutex;
 	std::condition_variable m_Cv;
 	int m_Channels = 4;
@@ -38,17 +46,22 @@ SDL_Sound_System::SDL_SoundSystemImpl::SDL_SoundSystemImpl() {
 		fprintf(stderr, "Unable to allocate mixing channels: %s\n", SDL_GetError());
 		exit(-1);
 	}
-	m_Thread = std::jthread{ &SDL_SoundSystemImpl::PlaySoundQueue, this };
+	m_PlayThread = std::jthread{ &SDL_SoundSystemImpl::PlaySoundQueue, this };
+	m_StopThread = std::jthread{ &SDL_SoundSystemImpl::RemoveSoundQueue, this };
+
 }
 SDL_Sound_System::SDL_SoundSystemImpl::~SDL_SoundSystemImpl()
 {
-	m_Cv.notify_one();
+	m_Cv.notify_all();
 	m_IsRunning = false;
-	if (m_Thread.joinable())
-		m_Thread.join();
+	if (m_PlayThread.joinable())
+		m_PlayThread.join();
 
-	Mix_HaltChannel(-1);
+
+	if (m_StopThread.joinable())
+		m_StopThread.join();
 }
+//Threads
 void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 {
 
@@ -56,12 +69,16 @@ void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 		std::unique_lock lock(m_Mutex);
 		while (!m_SoundQueue.empty())
 		{
+			std::cout << "play queue\n";
+
 			SoundEffect& currChunk = m_SoundQueue.front();
 			currChunk.load();
 			currChunk.Play();
 			m_SoundQueue.pop_front();
-
+			m_DeleteionQueue.push_back(currChunk);
 		}
+		//Notify deletion queue
+		m_Cv.notify_one();
 		m_Cv.wait(lock);
 
 
@@ -70,6 +87,33 @@ void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 
 
 }
+
+void SDL_Sound_System::SDL_SoundSystemImpl::RemoveSoundQueue()
+{
+	while (m_IsRunning) {
+
+		std::unique_lock lock(m_Mutex);
+		while (!m_DeleteionQueue.empty())
+		{
+			m_Cv.wait(lock);
+			std::cout << "delete queue\n";
+			SoundEffect& currChunk = m_DeleteionQueue.front();
+			if (currChunk.GetIsPlaying() == false) {
+				currChunk.ReleaseSound();
+				m_DeleteionQueue.pop_front();
+			}
+			else {
+				m_DeleteionQueue.pop_front();
+				m_DeleteionQueue.push_back(currChunk);
+			}
+			if (m_IsRunning == false)
+				return;
+		}
+
+
+	}
+}
+
 unsigned int SDL_Sound_System::SDL_SoundSystemImpl::RegisterSoundImpl(const std::string& path)
 {
 	auto it = std::find(m_PathMap.begin(), m_PathMap.end(), path);
@@ -93,7 +137,7 @@ void SDL_Sound_System::SDL_SoundSystemImpl::AddToQueue(const std::string& path, 
 	std::unique_lock lock(m_Mutex);
 	SoundEffect curr(path, volume == 0.f ? m_GlobalVolume : volume);
 	m_SoundQueue.push_back(curr);
-	m_Cv.notify_one();
+	m_Cv.notify_all();
 
 	
 }
@@ -107,6 +151,8 @@ void SDL_Sound_System::SDL_SoundSystemImpl::SetGlobalVolumeLevel(float volume)
 {
 	m_GlobalVolume = volume;
 }
+
+
 
 SDL_Sound_System::SDL_Sound_System() 
 	: m_pPimpl{ std::make_unique<SDL_SoundSystemImpl>() }

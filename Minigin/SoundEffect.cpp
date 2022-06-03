@@ -17,13 +17,9 @@ void SoundEffect::Play()
 {
 	m_SoundEffect->volume = static_cast<uint8_t>(m_Volume);
 	m_Channel = Mix_PlayChannel(m_Channel, m_SoundEffect, 0);
-	m_IsPlaying = true;
 }
 
-bool SoundEffect::IsLoaded()
-{
-	return m_IsLoaded;
-}
+
 
 void SoundEffect::set_volume(float volume)
 {
@@ -44,15 +40,12 @@ void SoundEffect::load()
 		std::cerr << Mix_GetError() << std::endl;
 	}
 	m_SoundEffect = currLoaded;
-	m_IsLoaded = true;
 }
 
 void SoundEffect::ReleaseSound()
 {
 	Mix_FreeChunk(m_SoundEffect);
 	m_SoundEffect = NULL;
-	m_IsReleased = true;
-	m_IsPlaying = false;
 }
 
 

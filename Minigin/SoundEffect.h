@@ -7,7 +7,6 @@ public:
 	SoundEffect(std::string path, float volume, int channel = -1);
 	~SoundEffect();
 	void Play();
-	bool IsLoaded();
 	void set_volume(float volume);
 	bool GetIsPlaying() const;
 	inline int GetChannel() { return m_Channel; }
@@ -15,9 +14,6 @@ public:
 	void ReleaseSound();
 private:
 	std::string m_path{};
-	bool m_IsLoaded = false;
-	bool m_IsReleased = false;
-	bool m_IsPlaying = false;
 	float m_Volume{};
 	Mix_Chunk* m_SoundEffect{};
 	int m_Channel = 0;
