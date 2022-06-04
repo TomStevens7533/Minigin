@@ -4,10 +4,12 @@
 #include "Observer.h"
 #include "EventType.h"
 #include <iostream>
+#include "InputManager.h"
 
 void GameManager::SetGamemode(Gamemode newMode)
 {
-
+	m_CurrentGamemode = newMode;
+	std::cout << (int)m_CurrentGamemode << std::endl;
 }
 
 void GameManager::SetBurgerGame(Burger::BurgerTime* pgame)
@@ -19,6 +21,7 @@ void GameManager::ResetCurrentLevel()
 {
 	if (m_pGame != nullptr) {
 		m_pGame->RemoveStage(m_pGame->GetCurrentStage());
+		dae::InputManager::GetInstance().RemoveAllPlayers();
 		m_pGame->LoadStage(m_pGame->GetCurrentStage());
 	}
 }
@@ -28,6 +31,7 @@ void GameManager::GoToNextLevel()
 	if (m_pGame != nullptr) {
 		m_IsLoadingLevel = true;
 		m_pGame->RemoveStage(m_pGame->GetCurrentStage());
+		dae::InputManager::GetInstance().RemoveAllPlayers();
 		m_pGame->LoadNextStage(m_pGame->GetCurrentStage());
 	}
 }

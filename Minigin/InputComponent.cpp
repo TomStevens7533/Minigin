@@ -1,5 +1,7 @@
 #include "MiniginPCH.h"
 #include "InputComponent.h"
+#include "BaseComponent.h"
+#include "GameObject.h"
 namespace dae {
 	InputComponent::InputComponent(int deviceIdx) : m_deviceIdx{deviceIdx}
 	{
@@ -8,6 +10,12 @@ namespace dae {
 			InputManager::GetInstance().SetNewPlayerAmount(m_deviceIdx + 1);
 		}
 	}
+
+	InputComponent::~InputComponent()
+	{
+
+	}
+
 	void InputComponent::AddCommand(ControllerButton button, unsigned char key, Command* command, KeyState state)
 	{
 		InputManager::GetInstance().AddCommand(button, static_cast<unsigned char>(key), command, state, m_deviceIdx);

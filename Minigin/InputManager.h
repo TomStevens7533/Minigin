@@ -42,6 +42,9 @@ namespace dae
 		bool HandleCommands(int playerIdx);
 
 		void SetNewPlayerAmount(int playerAmount);
+		void RemovePlayer(int deviceIdx);
+		void RemoveAllPlayers();
+
 		int GetDeviceAmount();
 
 		InputManager(const InputManager&& e) = delete;

@@ -60,7 +60,7 @@ void Burger::AttackComponent::Start()
 
 void Burger::AttackComponent::Fire()
 {
-	if (m_IsFiring == false && m_PepperShots > 0) {
+	if (m_IsFiring == false && GameManager::GetInstance().GetPepperShots() > 0) {
 
 
 		ServiceLocator::GetSoundSystem().play("Resources/FX/Pepper.mp3");

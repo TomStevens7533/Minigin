@@ -27,6 +27,8 @@ public:
 	void ResetCurrentLevel();
 	void GoToNextLevel();
 
+	Gamemode GetCurrentGamemode() const { return m_CurrentGamemode; }
+
 	void AddToScore(int score);
 	int GetScore();
 

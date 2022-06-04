@@ -11,7 +11,7 @@ namespace dae {
 		void addObserver(Observer* observer);
 	
 		void removeAllObserver();
-		void removeObserver(std::shared_ptr<Observer> observer);
+		void removeObserver(Observer* observer);
 		
 	protected:
 		void notify(const BaseComponent* entity, int event, EventArgs* args =  nullptr);

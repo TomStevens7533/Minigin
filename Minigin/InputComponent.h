@@ -5,7 +5,7 @@ namespace dae {
 	{
 	public:
 		InputComponent(int deviceIdx);
-		~InputComponent() = default;
+		~InputComponent();
 
 		void AddCommand(ControllerButton button, unsigned char key, Command* command, KeyState state);
 		int GetDeviceIdx() { return m_deviceIdx; };

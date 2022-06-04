@@ -19,6 +19,7 @@ namespace Burger {
 	class PetterPepperComponent final : public dae::BaseComponent, public dae::Subject, public dae::Observer
 	{
 	public:
+		~PetterPepperComponent();
 		virtual void Start() override;
 		virtual void Update() override;
 		virtual void LateUpdate() override;
@@ -67,6 +68,8 @@ namespace Burger {
 
 		bool m_IsHit = false;
 		bool m_IsDeath = false;
+
+		static int m_PepperAmountInGame;
 	};
 
 }

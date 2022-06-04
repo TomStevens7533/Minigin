@@ -27,9 +27,9 @@ void dae::Subject::removeAllObserver()
 	}
 }
 
-void dae::Subject::removeObserver(std::shared_ptr<Observer> observer)
+void dae::Subject::removeObserver(Observer* observer)
 {
-	Observer* interPointer = observer.get();
+	Observer* interPointer = observer;
 	if (head_ == interPointer)
 	{
 		head_ = interPointer->next_;

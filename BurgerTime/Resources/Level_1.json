@@ -38,7 +38,7 @@
       },
       {
         "name": "PeterPepperPrefab",
-        "Positions": [ [ 100, 346 ] ]
+        "Positions": [ [ 100, 346 ], [ 200, 346 ] ]
       },
       {
         "name": "PlatformLongPrefab",

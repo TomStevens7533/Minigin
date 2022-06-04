@@ -126,7 +126,7 @@ void Burger::LevelCreator::CreateLevel(std::string path, dae::Scene* currSceneTo
 											inf.Score = memIt->value.GetInt();
 										}
 										else {
-											std::string exeptionStr = std::string("Unknown in enemyinfo name of faulty obj: ") + memIt->name.GetString();
+											std::string exeptionStr = std::string("Unknown in enemyinfo!! Name of faulty obj: ") + memIt->name.GetString();
 											throw ParserException(exeptionStr);
 										}
 
@@ -188,13 +188,33 @@ void Burger::LevelCreator::AddPrefabToScene(const std::string& name, const std::
 		}
 	}
 	else if (name == "PeterPepperPrefab") {
-		for (point elementPos : posVec)
-		{
-			auto pepper = PrefabCreator::CreatePlayerPrefab(elementPos);
-			//Set Score UI
 
-			currScene->Add(pepper);
+		Gamemode curMode = GameManager::GetInstance().GetCurrentGamemode();
+		switch (curMode)
+		{
+		case Gamemode::COOP:
+			for (size_t i = 0; i < posVec.size(); i++)
+			{
+				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[i]);
+				//Set Score UI
+				currScene->Add(pepper);
+			}
+			break;
+		case Gamemode::PVP:
+			break;
+		case Gamemode::SOLO:
+			for (size_t i = 0; i < posVec.size(); i++)
+			{
+				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[i]);
+				//Set Score UI
+				currScene->Add(pepper);
+				break;
+			}
+			break;
+		default:
+			break;
 		}
+		
 	}
 	else if (name == "PlatformSoloPrefab") {
 

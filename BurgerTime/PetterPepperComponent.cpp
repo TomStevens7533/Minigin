@@ -14,7 +14,16 @@
 #include "BurgerTimeManager.h"
 
 namespace Burger {
+	int PetterPepperComponent::m_PepperAmountInGame = 0;
 
+
+
+	PetterPepperComponent::~PetterPepperComponent()
+	{
+		std::cout << "pepper deleted\n";
+		GameManager::GetInstance().removeObserver(this);
+
+	}
 
 	void PetterPepperComponent::Start()
 	{
@@ -29,19 +38,38 @@ namespace Burger {
 
 		//addObserver(GameManager::GetInstance());
 
-		m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 'A', new AttackCommand(attackComp), dae::KeyState::PRESSED);
-		m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftEnterCommand(this), dae::KeyState::DOWN);
-		m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightEnterCommand(this), dae::KeyState::DOWN);
-		m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpEnterCommand(this), dae::KeyState::DOWN);
-		m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownEnterCommand(this), dae::KeyState::DOWN);
+		if (m_PepperAmountInGame % 2 == 0)
+		{
+			//ARROWS
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 46, new AttackCommand(attackComp), dae::KeyState::PRESSED);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftEnterCommand(this), dae::KeyState::DOWN);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightEnterCommand(this), dae::KeyState::DOWN);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpEnterCommand(this), dae::KeyState::DOWN);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownEnterCommand(this), dae::KeyState::DOWN);
 
 
-		m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftExitCommand(this), dae::KeyState::RELEASED);
-		m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightExitCommand(this), dae::KeyState::RELEASED);
-		m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpExitCommand(this), dae::KeyState::RELEASED);
-		m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownExitCommand(this), dae::KeyState::RELEASED);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftExitCommand(this), dae::KeyState::RELEASED);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightExitCommand(this), dae::KeyState::RELEASED);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpExitCommand(this), dae::KeyState::RELEASED);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownExitCommand(this), dae::KeyState::RELEASED);
+		}
+		else {
+			//WASD
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 'Q', new AttackCommand(attackComp), dae::KeyState::PRESSED);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftEnterCommand(this), dae::KeyState::DOWN);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightEnterCommand(this), dae::KeyState::DOWN);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpEnterCommand(this), dae::KeyState::DOWN);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownEnterCommand(this), dae::KeyState::DOWN);
 
 
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftExitCommand(this), dae::KeyState::RELEASED);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightExitCommand(this), dae::KeyState::RELEASED);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpExitCommand(this), dae::KeyState::RELEASED);
+			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownExitCommand(this), dae::KeyState::RELEASED);
+		}
+		
+
+		++m_PepperAmountInGame;
 
 		//Adds itself as observor fol collision events
 		if (m_ColliderComponent) {
@@ -61,8 +89,9 @@ namespace Burger {
 		
 			if (m_CurrentVictroyDance < m_MaxVictoryDance)
 				m_CurrentVictroyDance += dae::Time::GetInstance().GetDeltaTime();
-			else
+			else {
 				GameManager::GetInstance().GoToNextLevel();
+			}
 		}
 	}
 
@@ -76,6 +105,7 @@ namespace Burger {
 
 		if (m_IsHit && m_SpriteComponent->IsActiveInFinalFrame()) {		
 
+			--m_PepperAmountInGame;
 			notify(this, PepperEvent::HEALTH_DECREASE);
 			m_IsHit = false;
 		}
@@ -89,11 +119,12 @@ namespace Burger {
 	void PetterPepperComponent::MoveLeftEnter()
 	{
 		if (m_IsOnFloorLeft) {
-			if (m_SpriteComponent != nullptr) {
+			if (m_SpriteComponent != nullptr && m_IsHit == false) {
 				m_SpriteComponent->SetActiveAnimation("Move");
 				m_SpriteComponent->SetFlipState(false);
+				m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::LEFT);
+
 			}
-			m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::LEFT);
 			return;
 		}
 		m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::NONE);
@@ -103,11 +134,12 @@ namespace Burger {
 	void PetterPepperComponent::MoveRightEnter()
 	{
 		if (m_IsOnFloorRight) {
-			if (m_SpriteComponent != nullptr) {
+			if (m_SpriteComponent != nullptr && m_IsHit == false) {
 				m_SpriteComponent->SetActiveAnimation("Move");
 				m_SpriteComponent->SetFlipState(true);
+				m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::RIGHT);
+
 			}
-			m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::RIGHT);
 			return;
 
 		}
@@ -119,11 +151,12 @@ namespace Burger {
 	{
 
 		if (m_IsOnLadderUp) {
-			if (m_SpriteComponent != nullptr) {
+			if (m_SpriteComponent != nullptr && m_IsHit == false) {
 				m_SpriteComponent->SetActiveAnimation("MoveForward");
 				m_SpriteComponent->SetFlipState(false);
+				m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::UP);
+
 			}
-			m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::UP);
 			return;
 		}
 		m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
@@ -133,11 +166,12 @@ namespace Burger {
 	void PetterPepperComponent::MoveDownEnter()
 	{
 		if (m_IsOnLadderDown) {
-			if (m_SpriteComponent != nullptr) {
+			if (m_SpriteComponent != nullptr && m_IsHit == false) {
 				m_SpriteComponent->SetActiveAnimation("MoveBackwards");
 				m_SpriteComponent->SetFlipState(false);
+				m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::DOWN);
+
 			}
-			m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::DOWN);
 			return;
 		}
 		m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
@@ -235,6 +269,10 @@ namespace Burger {
 			m_IsHit = true;
 			m_SpriteComponent->SetActiveAnimation("Death");
 			m_SpriteComponent->SetFlipState(false);
+			m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
+			m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
+
+
 		}
 	}
 
@@ -258,4 +296,4 @@ namespace Burger {
 		}
 	}
 
-}
+	}

@@ -69,8 +69,6 @@ void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 		std::unique_lock lock(m_Mutex);
 		while (!m_SoundQueue.empty())
 		{
-			std::cout << "play queue\n";
-
 			SoundEffect& currChunk = m_SoundQueue.front();
 			currChunk.load();
 			currChunk.Play();
@@ -84,8 +82,6 @@ void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 
 	}
 	
-
-
 }
 
 void SDL_Sound_System::SDL_SoundSystemImpl::RemoveSoundQueue()
@@ -95,8 +91,7 @@ void SDL_Sound_System::SDL_SoundSystemImpl::RemoveSoundQueue()
 		std::unique_lock lock(m_Mutex);
 		while (!m_DeleteionQueue.empty())
 		{
-			m_Cv.wait(lock);
-			std::cout << "delete queue\n";
+			m_Cv.wait(lock); //wait for PlaySoundQueue thread
 			SoundEffect& currChunk = m_DeleteionQueue.front();
 			if (currChunk.GetIsPlaying() == false) {
 				currChunk.ReleaseSound();

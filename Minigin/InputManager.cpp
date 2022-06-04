@@ -5,6 +5,7 @@
 #include <Xinput.h>
 #include <algorithm>
 #include "imgui_impl_sdl.h"
+#include <xutility>
 #pragma comment(lib, "xinput.lib")
 
 using namespace dae;
@@ -26,6 +27,8 @@ public:
 	bool IsKeyDownImpl(ControllerButton button, int deviceIdx) const;
 	bool IsKeyPressedImpl(ControllerButton button, int deviceIdx) const;
 	bool IsKeyReleasedImpl(ControllerButton button, int deviceIdx) const;
+
+	void RemovePlayer() { --m_PlayerAmount; };
 
 	bool IsKeyDownImpl(unsigned char key) const;
 	bool IsKeyPressedImpl(unsigned char key) const;
@@ -135,7 +138,6 @@ bool InputManager::InputManagerImpl::IsKeyReleasedImpl(unsigned char key) const
 
 //InputManager
 InputManager::InputManager() : m_pPimpl{ std::make_unique<InputManagerImpl>() } {
-	SetNewPlayerAmount(1);
 }
 //destructor visibility
 InputManager::~InputManager() {
@@ -149,14 +151,16 @@ InputManager::~InputManager() {
 bool InputManager::HandleCommands(int playerIdx)
 {
 	bool isTriggered = false;
-
-	for (auto& mapElement : m_CommandContainer[playerIdx])
-	{
-		if (HandleCommand(mapElement.first.first.first, mapElement.first.first.second, mapElement.first.second, mapElement.second.get(), playerIdx)) {
-			isTriggered = true;
+	if (static_cast<int>(m_CommandContainer.size()) > playerIdx) {
+		for (auto& mapElement : m_CommandContainer[playerIdx])
+		{
+			if (HandleCommand(mapElement.first.first.first, mapElement.first.first.second, mapElement.first.second, mapElement.second.get(), playerIdx)) {
+				isTriggered = true;
+			}
 		}
+		return isTriggered;
 	}
-	return isTriggered;
+	return false;
 }
 
 void dae::InputManager::SetNewPlayerAmount(int playerAmount)
@@ -167,6 +171,23 @@ void dae::InputManager::SetNewPlayerAmount(int playerAmount)
 		m_CommandContainer.emplace_back();
 	}
 	m_pPimpl->SetNewPlayerAmountImpl(playerAmount);
+}
+
+void InputManager::RemoveAllPlayers()
+{
+	for (int i = 0; i < (GetDeviceAmount()); i++)
+	{
+		//TODO: change if uniqueptr
+		RemovePlayer(i);
+	}
+}
+
+void InputManager::RemovePlayer(int deviceIdx)
+{
+	auto mapIt = m_CommandContainer.begin();
+	std::advance(mapIt, deviceIdx);
+	m_CommandContainer.erase(mapIt);
+	m_pPimpl->RemovePlayer();
 }
 
 int InputManager::GetDeviceAmount()
