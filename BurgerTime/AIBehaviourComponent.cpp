@@ -253,19 +253,21 @@ void Burger::HorizontalState::Entry(AIBehaviourComponent& ai)
 		return;
 	}
 
+	if (ai.m_MovementComponent->GetDirection() == Direction::NONE || ai.m_Type == EnemyType::SPIKE) {
+		glm::vec2 pos = ai.GetClosestPlayerPos();
+		float currPosx = ai.GetAttachedGameObject()->GetTransform().GetPosition().x;
+
+		if (pos.x < (currPosx)) {
+			ai.m_MovementComponent->SetNewDirection(Direction::LEFT);
+		}
+		if (pos.x > (currPosx)) {
+			//Floor in sight
+			ai.m_MovementComponent->SetNewDirection(Direction::RIGHT);
+		}
+
+	}
 
 	
-	glm::vec2 pos = ai.GetClosestPlayerPos();
-	float currPosx = ai.GetAttachedGameObject()->GetTransform().GetPosition().x;
-
-	if (pos.x < (currPosx)) {
-		ai.m_MovementComponent->SetNewDirection(Direction::LEFT);
-	}
-	if (pos.x > (currPosx)) {
-		//Floor in sight
-		ai.m_MovementComponent->SetNewDirection(Direction::RIGHT);
-
-	}
 
 
 
@@ -280,13 +282,6 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 			return new VerticalState();
 		else 
 			return new HorizontalState();
-	}
-	else if (!ai.m_IsOnLadder && ai.m_Type == EnemyType::SPIKE && m_CurrentTime > (m_MinExitTime / 2.f)) {
-		if (MathHelper::RandomBool(0.003f)) {
-			m_CurrentTime = 0.f;
-			return new HorizontalState();
-
-		}
 	}
 	else {
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
