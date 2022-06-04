@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
+#include "BurgerStructs.h"
 namespace Burger {
 	class MainMenuComp final : public dae::BaseComponent
 	{
@@ -16,6 +17,7 @@ namespace Burger {
 		MainMenuComp& operator=(const MainMenuComp& other) = delete;
 		MainMenuComp& operator=(MainMenuComp&& other) = delete;
 	private:
-		unsigned int m_currIdx;
+		Gamemode m_SelectedGamemode = Gamemode::SOLO;
+
 	};
 }

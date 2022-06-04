@@ -22,4 +22,15 @@ enum class Direction {
 	RIGHT,
 	UP,
 	DOWN
+}; 
+enum class Gamemode {
+	COOP,
+	PVP,
+	SOLO
+};
+struct LevelInfo
+{
+	int MaxLives;
+	int MaxPepper;
+	int BunWinCoun;
 };

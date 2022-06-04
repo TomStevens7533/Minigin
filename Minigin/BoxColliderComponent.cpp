@@ -108,10 +108,6 @@ void dae::BoxColliderComponent::OnOverlapStay(const std::shared_ptr<ColliderInfo
 			m_RegisteredListeners[i].OverlapStayFunc(otherCollider);
 	}
 
-	/*for (size_t i = 0; i < m_RegisteredListeners.size(); i++)
-	{
-		m_RegisteredListeners[i]->OnCollisionStay(*otherCollider);
-	}*/
 }
 
 void dae::BoxColliderComponent::OnOverlapEnter(const std::shared_ptr<ColliderInfo> otherCollider)
@@ -138,6 +134,8 @@ dae::BoxColliderComponent::~BoxColliderComponent()
 
 void dae::BoxColliderComponent::Render() const
 {
+
+#ifdef _DEBUG
 	if (m_pColliderInfo) {
 		SDL_Rect rect;
 		rect.w = (int)m_pColliderInfo->m_ColliderRect.width;
@@ -150,6 +148,9 @@ void dae::BoxColliderComponent::Render() const
 		SDL_RenderDrawRect(Renderer::GetInstance().GetSDLRenderer(),
 			&rect);
 	}
+#endif // _DEBUG
+
+	
 	
 
 }

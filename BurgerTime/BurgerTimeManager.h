@@ -2,23 +2,14 @@
 #include "Singleton.h"
 #include "Observer.h"
 #include "Subject.h"
+#include "BurgerStructs.h"
 
 namespace Burger { class BurgerTime; }
 namespace dae {
 	class BaseComponent; struct EventArgs;
 }
 
-enum class Gamemode {
-	COOP,
-	PVP,
-	SOLO
-};
-struct LevelInfo
-{
-	int MaxLives;
-	int MaxPepper;
-	int BunWinCoun;
-};
+
 
 class GameManager : public dae::Singleton<GameManager>, public dae::Observer, public dae::Subject {
 public:

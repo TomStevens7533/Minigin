@@ -10,11 +10,14 @@ void Burger::GameoverComp::Render() const
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 
+	ImGui::SetNextWindowPos({ 180,160 });
 	ImGui::Begin("RIP", nullptr, window_flags);
 	ImGui::SetWindowSize({ 300, 160 });
-
+	ImGui::Spacing();
 	ImGui::Text("Boeken toe!!!");
-	ImGui::Text("You lost oh no ca nest pas bien hייי please trya again a");
+	ImGui::Spacing();
+	ImGui::Text("You lost oh no ca nest pas bien please trya again a");
+	ImGui::Spacing();
 	ImGui::Indent();
 
 	std::string score = "Score :";
