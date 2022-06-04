@@ -132,7 +132,7 @@ namespace Burger {
 			m_SpriteComponent->SetActiveAnimation("Death");
 			m_SpriteComponent->SetFlipState(false);
 			auto moveComp = GetAttachedGameObject()->GetComponent<MovementComponent>();
-			moveComp->SetMovement(true);
+			moveComp->SetMovementDisable(true);
 
 
 		}

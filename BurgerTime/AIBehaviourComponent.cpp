@@ -15,8 +15,8 @@
 
 using namespace dae;
 
-Burger::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow, EnemyType type, int score, bool isPlayerController)
-	: m_TagToFollow{tagToFollow}, m_Type{ type }, m_Score{ score }, m_IsPlayerControllerd{isPlayerController}
+Burger::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow, EnemyType type, int score, bool isPlayerControlled)
+	: m_TagToFollow{tagToFollow}, m_Type{ type }, m_Score{ score }, m_IsPlayerControllerd{ isPlayerControlled }
 {
 
 }
@@ -30,7 +30,7 @@ Burger::AIBehaviourComponent::~AIBehaviourComponent()
 void Burger::AIBehaviourComponent::Start()
 {
 	
-	m_HotDogMovement = GetAttachedGameObject()->GetComponent<MovementComponent>();
+	m_MovementComponent = GetAttachedGameObject()->GetComponent<MovementComponent>();
 	m_SpriteComponent = GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
 
 
@@ -68,22 +68,25 @@ void Burger::AIBehaviourComponent::Update()
 	}
 	else {
 		//First setup
-		m_HotDogMovement->SetMovementCollisionCheck(false);
-		m_CurrState = new HorizontalState();
-		m_CurrState->Entry(*this);
-		m_IsSpawning = false;
-		m_HotDogMovement->SetMovementCollisionCheck(true);
+		if (m_IsPlayerControllerd == false) {
+			m_MovementComponent->SetMovementCollisionCheck(false);
+			m_CurrState = new HorizontalState();
+			m_CurrState->Entry(*this);
+			m_IsSpawning = false;
+			m_MovementComponent->SetMovementCollisionCheck(true);
+		}
+		
 
 	}
 	m_IsOnLadder = false;
 	m_IsOnFloor = false;
-
+	UpdateSprite();
 
 }
 void Burger::AIBehaviourComponent::SetFallState(float velocity)
 {
 	if (!m_IsFalling) {
-		m_HotDogMovement->SetNewVelocity(velocity);
+		m_MovementComponent->SetNewVelocity(velocity);
 		m_CurrState->Exit(*this);
 		delete m_CurrState;
 		m_CurrState = new FallingState();
@@ -122,6 +125,34 @@ glm::vec2 Burger::AIBehaviourComponent::GetClosestPlayerPos() const
 
 
 
+void Burger::AIBehaviourComponent::UpdateSprite()
+{
+
+	Direction dir = m_MovementComponent->GetMovement();
+
+	switch (dir)
+	{
+	case Direction::LEFT:
+		m_SpriteComponent->SetActiveAnimation("MoveSide");
+		m_SpriteComponent->SetFlipState(false);
+		break;
+	case Direction::RIGHT:
+		m_SpriteComponent->SetActiveAnimation("MoveSide");
+		m_SpriteComponent->SetFlipState(true);
+		break;
+	case Direction::UP:
+		m_SpriteComponent->SetActiveAnimation("MoveBackwards");
+		m_SpriteComponent->SetFlipState(false);
+		break;
+	case Direction::DOWN:
+		m_SpriteComponent->SetActiveAnimation("MoveForward");
+		m_SpriteComponent->SetFlipState(false);
+		break;
+	default:
+		break;
+	}
+}
+
 void Burger::AIBehaviourComponent::OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo)
 {
 	ColliderInfo aiColInfo = m_ColliderComponent->GetColliderInfo();
@@ -149,8 +180,9 @@ void Burger::AIBehaviourComponent::OnCollisionStay(const std::shared_ptr<Collide
 void Burger::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo)
 {
 	if (otherInfo->tag == "Shot") {
-		std::cout << "hit\n";
-		m_CurrState->Exit(*this);
+		if (m_CurrState != nullptr) {
+			m_CurrState->Exit(*this);
+		}
 		delete m_CurrState;
 		m_CurrState = new HitState();
 		m_CurrState->Entry(*this);
@@ -165,7 +197,9 @@ void Burger::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<Collid
 		//Bun detection
 		if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, topCheck)) {
 			m_IsDeath = true;
-			m_CurrState->Exit(*this);
+			if (m_CurrState != nullptr) {
+				m_CurrState->Exit(*this);
+			}
 			delete m_CurrState;
 			m_CurrState = new DeathState();
 			m_CurrState->Entry(*this);
@@ -174,7 +208,9 @@ void Burger::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<Collid
 	}
 	else if (otherInfo->tag == "BunEnd") {
 		m_IsDeath = true;
-		m_CurrState->Exit(*this);
+		if (m_CurrState != nullptr) {
+			m_CurrState->Exit(*this);
+		}
 		delete m_CurrState;
 		m_CurrState = new DeathState();
 		m_CurrState->Entry(*this);
@@ -200,33 +236,25 @@ void Burger::HorizontalState::Entry(AIBehaviourComponent& ai)
 		, glm::vec2(-1, 0), 50.f, "Floor", 1);
 
 	if (rightFloorHit == nullptr && ai.m_IsSpawning == false) {
-		ai.m_HotDogMovement->SetNewDirection(Direction::LEFT);
-		ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
-		ai.m_SpriteComponent->SetFlipState(false);
+		ai.m_MovementComponent->SetNewDirection(Direction::LEFT);
 		return;
 	}
 	if (leftFloorHit == nullptr && ai.m_IsSpawning == false) {
-		ai.m_HotDogMovement->SetNewDirection(Direction::RIGHT);
-		ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
-		ai.m_SpriteComponent->SetFlipState(true);
+		ai.m_MovementComponent->SetNewDirection(Direction::RIGHT);
 		return;
 	}
 
 
-	if (ai.m_HotDogMovement->GetDirection() == Direction::NONE) {
+	if (ai.m_MovementComponent->GetDirection() == Direction::NONE) {
 		glm::vec2 pos = ai.GetClosestPlayerPos();
 		float currPosx = ai.GetAttachedGameObject()->GetTransform().GetPosition().x;
 
 		if (pos.x < (currPosx)) {
-			ai.m_HotDogMovement->SetNewDirection(Direction::LEFT);
-			ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
-			ai.m_SpriteComponent->SetFlipState(false);
+			ai.m_MovementComponent->SetNewDirection(Direction::LEFT);
 		}
 		if (pos.x > (currPosx)) {
 			//Floor in sight
-			ai.m_HotDogMovement->SetNewDirection(Direction::RIGHT);
-			ai.m_SpriteComponent->SetActiveAnimation("MoveSide");
-			ai.m_SpriteComponent->SetFlipState(true);
+			ai.m_MovementComponent->SetNewDirection(Direction::RIGHT);
 
 		}
 	}
@@ -277,13 +305,13 @@ Burger::AIState* Burger::VerticalState::UpdateState(AIBehaviourComponent& ai)
 
 void Burger::VerticalState::Exit(AIBehaviourComponent& ai)
 {
-	ai.m_HotDogMovement->SetNewDirection(Direction::NONE);
+	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 }
 
 
 void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 {
-	ai.m_HotDogMovement->SetNewDirection(Direction::NONE);
+	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 
 
 	float posY = ai.GetClosestPlayerPos().y;
@@ -297,20 +325,12 @@ void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 		//Check if floor goes further else go other dir
 		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, -1), 35.f, "Ladder", 1)
 			|| ai.m_IsSpawning) {
-
-			ai.m_HotDogMovement->SetNewDirection(Direction::UP);
-
-			ai.m_SpriteComponent->SetActiveAnimation("MoveBackwards");
-			ai.m_SpriteComponent->SetFlipState(false);
+			ai.m_MovementComponent->SetNewDirection(Direction::UP);
 			return;
 
 		}
 		else {
-			ai.m_SpriteComponent->SetActiveAnimation("MoveForward");
-			ai.m_SpriteComponent->SetFlipState(false);
-			ai.m_HotDogMovement->SetNewDirection(Direction::DOWN);
-
-
+			ai.m_MovementComponent->SetNewDirection(Direction::DOWN);
 		}
 	}
 	
@@ -320,15 +340,10 @@ void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, 1),35.f, "Ladder", 1)
 			|| ai.m_IsSpawning) {
 			//Floor in sight
-				ai.m_HotDogMovement->SetNewDirection(Direction::DOWN);
-				ai.m_SpriteComponent->SetActiveAnimation("MoveForward");
-				ai.m_SpriteComponent->SetFlipState(false);
 				return;
 			}
 			else {
-				ai.m_SpriteComponent->SetActiveAnimation("MoveBackwards");
-				ai.m_SpriteComponent->SetFlipState(false);
-				ai.m_HotDogMovement->SetNewDirection(Direction::UP);
+				ai.m_MovementComponent->SetNewDirection(Direction::UP);
 				return;
 
 			}
@@ -343,6 +358,8 @@ void Burger::HitState::Entry(AIBehaviourComponent& ai)
 	//Se sprite
 	ai.m_SpriteComponent->SetActiveAnimation("Fried");
 	ai.m_SpriteComponent->SetFlipState(false);
+	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
+
 
 	//play fx
 	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyStun.mp3");
@@ -350,7 +367,7 @@ void Burger::HitState::Entry(AIBehaviourComponent& ai)
 
 	//Disable enemy collider
 	ai.m_ColliderComponent->DisableCollider();
-	ai.m_HotDogMovement->SetNewDirection(Direction::NONE);
+	ai.m_MovementComponent->SetMovementDisable(true);
 }
 
 
@@ -375,6 +392,8 @@ Burger::AIState* Burger::HitState::UpdateState(AIBehaviourComponent&)
 void Burger::HitState::Exit(AIBehaviourComponent& ai)
 {
 	ai.m_ColliderComponent->EnableCollider();
+	ai.m_MovementComponent->SetMovementDisable(false);
+
 }
 
 void Burger::DeathState::Entry(AIBehaviourComponent& ai)
@@ -385,7 +404,10 @@ void Burger::DeathState::Entry(AIBehaviourComponent& ai)
 
 	ai.m_SpriteComponent->SetActiveAnimation("Death");
 	ai.m_ColliderComponent->DisableCollider();
-	ai.m_HotDogMovement->SetNewDirection(Direction::NONE);
+	ai.m_MovementComponent->SetMovementDisable(true);
+	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
+
+
 
 }
 
@@ -413,7 +435,7 @@ void Burger::DeathState::Exit(AIBehaviourComponent& ai)
 
 void Burger::FallingState::Entry(AIBehaviourComponent& ai)
 {
-	ai.m_HotDogMovement->SetNewDirection(Direction::DOWN);
+	ai.m_MovementComponent->SetNewDirection(Direction::DOWN);
 
 	//Play fx
 	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDrop.mp3");

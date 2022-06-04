@@ -30,8 +30,10 @@ void Burger::MovementComponent::Start()
 
 void Burger::MovementComponent::Update()
 {
-	if (m_IsDisabled == true)
+	if (m_IsDisabled) {
+		std::cout << "disable\n";
 		return;
+	}
 
 	Transform& tr = m_pParent->GetTransform();
 	glm::vec2 newPos;

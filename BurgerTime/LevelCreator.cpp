@@ -204,7 +204,7 @@ void Burger::LevelCreator::AddPrefabToScene(const std::string& name, const std::
 			if (posVec.size() >= 2) {
 				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[0]);
 				currScene->Add(pepper);
-				//pepper = PrefabCreator::CreatePlayableWorstPrefab(posVec[1]);
+				pepper = PrefabCreator::CreatePlayableWorstPrefab(posVec[1], 500);
 				currScene->Add(pepper);
 			}
 			break;

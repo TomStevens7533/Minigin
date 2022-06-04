@@ -15,6 +15,7 @@
 #include "LivesDisplayComponent.h"
 #include "FInalBurgerComponent.h"
 #include "MainMenuComponent.h"
+#include "Command.cpp"
 #include "GameOverComponent.h"
 
 using namespace Burger;
@@ -165,19 +166,18 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayableWorstPrefab(point 
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
 	auto movementComp = std::make_shared<MovementComponent>(40.f);
 	auto inputComponent = std::make_shared<dae::InputComponent>(m_PlayerCount);
+	MovementComponent* pMove = movementComp.get();
+
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftEnterCommand(pMove), dae::KeyState::DOWN);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightEnterCommand(pMove), dae::KeyState::DOWN);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpEnterCommand(pMove), dae::KeyState::DOWN);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownEnterCommand(pMove), dae::KeyState::DOWN);
 
 
-
-	/*inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftEnterCommand(this), dae::KeyState::DOWN);
-	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightEnterCommand(this), dae::KeyState::DOWN);
-	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpEnterCommand(this), dae::KeyState::DOWN);
-	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownEnterCommand(this), dae::KeyState::DOWN);
-
-
-	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftExitCommand(this), dae::KeyState::RELEASED);
-	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightExitCommand(this), dae::KeyState::RELEASED);
-	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpExitCommand(this), dae::KeyState::RELEASED);
-	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownExitCommand(this), dae::KeyState::RELEASED);*/
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftExitCommand(pMove), dae::KeyState::RELEASED);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightExitCommand(pMove), dae::KeyState::RELEASED);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpExitCommand(pMove), dae::KeyState::RELEASED);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownExitCommand(pMove), dae::KeyState::RELEASED);
 
 	//Make playable
 	auto hotdogg = std::make_shared<AIBehaviourComponent>("Player", EnemyType::WORST, score, true);

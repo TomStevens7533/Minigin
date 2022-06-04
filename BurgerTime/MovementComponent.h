@@ -16,7 +16,7 @@ namespace Burger {
 
 		void SetNewDirection(Direction newDir);
 		Direction GetDirection() const { return m_CurrentDir; }
-		void SetMovement(bool isDisabled) { m_IsDisabled = isDisabled; }
+		void SetMovementDisable(bool isDisabled) { m_IsDisabled = isDisabled; }
 		Direction GetMovement() { return m_CurrentDir; }
 
 		void SetMovementCollisionCheck(bool isDisabled) { m_IsCollisionDisabled = isDisabled; }
@@ -30,9 +30,6 @@ namespace Burger {
 		MovementComponent(MovementComponent&& other) = delete;
 		MovementComponent& operator=(const MovementComponent& other) = delete;
 		MovementComponent& operator=(MovementComponent&& other) = delete;
-
-		//const inline bool GetIsMovingVertically() const { return m_IsMovingVertically; }
-		//const inline bool GetIsMovingHorizontally() const { return m_IsMovingHorizontally; }
 
 		inline void SetNewVelocity(float newVelocity) {
 			m_Velocity = newVelocity;

@@ -83,7 +83,7 @@ namespace Burger {
 	class AIBehaviourComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
-		AIBehaviourComponent(std::string tagToFollow, EnemyType type, int score, bool isPlayerController = false);
+		AIBehaviourComponent(std::string tagToFollow, EnemyType type, int score, bool isPlayerControlled = false);
 		~AIBehaviourComponent();
 
 
@@ -108,6 +108,7 @@ namespace Burger {
 		friend class FallingState;
 
 
+		void UpdateSprite();
 
 
 
@@ -119,7 +120,7 @@ namespace Burger {
 		AIState* m_CurrState = nullptr;
 		std::vector <dae::GameObject*> m_PlayerVec;
 		std::string m_TagToFollow;
-		MovementComponent* m_HotDogMovement = nullptr;
+		MovementComponent* m_MovementComponent = nullptr;
 		dae::SpriteComponent* m_SpriteComponent = nullptr;
 		dae::BoxColliderComponent* m_ColliderComponent = nullptr;
 
