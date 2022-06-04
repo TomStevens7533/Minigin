@@ -91,18 +91,12 @@ void Burger::AIBehaviourComponent::SetFallState(float velocity)
 		}
 		delete m_CurrState;
 		m_CurrState = new FallingState();
+		m_CurrState->Entry(*this);
 		m_IsFalling = true;
 
 
 		m_MovementComponent->SetNewVelocity(velocity);
-		m_MovementComponent->SetNewDirection(Direction::DOWN);
-
-		m_MovementComponent->SetMovementCollisionCheckDisable(true);
-		m_MovementComponent->SetChangeMovementDisable(true);
-
-
-		//Play fx
-		ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDrop.mp3");
+		
 
 	}
 }
@@ -140,6 +134,10 @@ void Burger::AIBehaviourComponent::UpdateSprite()
 {
 
 	Direction dir = m_MovementComponent->GetMovement();
+
+	//make death and victory state
+	if (m_IsDeath)
+		return;
 
 	switch (dir)
 	{
@@ -362,7 +360,7 @@ void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 
 }
 
-
+//HIT
 void Burger::HitState::Entry(AIBehaviourComponent& ai)
 {
 	//Se sprite
@@ -380,11 +378,6 @@ void Burger::HitState::Entry(AIBehaviourComponent& ai)
 	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 	ai.m_MovementComponent->SetChangeMovementDisable(true);
 }
-
-
-
-
-//HIT
 Burger::AIState* Burger::HitState::UpdateState(AIBehaviourComponent&)
 {
 	if (m_CurrentTime > m_MinExitTime) {
@@ -397,34 +390,21 @@ Burger::AIState* Burger::HitState::UpdateState(AIBehaviourComponent&)
 	}
 
 }
-
-
-
 void Burger::HitState::Exit(AIBehaviourComponent& ai)
 {
 	ai.m_ColliderComponent->EnableCollider();
 	ai.m_MovementComponent->SetChangeMovementDisable(false);
 
 }
-
+//DEATH
 void Burger::DeathState::Entry(AIBehaviourComponent& ai)
 {
-
 	//play fx
 	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDeath.mp3");
-
 	ai.m_ColliderComponent->DisableCollider();
-	ai.m_MovementComponent->SetChangeMovementDisable(true);
 	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 	ai.m_SpriteComponent->SetActiveAnimation("Death");
-
-
-
 }
-
-
-
-//DEATH
 Burger::AIState* Burger::DeathState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_SpriteComponent->IsActiveInFinalFrame()) {
@@ -444,14 +424,27 @@ void Burger::DeathState::Exit(AIBehaviourComponent& ai)
 {
 	ai.m_ColliderComponent->DisableCollider();
 }
-
+//FALLL
 void Burger::FallingState::Entry(AIBehaviourComponent& ai)
 {
 
+	ai.m_MovementComponent->SetNewDirection(Direction::DOWN);
 
+	ai.m_MovementComponent->SetMovementCollisionCheckDisable(true);
+	ai.m_MovementComponent->SetChangeMovementDisable(true);
+
+
+	//Play fx
+	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDrop.mp3");
 }
 
 Burger::AIState* Burger::FallingState::UpdateState(AIBehaviourComponent& ai)
 {
 	return nullptr;
+}
+
+void Burger::FallingState::Exit(AIBehaviourComponent& ai)
+{
+	ai.m_MovementComponent->SetChangeMovementDisable(false);
+
 }

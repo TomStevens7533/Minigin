@@ -49,7 +49,6 @@ namespace Burger {
 
 		bool m_IsVictory = false;
 		bool m_IsHit = false;
-		bool m_IsDeath = false;
 
 		static bool m_IsFinished;
 		static int m_PepperAmountInGame;

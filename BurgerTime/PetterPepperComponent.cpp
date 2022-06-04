@@ -95,9 +95,9 @@ namespace Burger {
 			if (m_CurrentVictroyDance < m_MaxVictoryDance)
 				m_CurrentVictroyDance += dae::Time::GetInstance().GetDeltaTime();
 			else {
-				--m_PepperAmountInGame;
 				if (m_IsFinished == false) { //make sure it does not get called multiple times in coop
 					GameManager::GetInstance().GoToNextLevel();
+					m_PepperAmountInGame = 0;
 					m_IsFinished = true;
 				}
 			}
@@ -132,6 +132,7 @@ namespace Burger {
 			m_SpriteComponent->SetActiveAnimation("Death");
 			m_SpriteComponent->SetFlipState(false);
 			auto moveComp = GetAttachedGameObject()->GetComponent<MovementComponent>();
+			moveComp->SetNewDirection(Direction::NONE);
 			moveComp->SetChangeMovementDisable(true);
 
 
@@ -161,7 +162,7 @@ namespace Burger {
 	void PetterPepperComponent::UpdateSprite()
 	{
 		//make death and victory state
-		if (m_IsDeath || m_IsVictory)
+		if (m_IsHit || m_IsVictory)
 			return;
 
 		Direction dir = m_MovementComponent->GetMovement();
