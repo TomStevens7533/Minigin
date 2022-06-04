@@ -8,6 +8,8 @@ namespace Burger {
 	{
 		MAIN_MENU,
 		LEVEL1,
+		LEVEL2,
+		LEVEL3,
 		GAME_OVER
 
 	};
@@ -18,6 +20,9 @@ namespace Burger {
 		void Initialize();
 		void CreateMainMenu();
 		void CreateLevel1();
+		void CreateLevel2();
+		void CreateLevel3();
+
 		void CreateGameOver();
 
 		void LoadNextStage(Level level);

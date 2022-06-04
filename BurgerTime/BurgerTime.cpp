@@ -33,7 +33,6 @@ void BurgerTime::CreateLevel1()
 	m_CurrentLevel = Level::LEVEL1;
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene("Level1");
 	CreateLevel("Resources/Level_1.json", &scene);
-	//dae::SceneManager::GetInstance().QueueNewScene(&scene);
 	scene.Start();
 }
 
@@ -67,6 +66,12 @@ void BurgerTime::LoadNextStage(Level level)
 		CreateLevel1();
 		break;
 	case Level::LEVEL1:
+		CreateLevel2();
+		break;
+	case Level::LEVEL2:
+		CreateLevel3();
+		break;
+	case Level::LEVEL3:
 		CreateMainMenu();
 		break;
 	default:
@@ -98,6 +103,12 @@ void BurgerTime::RemoveStage(Level level)
 		break;
 	case Level::LEVEL1:
 		dae::SceneManager::GetInstance().DestroyScene("Level1");
+		break;
+	case Level::LEVEL2:
+		dae::SceneManager::GetInstance().DestroyScene("Level2");
+		break;
+	case Level::LEVEL3:
+		dae::SceneManager::GetInstance().DestroyScene("Level3");
 		break;
 	case Level::GAME_OVER:
 		dae::SceneManager::GetInstance().DestroyScene("GameOver");
@@ -132,6 +143,12 @@ void BurgerTime::LoadStage(Level level)
 	case Level::LEVEL1:
 		CreateLevel1();
 		break;
+	case Level::LEVEL2:
+		CreateLevel2();
+		break;
+	case Level::LEVEL3:
+		CreateLevel3();
+		break;
 	case Level::GAME_OVER:
 		CreateGameOver();
 		break;
@@ -139,5 +156,27 @@ void BurgerTime::LoadStage(Level level)
 		CreateMainMenu();
 		break;
 	}
+}
+
+void BurgerTime::CreateLevel2()
+{
+	ServiceLocator::GetSoundSystem().StopAll();
+	ServiceLocator::GetSoundSystem().play("Resources/Music/LEVEL2.mp3");
+
+	m_CurrentLevel = Level::LEVEL2;
+	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene("Level2");
+	CreateLevel("Resources/Level_2.json", &scene);
+	scene.Start();
+}
+
+void BurgerTime::CreateLevel3()
+{
+	ServiceLocator::GetSoundSystem().StopAll();
+	ServiceLocator::GetSoundSystem().play("Resources/Music/LEVEL3.mp3");
+
+	m_CurrentLevel = Level::LEVEL3;
+	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene("Level3");
+	CreateLevel("Resources/Level_3.json", &scene);
+	scene.Start();
 }
 

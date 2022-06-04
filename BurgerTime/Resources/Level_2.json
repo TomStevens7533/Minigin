@@ -3,7 +3,7 @@
     "LevelInfo" :{
       "MaxLives" : 5,
       "MaxPepper" : 5,
-      "BunsToWin" : 2
+      "BunsToWin" : 3
     },
 
     "Positions": [
@@ -25,15 +25,11 @@
         "Positions": [
           [ 62, 290 ],
           [ 62, 53 ],
-          [ 184, 290 ],
           [ 184, 112 ],
-          [ 184, 53 ],
           [ 309, 290 ],
           [ 309, 112 ],
           [ 309, 53 ],
-          [ 435, 290 ],
-          [ 435, 112 ],
-          [ 435, 53 ]
+          [ 435, 290 ]
         ]
       },
       {
@@ -67,23 +63,23 @@
       },
       {
         "name": "TopBun",
-        "Positions": [ [ 245, 45 ],  [ 490, 45 ] ]
+        "Positions": [ [ 245, 45 ],  [ 490, 45 ], [ 100, 45 ]  ]
       },
       {
         "name": "Lettuce",
-        "Positions": [ [ 245, 145 ],  [ 490, 180 ] ]
+        "Positions": [ [ 245, 145 ], [ 490, 110 ], [ 100, 110 ]  ]
       },
       {
         "name": "Tomato",
-        "Positions": [ [ 245, 215 ],  [ 490, 250 ] ]
+        "Positions": [ [ 245, 215 ], [ 490, 250 ], [ 100, 280 ]  ]
       },
       {
         "name": "LowerBun",
-        "Positions": [ [ 245, 355 ],  [ 490, 355 ] ]
+        "Positions": [ [ 245, 355 ], [ 490, 355 ], [ 100, 355 ]  ]
       },
       {
         "name": "BurgerCatcher",
-        "Positions": [ [ 245, 455 ],  [ 490, 455 ] ]
+        "Positions": [ [ 245, 455 ], [ 490, 455 ],[ 100, 455 ]  ]
       },
       {
         "name": "EnemySpawnPoints",
@@ -96,12 +92,12 @@
         "EnemyInfo": [
             {
               "idx": 1,
-              "maxLevel": 3,
+              "maxLevel": 5,
               "KillScore": 500
             },
             {
               "idx": 2,
-              "maxLevel": 1,
+              "maxLevel": 2,
               "KillScore": 600
             }
           ]
