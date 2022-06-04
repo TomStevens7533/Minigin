@@ -43,7 +43,7 @@ namespace Burger {
 
 		//addObserver(GameManager::GetInstance());
 
-		if (m_PepperAmountInGame % 2 == 0)
+		if (m_PepperAmountInGame % 2 == 1)
 		{
 			//ARROWS
 			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 46, new AttackCommand(attackComp), dae::KeyState::PRESSED);
