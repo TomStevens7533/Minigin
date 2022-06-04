@@ -9,6 +9,7 @@ namespace dae {
 		if (!(m_deviceIdx < InputManager::GetInstance().GetDeviceAmount())) {
 			InputManager::GetInstance().SetNewPlayerAmount(m_deviceIdx + 1);
 		}
+		std::cout << m_deviceIdx << std::endl;
 	}
 
 	InputComponent::~InputComponent()

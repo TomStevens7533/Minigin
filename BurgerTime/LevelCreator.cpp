@@ -187,41 +187,7 @@ void Burger::LevelCreator::AddPrefabToScene(const std::string& name, const std::
 
 		}
 	}
-	else if (name == "PeterPepperPrefab") {
-
-		Gamemode curMode = GameManager::GetInstance().GetCurrentGamemode();
-		switch (curMode)
-		{
-		case Gamemode::COOP:
-			for (size_t i = 0; i < posVec.size(); i++)
-			{
-				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[i]);
-				//Set Score UI
-				currScene->Add(pepper);
-			}
-			break;
-		case Gamemode::PVP:
-			if (posVec.size() >= 2) {
-				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[0]);
-				currScene->Add(pepper);
-				pepper = PrefabCreator::CreatePlayableWorstPrefab(posVec[1], 500);
-				currScene->Add(pepper);
-			}
-			break;
-		case Gamemode::SOLO:
-			for (size_t i = 0; i < posVec.size(); i++)
-			{
-				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[i]);
-				//Set Score UI
-				currScene->Add(pepper);
-				break;
-			}
-			break;
-		default:
-			break;
-		}
-		
-	}
+	
 	else if (name == "PlatformSoloPrefab") {
 
 		for (point elementPos : posVec)
@@ -286,6 +252,41 @@ void Burger::LevelCreator::AddPrefabToScene(const std::string& name, const std::
 			auto burerCatch = PrefabCreator::CreatBurgerCathcherPrefab(elementPos);
 			currScene->Add(burerCatch);
 		}
+	}
+	else if (name == "PeterPepperPrefab") {
+
+		Gamemode curMode = GameManager::GetInstance().GetCurrentGamemode();
+		switch (curMode)
+		{
+		case Gamemode::COOP:
+			for (size_t i = 0; i < posVec.size(); i++)
+			{
+				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[i], i);
+				//Set Score UI
+				currScene->Add(pepper);
+			}
+			break;
+		case Gamemode::PVP:
+			if (posVec.size() >= 2) {
+				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[0], 0);
+				currScene->Add(pepper);
+				pepper = PrefabCreator::CreatePlayableWorstPrefab(posVec[1], 500, 1);
+				currScene->Add(pepper);
+			}
+			break;
+		case Gamemode::SOLO:
+			for (size_t i = 0; i < posVec.size(); i++)
+			{
+				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[i], i);
+				//Set Score UI
+				currScene->Add(pepper);
+				break;
+			}
+			break;
+		default:
+			break;
+		}
+
 	}
 
 }

@@ -159,13 +159,13 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateGameOver()
 	return menu;
 }
 
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayableWorstPrefab(point pos, int score)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayableWorstPrefab(point pos, int score, int playerID)
 {
 	auto hotdoggGo = std::make_shared<dae::GameObject>();
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
 	auto movementComp = std::make_shared<MovementComponent>(40.f);
-	auto inputComponent = std::make_shared<dae::InputComponent>(m_PlayerCount);
+	auto inputComponent = std::make_shared<dae::InputComponent>(playerID);
 	MovementComponent* pMove = movementComp.get();
 
 	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftEnterCommand(pMove), dae::KeyState::DOWN);
@@ -197,6 +197,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayableWorstPrefab(point 
 
 
 	hotdoggGo->SetPosition(pos.x, pos.y);
+	++m_PlayerCount;
 	return hotdoggGo;
 }
 
@@ -218,11 +219,11 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlatformPrefab(point pos, 
 
 
 
-std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos)
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos, int playerID)
 {
 	auto PeterPepper = std::make_shared<dae::GameObject>();
 	PeterPepper->SetName("Player");
-	auto inputComponent = std::make_shared<dae::InputComponent>(m_PlayerCount);
+	auto inputComponent = std::make_shared<dae::InputComponent>(playerID);
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.15f);
 	auto peterPepperComp = std::make_shared<PetterPepperComponent>();
 	auto movementComp = std::make_shared<MovementComponent>(70.f);
@@ -251,6 +252,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayerPrefab(point pos)
 
 	PeterPepper->SetPosition(pos.x, pos.y);
 
+	++m_PlayerCount;
 
 
 	return PeterPepper;
