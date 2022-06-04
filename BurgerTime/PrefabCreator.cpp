@@ -19,7 +19,7 @@
 
 using namespace Burger;
 
-
+int Burger::PrefabCreator::m_PlayerCount = 0;
 
 std::shared_ptr<dae::GameObject> PrefabCreator::CreateEnemySpawner(std::vector<point> spawnPoint, std::map<EnemyType, EnemySpawnInfo>& enemyMap)
 {
@@ -158,7 +158,48 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateGameOver()
 	return menu;
 }
 
-int Burger::PrefabCreator::m_PlayerCount = 0;
+std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayableWorstPrefab(point pos, int score)
+{
+	auto hotdoggGo = std::make_shared<dae::GameObject>();
+	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
+	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
+	auto movementComp = std::make_shared<MovementComponent>(40.f);
+	auto inputComponent = std::make_shared<dae::InputComponent>(m_PlayerCount);
+
+
+
+	/*inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftEnterCommand(this), dae::KeyState::DOWN);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightEnterCommand(this), dae::KeyState::DOWN);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpEnterCommand(this), dae::KeyState::DOWN);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownEnterCommand(this), dae::KeyState::DOWN);
+
+
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftExitCommand(this), dae::KeyState::RELEASED);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightExitCommand(this), dae::KeyState::RELEASED);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpExitCommand(this), dae::KeyState::RELEASED);
+	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownExitCommand(this), dae::KeyState::RELEASED);*/
+
+	//Make playable
+	auto hotdogg = std::make_shared<AIBehaviourComponent>("Player", EnemyType::WORST, score, true);
+
+
+	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);
+	spriteComponent->AddAnimation("MoveForward", 0, 2, 2, 3);
+	spriteComponent->AddAnimation("MoveBackwards", 4, 2, 6, 3);
+	spriteComponent->AddAnimation("Fried", 4, 3, 6, 4);
+	spriteComponent->AddAnimation("Death", 0, 3, 4, 4);
+
+	hotdoggGo->AddComponent<dae::SpriteComponent>(spriteComponent);
+	hotdoggGo->AddComponent<dae::BoxColliderComponent>(boxCollider);
+	hotdoggGo->AddComponent<MovementComponent>(movementComp);
+	hotdoggGo->AddComponent<AIBehaviourComponent>(hotdogg);
+	hotdoggGo->AddComponent<dae::InputComponent>(inputComponent);
+
+
+	hotdoggGo->SetPosition(pos.x, pos.y);
+	return hotdoggGo;
+}
+
 
 std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlatformPrefab(point pos, int tilling)
 {

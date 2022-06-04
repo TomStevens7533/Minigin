@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
-#include "structs.h"
+#include "BurgerStructs.h"
 #include "BoxColliderComponent.h"
 namespace Burger {
 
@@ -14,29 +14,32 @@ namespace Burger {
 		virtual void LateUpdate() override;
 		virtual void Render() const override { };
 
-		void SetNewHorizontalDirection(dae::HorizontalDirection newDir);
-		void SetNewVerticalDirection(dae::VerticalDirection newDir);
+		void SetNewDirection(Direction newDir);
+		Direction GetDirection() const { return m_CurrentDir; }
+		void SetMovement(bool isDisabled) { m_IsDisabled = isDisabled; }
+		void SetMovementCollisionCheck(bool isDisabled) { m_IsCollisionDisabled = isDisabled; }
 
-		dae::HorizontalDirection GetHorizonDir() { return m_CurrentHorizonDirection; }
-		dae::VerticalDirection GetVerticalDir() { return m_CurrentVertoicalDirection; }
+		void OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo);
 
+		//const inline bool GetIsMovingVertically() const { return m_IsMovingVertically; }
+		//const inline bool GetIsMovingHorizontally() const { return m_IsMovingHorizontally; }
 
-		const inline bool GetIsMovingVertically() const { return m_IsMovingVertically; }
-		const inline bool GetIsMovingHorizontally() const { return m_IsMovingHorizontally; }
-
-		glm::vec2 GetCenterPos() const;
 		inline void SetNewVelocity(float newVelocity) {
 			m_Velocity = newVelocity;
 		}
 
 	private:
-		dae::HorizontalDirection m_CurrentHorizonDirection = dae::HorizontalDirection::NONE;
-		dae::VerticalDirection m_CurrentVertoicalDirection = dae::VerticalDirection::NONE;
-
-		dae::BoxColliderComponent* m_ColliderComponent;
-		bool m_IsMovingVertically{ false };
-		bool m_IsMovingHorizontally{ false };
+		Direction m_CurrentDir = Direction::NONE;
+		dae::BoxColliderComponent* m_ColliderComponent = nullptr;
 		float m_Velocity{};
+		bool m_IsDisabled = false;
+		bool m_IsCollisionDisabled = false;
+		bool m_IsOnLadderUp = false;
+		bool m_IsOnLadderDown = false;
+
+		bool m_IsOnFloorRight = false;
+		bool m_IsOnFloorLeft = false;
+
 
 	};
 }

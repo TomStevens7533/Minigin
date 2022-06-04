@@ -101,8 +101,6 @@ void Burger::EnemySpawnComponent::SpawnEnemy()
 
 
 		}
-	
-	
 	}
 	else {
 		//Add Timer

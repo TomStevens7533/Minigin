@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "DeltaTime.h"
 #include "ServiceLocator.h"
+#include "MathHelper.h"
 
 using namespace dae;
 Burger::MovementComponent::MovementComponent(float movementVelocity) : m_Velocity{movementVelocity}
@@ -18,52 +19,61 @@ Burger::MovementComponent::MovementComponent(float movementVelocity) : m_Velocit
 void Burger::MovementComponent::Start()
 {
 	m_ColliderComponent = GetAttachedGameObject()->GetComponent<dae::BoxColliderComponent>();
+
+	if (m_ColliderComponent) {
+		dae::ColliderCallbacks colBack;
+		colBack.OverlapStayFunc = std::bind(&MovementComponent::OnCollisionStay, this, std::placeholders::_1);
+
+		m_ColliderComponent->AddListener(colBack);
+	}
 }
 
 void Burger::MovementComponent::Update()
 {
+	if (m_IsDisabled == true)
+		return;
+
 	Transform& tr = m_pParent->GetTransform();
 	glm::vec2 newPos;
 	newPos = tr.GetPosition();
 	glm::vec2 lookUpPos = newPos;
 	//Horizontal
-	switch (m_CurrentHorizonDirection) {
-	case HorizontalDirection::LEFT:
-		newPos.x -= m_Velocity * Time::GetInstance().GetDeltaTime();
-		tr.SetPosition(newPos.x, newPos.y, 0.f);
+	switch (m_CurrentDir) {
+	case Direction::LEFT:
+		if (m_IsOnFloorLeft || m_IsCollisionDisabled) {
+			newPos.x -= m_Velocity * Time::GetInstance().GetDeltaTime();
+			tr.SetPosition(newPos.x, newPos.y, 0.f);
+		}
+		else
+			m_CurrentDir = Direction::NONE;
 		break;
-	case HorizontalDirection::RIGHT:
-
-		
+	case Direction::RIGHT:
+		if (m_IsOnFloorRight || m_IsCollisionDisabled) {
 			newPos.x += m_Velocity * Time::GetInstance().GetDeltaTime();
 			tr.SetPosition(newPos.x, newPos.y, 0.f);
-		
-		
-		
+		}
+		else
+			m_CurrentDir = Direction::NONE;
 		break;
-	default:
-		m_IsMovingHorizontally = false;
-		break;
-	}
-	//vertical
-	switch (m_CurrentVertoicalDirection)
-	{
-	case VerticalDirection::DOWN:
-		
+
+	case Direction::DOWN:
+		if (m_IsOnLadderDown || m_IsCollisionDisabled) {
 			newPos.y += m_Velocity * Time::GetInstance().GetDeltaTime();
 			tr.SetPosition(newPos.x, newPos.y, 0.f);
-		
+		}
+		else
+			m_CurrentDir = Direction::NONE;
+
 		break;
-	case VerticalDirection::UP:
-
-		
-
+	case Direction::UP:
+		if (m_IsOnLadderUp || m_IsCollisionDisabled) {
 			newPos.y -= m_Velocity * Time::GetInstance().GetDeltaTime();
 			tr.SetPosition(newPos.x, newPos.y, 0.f);
-	
+		}
+		else
+			m_CurrentDir = Direction::NONE;
 		break;
 	default:
-		m_IsMovingVertically = false;
 		break;
 	}
 
@@ -73,29 +83,64 @@ void Burger::MovementComponent::Update()
 void Burger::MovementComponent::LateUpdate()
 {
 
-	
+	//Reser movement
+	m_IsOnLadderDown = false;
+	m_IsOnLadderUp = false;
+	m_IsOnFloorRight = false;
+	m_IsOnFloorLeft = false;
 
 		
 
 }
 
-void Burger::MovementComponent::SetNewVerticalDirection(VerticalDirection newDir)
+void Burger::MovementComponent::SetNewDirection(Direction newDir)
 {
-	m_CurrentVertoicalDirection = newDir;
+	m_CurrentDir = newDir;
 }
 
-
-glm::vec2 Burger::MovementComponent::GetCenterPos() const
+void Burger::MovementComponent::OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo)
 {
-	Transform& tr = m_pParent->GetTransform();
-	glm::vec2 newPos;
-	newPos = tr.GetPosition();
-	glm::vec2 colliderDimensions = m_ColliderComponent->GetDimension();
-	return glm::vec2{ newPos.x + (colliderDimensions.x / 2.f), newPos.y + (colliderDimensions.y / 2.f) };
-}
+	glm::vec2 searchPos1;
+	glm::vec2 searchPos2;
+	dae::ColliderInfo info = m_ColliderComponent->GetColliderInfo();
 
-void Burger::MovementComponent::SetNewHorizontalDirection(HorizontalDirection newDir)
-{
-	m_CurrentHorizonDirection = newDir;
-}
 
+	if (otherInfo->tag == "Ladder") {
+
+		//UP
+		searchPos1.x = info.m_ColliderRect.x + (info.m_ColliderRect.width / 2.f);
+		searchPos1.y = info.m_ColliderRect.y + (info.m_ColliderRect.height / 2.f);
+
+		//Down					
+		searchPos2.x = info.m_ColliderRect.x + (info.m_ColliderRect.width / 2.f);
+		searchPos2.y = info.m_ColliderRect.y + info.m_ColliderRect.height;
+
+		if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos1)) {
+
+			m_IsOnLadderUp = true;
+		}
+		if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos2)) {
+			m_IsOnLadderDown = true;
+
+		}
+	}
+	if (otherInfo->tag == "Floor") {
+
+		//right
+		searchPos1.x = info.m_ColliderRect.x + (info.m_ColliderRect.width / 4.f);
+		searchPos1.y = info.m_ColliderRect.y + (info.m_ColliderRect.height);
+
+		////left
+		searchPos2.x = info.m_ColliderRect.x + ((info.m_ColliderRect.width));
+		searchPos2.y = info.m_ColliderRect.y + info.m_ColliderRect.height;
+
+		if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos2)) {
+			m_IsOnFloorRight = true;
+		}
+		if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos1)) {
+			m_IsOnFloorLeft = true;
+		}
+
+
+	}
+}

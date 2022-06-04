@@ -15,6 +15,10 @@ namespace Burger {
 	class PrefabCreator {
 	public:
 		static std::shared_ptr<dae::GameObject> CreatePlayerPrefab(point pos);
+		static std::shared_ptr<dae::GameObject> CreatePlayableWorstPrefab(point pos, int score);
+
+
+
 		static std::shared_ptr<dae::GameObject> CreatePlatformPrefab(point pos, int tilling);
 		static std::shared_ptr<dae::GameObject> CreateLadderPrefab(point pos, int tilling);
 		static std::shared_ptr<dae::GameObject> CreatTopBurgerPrefab(point pos);

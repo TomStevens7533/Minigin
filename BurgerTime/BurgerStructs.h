@@ -16,3 +16,10 @@ struct EnemySpawnInfo {
 	int Score;
 	int CurrentInStage = 0;
 };
+enum class Direction {
+	NONE,
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN
+};

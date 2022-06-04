@@ -83,7 +83,7 @@ namespace Burger {
 	class AIBehaviourComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
-		AIBehaviourComponent(std::string tagToFollow, EnemyType type, int score);
+		AIBehaviourComponent(std::string tagToFollow, EnemyType type, int score, bool isPlayerController = false);
 		~AIBehaviourComponent();
 
 
@@ -98,8 +98,6 @@ namespace Burger {
 		virtual void Update() override;
 		virtual void LateUpdate() override {};
 
-		void SetHorizontalDir(dae::HorizontalDirection horizon);
-		void SetVerticalDir(dae::VerticalDirection vertical);
 		void SetFallState(float velocity);
 		glm::vec2 GetClosestPlayerPos() const;
 
@@ -107,6 +105,9 @@ namespace Burger {
 		friend class VerticalState;
 		friend class HitState;
 		friend class DeathState;
+		friend class FallingState;
+
+
 
 
 
@@ -127,7 +128,7 @@ namespace Burger {
 		bool m_IsDeath = false;
 		bool m_IsSpawning = true;
 		bool m_IsFalling = false;
-
+		bool m_IsPlayerControllerd = false;
 		int m_Score{};
 		EnemyType m_Type;
 	};

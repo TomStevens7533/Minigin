@@ -1,109 +1,103 @@
-#include "MiniginPCH.h"
-
 #include "MovementComponent.h"
-#include "SpriteComponent.h"
-#include "GameObject.h"
-#include "ServiceLocator.h"
-#include "AttackComponent.h"
-#include "PetterPepperComponent.h"
 #include "Command.h"
+#include "AttackComponent.h"
 //Enter
 class MoveRightEnterCommand : public dae::Command {
 public:
-	MoveRightEnterCommand(Burger::PetterPepperComponent* peterComp)
-		: m_PeterComp{ peterComp } {
+	MoveRightEnterCommand(Burger::MovementComponent* moveComp)
+		: m_MoveComp{ moveComp } {
 
 	};
 	virtual void Excecute() {
-		m_PeterComp->MoveRightEnter();
+		m_MoveComp->SetNewDirection(Direction::RIGHT);
 	}
 private:
-	Burger::PetterPepperComponent* m_PeterComp;
+	Burger::MovementComponent* m_MoveComp;
 };
 class MoveUpEnterCommand : public dae::Command {
 public:
-	MoveUpEnterCommand(Burger::PetterPepperComponent* peterComp)
-		: m_PeterComp{ peterComp } {
+	MoveUpEnterCommand(Burger::MovementComponent* moveComp)
+		: m_MoveComp{ moveComp } {
 	};
 	virtual void Excecute() {
-		m_PeterComp->MoveUpEnter();
+		m_MoveComp->SetNewDirection(Direction::UP);
 		//sprite
 	
 	}
 private:
-	Burger::PetterPepperComponent* m_PeterComp;
+	Burger::MovementComponent* m_MoveComp;
 };
 class MoveDownEnterCommand : public dae::Command {
 public:
-	MoveDownEnterCommand(Burger::PetterPepperComponent* peterComp)
-	: m_PeterComp{ peterComp } {
+	MoveDownEnterCommand(Burger::MovementComponent* moveComp)
+	: m_MoveComp{ moveComp } {
 	};
 	virtual void Excecute() {
-		m_PeterComp->MoveDownEnter();
+		m_MoveComp->SetNewDirection(Direction::DOWN);
 	}
 private:
-	Burger::PetterPepperComponent* m_PeterComp;
+	Burger::MovementComponent* m_MoveComp;
 };
 class MoveLeftEnterCommand : public dae::Command {
 public:
-	MoveLeftEnterCommand(Burger::PetterPepperComponent* peterComp)
-		: m_PeterComp{ peterComp } {
+	MoveLeftEnterCommand(Burger::MovementComponent* moveComp)
+		: m_MoveComp{ moveComp } {
 	};
 	virtual void Excecute() {
-		m_PeterComp->MoveLeftEnter();
+		m_MoveComp->SetNewDirection(Direction::LEFT);
 	}
 private:
-	Burger::PetterPepperComponent* m_PeterComp;
+	Burger::MovementComponent* m_MoveComp;
 
 };
 
 //Exit commanbds
 class MoveRightExitCommand : public dae::Command {
 public:
-	MoveRightExitCommand(Burger::PetterPepperComponent* peterComp)
-		: m_PeterComp{ peterComp } {
+	MoveRightExitCommand(Burger::MovementComponent* moveComp)
+		: m_MoveComp{ moveComp } {
 
 	};
 	virtual void Excecute() {
-		m_PeterComp->MoveRightExit();
+		m_MoveComp->SetNewDirection(Direction::NONE);
 	}
 private:
-	Burger::PetterPepperComponent* m_PeterComp;
+	Burger::MovementComponent* m_MoveComp;
 };
 class MoveUpExitCommand : public dae::Command {
 public:
-	MoveUpExitCommand(Burger::PetterPepperComponent* peterComp)
-		: m_PeterComp{ peterComp } {
+	MoveUpExitCommand(Burger::MovementComponent* moveComp)
+		: m_MoveComp{ moveComp } {
 	};
 	virtual void Excecute() {
-		m_PeterComp->MoveUpExit();
+		m_MoveComp->SetNewDirection(Direction::NONE);
 		//sprite
 
 	}
 private:
-	Burger::PetterPepperComponent* m_PeterComp;
+	Burger::MovementComponent* m_MoveComp;
 };
 class MoveDownExitCommand : public dae::Command {
 public:
-	MoveDownExitCommand(Burger::PetterPepperComponent* peterComp)
-		: m_PeterComp{ peterComp } {
+	MoveDownExitCommand(Burger::MovementComponent* moveComp)
+		: m_MoveComp{ moveComp } {
 	};
 	virtual void Excecute() {
-		m_PeterComp->MoveDownExit();
+		m_MoveComp->SetNewDirection(Direction::NONE);
 	}
 private:
-	Burger::PetterPepperComponent* m_PeterComp;
+	Burger::MovementComponent* m_MoveComp;
 };
 class MoveLeftExitCommand : public dae::Command {
 public:
-	MoveLeftExitCommand(Burger::PetterPepperComponent* peterComp)
-		: m_PeterComp{ peterComp } {
+	MoveLeftExitCommand(Burger::MovementComponent* moveComp)
+		: m_MoveComp{ moveComp } {
 	};
 	virtual void Excecute() {
-		m_PeterComp->MoveLeftExit();
+		m_MoveComp->SetNewDirection(Direction::NONE);
 	}
 private:
-	Burger::PetterPepperComponent* m_PeterComp;
+	Burger::MovementComponent* m_MoveComp;
 
 };
 

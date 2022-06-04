@@ -36,15 +36,5 @@ namespace dae {
 	};
 	
 
-	enum class HorizontalDirection {
-		NONE,
-		LEFT,
-		RIGHT
-	};
-	enum class VerticalDirection {
-		NONE,
-		UP,
-		DOWN
-	};
 
 }

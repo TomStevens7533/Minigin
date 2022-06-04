@@ -12,6 +12,7 @@
 #include "EventType.h"
 #include "DeltaTime.h"
 #include "BurgerTimeManager.h"
+#include "ServiceLocator.h"
 
 namespace Burger {
 
@@ -23,7 +24,6 @@ namespace Burger {
 
 	PetterPepperComponent::~PetterPepperComponent()
 	{
-		std::cout << "pepper deleted\n";
 		GameManager::GetInstance().removeObserver(this);
 
 	}
@@ -32,11 +32,11 @@ namespace Burger {
 	{
 		m_IsFinished = false;
 
-		m_InputComponent = GetAttachedGameObject()->GetComponent<dae::InputComponent>();
+		auto inputComp = GetAttachedGameObject()->GetComponent<dae::InputComponent>();
 		m_SpriteComponent = GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
-		m_ColliderComponent = GetAttachedGameObject()->GetComponent<dae::BoxColliderComponent>();
+		auto CollComp = GetAttachedGameObject()->GetComponent<dae::BoxColliderComponent>();
 
-		m_MovementComp = GetAttachedGameObject()->GetComponent<MovementComponent>();
+		auto moveComp = GetAttachedGameObject()->GetComponent<MovementComponent>();
 		auto attackComp = GetAttachedGameObject()->GetComponent<AttackComponent>();
 
 		GameManager::GetInstance().addObserver(this);
@@ -46,44 +46,44 @@ namespace Burger {
 		if (m_PepperAmountInGame % 2 == 0)
 		{
 			//ARROWS
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 46, new AttackCommand(attackComp), dae::KeyState::PRESSED);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftEnterCommand(this), dae::KeyState::DOWN);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightEnterCommand(this), dae::KeyState::DOWN);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpEnterCommand(this), dae::KeyState::DOWN);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownEnterCommand(this), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 46, new AttackCommand(attackComp), dae::KeyState::PRESSED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftEnterCommand(moveComp), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightEnterCommand(moveComp), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpEnterCommand(moveComp), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownEnterCommand(moveComp), dae::KeyState::DOWN);
 
 
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftExitCommand(this), dae::KeyState::RELEASED);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightExitCommand(this), dae::KeyState::RELEASED);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpExitCommand(this), dae::KeyState::RELEASED);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownExitCommand(this), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftExitCommand(moveComp), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightExitCommand(moveComp), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpExitCommand(moveComp), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownExitCommand(moveComp), dae::KeyState::RELEASED);
 		}
 		else {
 			//WASD
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 'Q', new AttackCommand(attackComp), dae::KeyState::PRESSED);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftEnterCommand(this), dae::KeyState::DOWN);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightEnterCommand(this), dae::KeyState::DOWN);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpEnterCommand(this), dae::KeyState::DOWN);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownEnterCommand(this), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 'Q', new AttackCommand(attackComp), dae::KeyState::PRESSED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftEnterCommand(moveComp), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightEnterCommand(moveComp), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpEnterCommand(moveComp), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownEnterCommand(moveComp), dae::KeyState::DOWN);
 
 
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftExitCommand(this), dae::KeyState::RELEASED);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightExitCommand(this), dae::KeyState::RELEASED);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpExitCommand(this), dae::KeyState::RELEASED);
-			m_InputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownExitCommand(this), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftExitCommand(moveComp), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightExitCommand(moveComp), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpExitCommand(moveComp), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownExitCommand(moveComp), dae::KeyState::RELEASED);
 		}
 		
 
 		++m_PepperAmountInGame;
 
 		//Adds itself as observor fol collision events
-		if (m_ColliderComponent) {
+		if (CollComp) {
 			dae::ColliderCallbacks colBack;
 			colBack.OverlapEnterFunc = std::bind(&PetterPepperComponent::OnCollisionEnter, this, std::placeholders::_1);
 			colBack.OverlopExitFunc = std::bind(&PetterPepperComponent::OnCollisionExit, this, std::placeholders::_1);
 			colBack.OverlapStayFunc = std::bind(&PetterPepperComponent::OnCollisionStay, this, std::placeholders::_1);
 
-			m_ColliderComponent->AddListener(colBack);
+			CollComp->AddListener(colBack);
 		}
 
 	} 
@@ -106,167 +106,19 @@ namespace Burger {
 
 	void PetterPepperComponent::LateUpdate()
 	{
-		//Reser movement
-		m_IsOnLadderDown = false;
-		m_IsOnLadderUp = false;
-		m_IsOnFloorRight = false;
-		m_IsOnFloorLeft = false;
+
 
 		if (m_IsHit && m_SpriteComponent->IsActiveInFinalFrame()) {		
 
-			--m_PepperAmountInGame;
+			m_PepperAmountInGame = 0;
 			notify(this, PepperEvent::HEALTH_DECREASE);
 			m_IsHit = false;
 		}
 	}
 
-	void PetterPepperComponent::Render() const
-	{
-
-	}
-
-	void PetterPepperComponent::MoveLeftEnter()
-	{
-		if (m_IsOnFloorLeft) {
-			if (m_SpriteComponent != nullptr && m_IsHit == false) {
-				m_SpriteComponent->SetActiveAnimation("Move");
-				m_SpriteComponent->SetFlipState(false);
-				m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::LEFT);
-
-			}
-			return;
-		}
-		m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::NONE);
-
-	}
-
-	void PetterPepperComponent::MoveRightEnter()
-	{
-		if (m_IsOnFloorRight) {
-			if (m_SpriteComponent != nullptr && m_IsHit == false) {
-				m_SpriteComponent->SetActiveAnimation("Move");
-				m_SpriteComponent->SetFlipState(true);
-				m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::RIGHT);
-
-			}
-			return;
-
-		}
-		m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::NONE);
-
-	}
-
-	void PetterPepperComponent::MoveUpEnter()
-	{
-
-		if (m_IsOnLadderUp) {
-			if (m_SpriteComponent != nullptr && m_IsHit == false) {
-				m_SpriteComponent->SetActiveAnimation("MoveForward");
-				m_SpriteComponent->SetFlipState(false);
-				m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::UP);
-
-			}
-			return;
-		}
-		m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
-
-	}
-
-	void PetterPepperComponent::MoveDownEnter()
-	{
-		if (m_IsOnLadderDown) {
-			if (m_SpriteComponent != nullptr && m_IsHit == false) {
-				m_SpriteComponent->SetActiveAnimation("MoveBackwards");
-				m_SpriteComponent->SetFlipState(false);
-				m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::DOWN);
-
-			}
-			return;
-		}
-		m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
-	}
-
-	void PetterPepperComponent::MoveLeftExit()
-	{
-		m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::NONE);
-		if (m_MovementComp->GetVerticalDir() == dae::VerticalDirection::NONE) {
-			m_SpriteComponent->SetActiveAnimation("Idle");
-
-		}
-	}
-
-	void PetterPepperComponent::MoveRightExit()
-	{
-		m_MovementComp->SetNewHorizontalDirection(dae::HorizontalDirection::NONE);
-		if (m_MovementComp->GetVerticalDir() == dae::VerticalDirection::NONE) {
-			m_SpriteComponent->SetActiveAnimation("Idle");
-
-		}
-	}
-
-	void PetterPepperComponent::MoveUpExit()
-	{
-		m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
-		if (m_MovementComp->GetHorizonDir() == dae::HorizontalDirection::NONE) {
-			m_SpriteComponent->SetActiveAnimation("Idle");
-
-		}
-	}
-
-	void PetterPepperComponent::MoveDownExit()
-	{
-		m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
-		if (m_MovementComp->GetHorizonDir() == dae::HorizontalDirection::NONE) {
-			m_SpriteComponent->SetActiveAnimation("Idle");
-
-		}
-	}
-
 	void PetterPepperComponent::OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo)
 	{
-		glm::vec2 searchPos1;
-		glm::vec2 searchPos2;
-		dae::ColliderInfo info = m_ColliderComponent->GetColliderInfo();
-
-
-		if (otherInfo->tag == "Ladder") {
-
-			//UP
-			searchPos1.x = info.m_ColliderRect.x + (info.m_ColliderRect.width / 2.f);
-			searchPos1.y = info.m_ColliderRect.y + (info.m_ColliderRect.height / 2.f);
-									
-			//Down					
-			searchPos2.x = info.m_ColliderRect.x + (info.m_ColliderRect.width / 2.f);
-			searchPos2.y = info.m_ColliderRect.y + info.m_ColliderRect.height;
-
-			if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos1)) {
-
-				m_IsOnLadderUp = true;
-			}
-			if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos2)) {
-				m_IsOnLadderDown = true;
-
-			}
-		}
-		if (otherInfo->tag == "Floor") {
-
-			//right
-			searchPos1.x = info.m_ColliderRect.x + (info.m_ColliderRect.width / 4.f);
-			searchPos1.y = info.m_ColliderRect.y + (info.m_ColliderRect.height);
-
-			////left
-			searchPos2.x = info.m_ColliderRect.x + ((info.m_ColliderRect.width) );
-			searchPos2.y = info.m_ColliderRect.y + info.m_ColliderRect.height;
-
-			if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos2)) {
-				m_IsOnFloorRight = true;
-			}
-			if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos1)) {
-				m_IsOnFloorLeft = true;
-			}
-
-
-		}
+		
 
 
 	}
@@ -278,8 +130,8 @@ namespace Burger {
 			m_IsHit = true;
 			m_SpriteComponent->SetActiveAnimation("Death");
 			m_SpriteComponent->SetFlipState(false);
-			m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
-			m_MovementComp->SetNewVerticalDirection(dae::VerticalDirection::NONE);
+			auto moveComp = GetAttachedGameObject()->GetComponent<MovementComponent>();
+			moveComp->SetMovement(true);
 
 
 		}
