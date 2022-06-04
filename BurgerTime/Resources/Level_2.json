@@ -93,12 +93,17 @@
             {
               "idx": 1,
               "maxLevel": 5,
-              "KillScore": 500
+              "KillScore": 100
             },
             {
               "idx": 2,
               "maxLevel": 2,
-              "KillScore": 600
+              "KillScore": 300
+            },
+            {
+              "idx": 3,
+              "maxLevel": 1,
+              "KillScore": 200
             }
           ]
         

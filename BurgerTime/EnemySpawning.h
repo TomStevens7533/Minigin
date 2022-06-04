@@ -32,8 +32,8 @@ namespace Burger {
 		std::vector<point> m_SpawnPoints;
 		std::map<EnemyType, EnemySpawnInfo> m_EnemyMap;
 		float m_MaxSpawnTime = 0.f;
-		float m_RandSpawnTime = 0.5f;
-		float m_BaseSpawnTime = 0.5f;
+		float m_RandSpawnTime = 2.f;
+		float m_BaseSpawnTime = 1.f;
 		float m_CurrentSpawnTime = 0.f;
 	};
 }
