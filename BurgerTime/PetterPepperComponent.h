@@ -19,6 +19,7 @@ namespace Burger {
 	class PetterPepperComponent final : public dae::BaseComponent, public dae::Subject, public dae::Observer
 	{
 	public:
+		PetterPepperComponent() = default;
 		~PetterPepperComponent();
 		virtual void Start() override;
 		virtual void Update() override;
@@ -32,9 +33,17 @@ namespace Burger {
 
 		void onNotify(const BaseComponent* entity, int event, dae::EventArgs* args = nullptr) override;
 
+		void UpdateSprite();
+
+
+		PetterPepperComponent(const PetterPepperComponent& other) = delete;
+		PetterPepperComponent(PetterPepperComponent&& other) = delete;
+		PetterPepperComponent& operator=(const PetterPepperComponent& other) = delete;
+		PetterPepperComponent& operator=(PetterPepperComponent&& other) = delete;
+
 	private:
 		dae::SpriteComponent* m_SpriteComponent;
-		
+		MovementComponent* m_MovementComponent;
 		float m_MaxVictoryDance = 2.f;
 		float m_CurrentVictroyDance = 0.f;
 

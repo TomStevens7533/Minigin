@@ -36,7 +36,7 @@ namespace Burger {
 		m_SpriteComponent = GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
 		auto CollComp = GetAttachedGameObject()->GetComponent<dae::BoxColliderComponent>();
 
-		auto moveComp = GetAttachedGameObject()->GetComponent<MovementComponent>();
+		m_MovementComponent = GetAttachedGameObject()->GetComponent<MovementComponent>();
 		auto attackComp = GetAttachedGameObject()->GetComponent<AttackComponent>();
 
 		GameManager::GetInstance().addObserver(this);
@@ -47,32 +47,32 @@ namespace Burger {
 		{
 			//ARROWS
 			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 46, new AttackCommand(attackComp), dae::KeyState::PRESSED);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftEnterCommand(moveComp), dae::KeyState::DOWN);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightEnterCommand(moveComp), dae::KeyState::DOWN);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpEnterCommand(moveComp), dae::KeyState::DOWN);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownEnterCommand(moveComp), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftEnterCommand(m_MovementComponent), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightEnterCommand(m_MovementComponent), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpEnterCommand(m_MovementComponent), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownEnterCommand(m_MovementComponent), dae::KeyState::DOWN);
 
 
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftExitCommand(moveComp), dae::KeyState::RELEASED);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightExitCommand(moveComp), dae::KeyState::RELEASED);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpExitCommand(moveComp), dae::KeyState::RELEASED);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownExitCommand(moveComp), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftExitCommand(m_MovementComponent), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightExitCommand(m_MovementComponent), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpExitCommand(m_MovementComponent), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownExitCommand(m_MovementComponent), dae::KeyState::RELEASED);
 		}
 		else {
 			//WASD
 			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 'Q', new AttackCommand(attackComp), dae::KeyState::PRESSED);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftEnterCommand(moveComp), dae::KeyState::DOWN);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightEnterCommand(moveComp), dae::KeyState::DOWN);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpEnterCommand(moveComp), dae::KeyState::DOWN);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownEnterCommand(moveComp), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftEnterCommand(m_MovementComponent), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightEnterCommand(m_MovementComponent), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpEnterCommand(m_MovementComponent), dae::KeyState::DOWN);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownEnterCommand(m_MovementComponent), dae::KeyState::DOWN);
 
 
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftExitCommand(moveComp), dae::KeyState::RELEASED);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightExitCommand(moveComp), dae::KeyState::RELEASED);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpExitCommand(moveComp), dae::KeyState::RELEASED);
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownExitCommand(moveComp), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 'A', new MoveLeftExitCommand(m_MovementComponent), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 'D', new MoveRightExitCommand(m_MovementComponent), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 'W', new MoveUpExitCommand(m_MovementComponent), dae::KeyState::RELEASED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 'S', new MoveDownExitCommand(m_MovementComponent), dae::KeyState::RELEASED);
 		}
-		
+
 
 		++m_PepperAmountInGame;
 
@@ -86,12 +86,12 @@ namespace Burger {
 			CollComp->AddListener(colBack);
 		}
 
-	} 
+	}
 
 	void PetterPepperComponent::Update()
 	{
 		if (m_IsVictory) {
-		
+
 			if (m_CurrentVictroyDance < m_MaxVictoryDance)
 				m_CurrentVictroyDance += dae::Time::GetInstance().GetDeltaTime();
 			else {
@@ -102,13 +102,14 @@ namespace Burger {
 				}
 			}
 		}
+		UpdateSprite();
 	}
 
 	void PetterPepperComponent::LateUpdate()
 	{
 
 
-		if (m_IsHit && m_SpriteComponent->IsActiveInFinalFrame()) {		
+		if (m_IsHit && m_SpriteComponent->IsActiveInFinalFrame()) {
 
 			m_PepperAmountInGame = 0;
 			notify(this, PepperEvent::HEALTH_DECREASE);
@@ -118,7 +119,7 @@ namespace Burger {
 
 	void PetterPepperComponent::OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo)
 	{
-		
+
 
 
 	}
@@ -157,4 +158,38 @@ namespace Burger {
 		}
 	}
 
+	void PetterPepperComponent::UpdateSprite()
+	{
+		//make death and victory state
+		if (m_IsDeath || m_IsVictory)
+			return;
+
+		Direction dir = m_MovementComponent->GetMovement();
+
+
+		switch (dir)
+		{
+		case Direction::NONE:
+			m_SpriteComponent->SetActiveAnimation("Idle");
+			break;
+		case Direction::LEFT:
+			m_SpriteComponent->SetActiveAnimation("Move");
+			m_SpriteComponent->SetFlipState(false);
+			break;
+		case Direction::RIGHT:
+			m_SpriteComponent->SetActiveAnimation("Move");
+			m_SpriteComponent->SetFlipState(true);
+			break;
+		case Direction::UP:
+			m_SpriteComponent->SetActiveAnimation("MoveForward");
+			break;
+		case Direction::DOWN:
+			m_SpriteComponent->SetActiveAnimation("MoveBackwards");
+			break;
+		default:
+			break;
+		}
 	}
+
+
+}
