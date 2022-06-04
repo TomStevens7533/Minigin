@@ -14,6 +14,9 @@
 #include "BurgerTimeManager.h"
 
 namespace Burger {
+
+	bool PetterPepperComponent::m_IsFinished = false;
+
 	int PetterPepperComponent::m_PepperAmountInGame = 0;
 
 
@@ -27,6 +30,8 @@ namespace Burger {
 
 	void PetterPepperComponent::Start()
 	{
+		m_IsFinished = false;
+
 		m_InputComponent = GetAttachedGameObject()->GetComponent<dae::InputComponent>();
 		m_SpriteComponent = GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
 		m_ColliderComponent = GetAttachedGameObject()->GetComponent<dae::BoxColliderComponent>();
@@ -90,7 +95,11 @@ namespace Burger {
 			if (m_CurrentVictroyDance < m_MaxVictoryDance)
 				m_CurrentVictroyDance += dae::Time::GetInstance().GetDeltaTime();
 			else {
-				GameManager::GetInstance().GoToNextLevel();
+				--m_PepperAmountInGame;
+				if (m_IsFinished == false) { //make sure it does not get called multiple times in coop
+					GameManager::GetInstance().GoToNextLevel();
+					m_IsFinished = true;
+				}
 			}
 		}
 	}

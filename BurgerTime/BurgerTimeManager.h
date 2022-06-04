@@ -26,7 +26,7 @@ public:
 	void SetBurgerGame(Burger::BurgerTime* pgame);
 	void ResetCurrentLevel();
 	void GoToNextLevel();
-
+	void ResetScore();
 	Gamemode GetCurrentGamemode() const { return m_CurrentGamemode; }
 
 	void AddToScore(int score);

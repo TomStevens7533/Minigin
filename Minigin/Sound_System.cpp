@@ -30,7 +30,7 @@ private:
 
 	std::mutex m_Mutex;
 	std::condition_variable m_Cv;
-	int m_Channels = 4;
+	int m_Channels = 8;
 	float m_GlobalVolume{};
 	std::atomic<bool> m_IsRunning;
 	std::vector<std::string> m_PathMap;

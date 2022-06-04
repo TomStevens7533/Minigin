@@ -29,3 +29,8 @@ void Burger::GameoverComp::Render() const
 	ImGui::End();
 }
 
+void Burger::GameoverComp::Start()
+{
+	GameManager::GetInstance().ResetScore();
+}
+

@@ -29,11 +29,16 @@ void GameManager::ResetCurrentLevel()
 void GameManager::GoToNextLevel()
 {
 	if (m_pGame != nullptr) {
-		m_IsLoadingLevel = true;
 		m_pGame->RemoveStage(m_pGame->GetCurrentStage());
 		dae::InputManager::GetInstance().RemoveAllPlayers();
 		m_pGame->LoadNextStage(m_pGame->GetCurrentStage());
 	}
+}
+
+void GameManager::ResetScore()
+{
+	//write score to 
+	m_Score = 0;
 }
 
 void GameManager::AddToScore(int score)
