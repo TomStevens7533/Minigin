@@ -281,12 +281,6 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 		else 
 			return new HorizontalState();
 	}
-	else if (ai.m_Type == EnemyType::SPIKE && ai.m_IsOnFloor && m_CurrentTime > m_MinExitTime) { //Flipping of mr pickle
-		if (MathHelper::RandomBool(0.1f)) {
-			m_CurrentTime = 0.f;
-			return new HorizontalState();
-		}
-	}
 	else {
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
 	}

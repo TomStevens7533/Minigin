@@ -40,7 +40,7 @@ void GameManager::GoToNextLevel()
 
 void GameManager::ResetScore()
 {
-	//write score to 
+	//save score to file
 	m_Score = 0;
 }
 

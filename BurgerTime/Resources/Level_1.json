@@ -94,16 +94,21 @@
           [ 640, 348 ]
         ],
         "EnemyInfo": [
-            {
-              "idx": 1,
-              "maxLevel": 3,
-              "KillScore": 100
-            },
-            {
-              "idx": 2,
-              "maxLevel": 1,
-              "KillScore": 300
-            }
+          {
+            "idx": 1,
+            "maxLevel": 5,
+            "KillScore": 100
+          },
+          {
+            "idx": 2,
+            "maxLevel": 2,
+            "KillScore": 300
+          },
+          {
+            "idx": 3,
+            "maxLevel": 1,
+            "KillScore": 200
+          }
           ]
         
       },
