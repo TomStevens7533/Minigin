@@ -281,6 +281,12 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 		else 
 			return new HorizontalState();
 	}
+	else if (ai.m_Type == EnemyType::SPIKE && ai.m_IsOnFloor && m_CurrentTime > m_MinExitTime) { //Flipping of mr pickle
+		if (MathHelper::RandomBool(0.1f)) {
+			m_CurrentTime = 0.f;
+			return new HorizontalState();
+		}
+	}
 	else {
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
 	}
@@ -330,7 +336,7 @@ void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 		, AiInfo.m_ColliderRect.y + AiInfo.m_ColliderRect.height };
 	if (posY < (currPosY )) {
 		//Check if floor goes further else go other dir
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, -1), 35.f, "Ladder", 1)
+		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, -1), 20.f, "Ladder", 1)
 			|| ai.m_IsSpawning) {
 			ai.m_MovementComponent->SetNewDirection(Direction::UP);
 			return;
@@ -344,7 +350,7 @@ void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 
 	if (posY > (currPosY)) {
 		//Check if floor goes further else go other dir
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, 1),35.f, "Ladder", 1)
+		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, 1),20.f, "Ladder", 1)
 			|| ai.m_IsSpawning) {
 			//Floor in sight
 				ai.m_MovementComponent->SetNewDirection(Direction::DOWN);

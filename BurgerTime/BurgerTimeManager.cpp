@@ -22,6 +22,8 @@ void GameManager::ResetCurrentLevel()
 	if (m_pGame != nullptr) {
 		m_pGame->RemoveStage(m_pGame->GetCurrentStage());
 		dae::InputManager::GetInstance().RemoveAllPlayers();
+		m_CurrentInfo.MaxPepper = m_ResetInfo.MaxPepper;
+		m_CurrentInfo.BunWinCoun = m_ResetInfo.BunWinCoun;
 		m_pGame->LoadStage(m_pGame->GetCurrentStage());
 	}
 }
@@ -29,6 +31,7 @@ void GameManager::ResetCurrentLevel()
 void GameManager::GoToNextLevel()
 {
 	if (m_pGame != nullptr) {
+		m_IsLoadingLevel = true;
 		m_pGame->RemoveStage(m_pGame->GetCurrentStage());
 		dae::InputManager::GetInstance().RemoveAllPlayers();
 		m_pGame->LoadNextStage(m_pGame->GetCurrentStage());
@@ -86,7 +89,6 @@ void GameManager::onNotify(const dae::BaseComponent* entity, int event, dae::Eve
 			--m_CurrentInfo.BunWinCoun;
 		}
 		if(m_CurrentInfo.BunWinCoun <= 0) {
-			std::cout << "win\n";
 			notify(nullptr, Burger::PepperEvent::LEVEL_COMPLETE, nullptr);
 		}
 
@@ -99,6 +101,7 @@ void GameManager::SetNewLevelInfo(LevelInfo info)
 {
 	if (m_IsLoadingLevel) {
 		m_CurrentInfo = info;
+		m_ResetInfo = m_CurrentInfo;
 		m_IsLoadingLevel = false;
 	}
 }
