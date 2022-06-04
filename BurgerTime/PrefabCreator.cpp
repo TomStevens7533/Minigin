@@ -206,7 +206,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlatformPrefab(point pos, 
 	
 	auto goFloor = std::make_shared<dae::GameObject>();
 	auto texComp = std::make_shared<dae::TextureComponent>("Walkable.png");
-	auto goBoxColl = std::make_shared<dae::BoxColliderComponent>("Floor", 2);
+	auto goBoxColl = std::make_shared<dae::BoxColliderComponent>("Floor", 4);
 
 	goFloor->AddComponent<dae::TextureComponent>(texComp);
 	goFloor->AddComponent<BoxColliderComponent>(goBoxColl);
@@ -278,7 +278,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatTopBurgerPrefab(point pos)
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
 	goBurgerPiece->SetName("Bun");
 	auto TexComp = std::make_shared<dae::TextureComponent>("TopBun.png");
-	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
+	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun", 2);
 	auto bunComp = std::make_shared<BunBehaviour>();
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
@@ -293,7 +293,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatLettuceBurgerPrefab(point p
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
 	goBurgerPiece->SetName("Bun");
 	auto TexComp = std::make_shared<dae::TextureComponent>("Lettuce.png");
-	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
+	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun", 2);
 	auto bunComp = std::make_shared<BunBehaviour>();
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
@@ -310,7 +310,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatTomatoBurgerPrefab(point po
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
 	goBurgerPiece->SetName("Bun");
 	auto TexComp = std::make_shared<dae::TextureComponent>("Tomato.png");
-	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
+	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun", 2);
 	auto bunComp = std::make_shared<BunBehaviour>();
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
@@ -324,7 +324,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatLowerBurgerPrefab(point pos
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
 	goBurgerPiece->SetName("Bun");
 	auto TexComp = std::make_shared<dae::TextureComponent>("LowerBun.png");
-	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun");
+	auto boxComp = std::make_shared<dae::BoxColliderComponent>("Bun", 2);
 	auto bunComp = std::make_shared<BunBehaviour>();
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);
 	goBurgerPiece->AddComponent<dae::TextureComponent>(TexComp);
@@ -338,7 +338,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatBurgerCathcherPrefab(point 
 {
 	auto goBurgerPiece = std::make_shared<dae::GameObject>();
 	auto TexComp = std::make_shared<dae::TextureComponent>("BurgerCatcher.png");
-	auto boxComp = std::make_shared<dae::BoxColliderComponent>("BunEnd");
+	auto boxComp = std::make_shared<dae::BoxColliderComponent>("BunEnd", 2);
 	auto bunComp = std::make_shared<FinalBurgerComponent>(4);
 
 	goBurgerPiece->AddComponent<dae::BoxColliderComponent>(boxComp);

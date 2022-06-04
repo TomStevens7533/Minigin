@@ -96,8 +96,8 @@ namespace Burger {
 				m_CurrentVictroyDance += dae::Time::GetInstance().GetDeltaTime();
 			else {
 				if (m_IsFinished == false) { //make sure it does not get called multiple times in coop
-					GameManager::GetInstance().GoToNextLevel();
 					m_PepperAmountInGame = 0;
+					GameManager::GetInstance().GoToNextLevel();
 					m_IsFinished = true;
 				}
 			}

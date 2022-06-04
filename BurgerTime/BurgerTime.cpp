@@ -17,7 +17,7 @@ void BurgerTime::Initialize()
 	dae::ResourceManager::GetInstance().Init("Resources/");
 	//SEED
 	srand(static_cast<int>(time(NULL)));
-	ServiceLocator::GetSoundSystem().SetGlobalVolumeLevel(10.f);
+	ServiceLocator::GetSoundSystem().SetGlobalVolumeLevel(7.f);
 
 	CreateMainMenu();
 	GameManager::GetInstance().SetBurgerGame(this);

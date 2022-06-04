@@ -3,9 +3,8 @@
     "LevelInfo" :{
       "MaxLives" : 5,
       "MaxPepper" : 5,
-      "BunsToWin" : 4
+      "BunsToWin" : 3
     },
-
     "Positions": [
       {
         "name": "LadderLongPrefab",
@@ -27,7 +26,8 @@
           [ 184, 112 ],
           [ 309, 290 ],
           [ 309, 112 ],
-          [ 309, 53 ]
+          [ 309, 53 ],
+
         ]
       },
       {
