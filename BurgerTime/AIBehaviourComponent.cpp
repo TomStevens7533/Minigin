@@ -69,11 +69,11 @@ void Burger::AIBehaviourComponent::Update()
 	else {
 		//First setup
 		if (m_IsPlayerControllerd == false) {
-			m_MovementComponent->SetMovementCollisionCheck(false);
+			m_MovementComponent->SetMovementCollisionCheckDisable(false);
 			m_CurrState = new HorizontalState();
 			m_CurrState->Entry(*this);
 			m_IsSpawning = false;
-			m_MovementComponent->SetMovementCollisionCheck(true);
+			m_MovementComponent->SetMovementCollisionCheckDisable(true);
 		}
 		
 
@@ -86,12 +86,23 @@ void Burger::AIBehaviourComponent::Update()
 void Burger::AIBehaviourComponent::SetFallState(float velocity)
 {
 	if (!m_IsFalling) {
-		m_MovementComponent->SetNewVelocity(velocity);
-		m_CurrState->Exit(*this);
+		if (m_CurrState != nullptr) {
+			m_CurrState->Exit(*this);
+		}
 		delete m_CurrState;
 		m_CurrState = new FallingState();
-		m_CurrState->Entry(*this);
 		m_IsFalling = true;
+
+
+		m_MovementComponent->SetNewVelocity(velocity);
+		m_MovementComponent->SetNewDirection(Direction::DOWN);
+
+		m_MovementComponent->SetMovementCollisionCheckDisable(true);
+		m_MovementComponent->SetChangeMovementDisable(true);
+
+
+		//Play fx
+		ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDrop.mp3");
 
 	}
 }
@@ -271,8 +282,6 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 			return new VerticalState();
 		else 
 			return new HorizontalState();
-		
-
 	}
 	else {
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
@@ -340,6 +349,7 @@ void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, 1),35.f, "Ladder", 1)
 			|| ai.m_IsSpawning) {
 			//Floor in sight
+				ai.m_MovementComponent->SetNewDirection(Direction::DOWN);
 				return;
 			}
 			else {
@@ -367,7 +377,8 @@ void Burger::HitState::Entry(AIBehaviourComponent& ai)
 
 	//Disable enemy collider
 	ai.m_ColliderComponent->DisableCollider();
-	ai.m_MovementComponent->SetMovementDisable(true);
+	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
+	ai.m_MovementComponent->SetChangeMovementDisable(true);
 }
 
 
@@ -392,7 +403,7 @@ Burger::AIState* Burger::HitState::UpdateState(AIBehaviourComponent&)
 void Burger::HitState::Exit(AIBehaviourComponent& ai)
 {
 	ai.m_ColliderComponent->EnableCollider();
-	ai.m_MovementComponent->SetMovementDisable(false);
+	ai.m_MovementComponent->SetChangeMovementDisable(false);
 
 }
 
@@ -402,10 +413,10 @@ void Burger::DeathState::Entry(AIBehaviourComponent& ai)
 	//play fx
 	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDeath.mp3");
 
-	ai.m_SpriteComponent->SetActiveAnimation("Death");
 	ai.m_ColliderComponent->DisableCollider();
-	ai.m_MovementComponent->SetMovementDisable(true);
+	ai.m_MovementComponent->SetChangeMovementDisable(true);
 	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
+	ai.m_SpriteComponent->SetActiveAnimation("Death");
 
 
 
@@ -417,6 +428,7 @@ void Burger::DeathState::Entry(AIBehaviourComponent& ai)
 Burger::AIState* Burger::DeathState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_SpriteComponent->IsActiveInFinalFrame()) {
+		std::cout << "death\n";
 		m_IsSpawning = true;
 		//Notify death of enemy
 		EnemyArgs eArgs;
@@ -435,10 +447,7 @@ void Burger::DeathState::Exit(AIBehaviourComponent& ai)
 
 void Burger::FallingState::Entry(AIBehaviourComponent& ai)
 {
-	ai.m_MovementComponent->SetNewDirection(Direction::DOWN);
 
-	//Play fx
-	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDrop.mp3");
 
 }
 

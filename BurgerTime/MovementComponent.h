@@ -16,12 +16,12 @@ namespace Burger {
 
 		void SetNewDirection(Direction newDir);
 		Direction GetDirection() const { return m_CurrentDir; }
-		void SetMovementDisable(bool isDisabled) { m_IsDisabled = isDisabled; }
 		Direction GetMovement() { return m_CurrentDir; }
 
-		void SetMovementCollisionCheck(bool isDisabled) { m_IsCollisionDisabled = isDisabled; }
-
+		void SetChangeMovementDisable(bool isDisabled) { m_IsDisabled = isDisabled; }
+		void SetMovementCollisionCheckDisable(bool isDisabled) { m_IsCollisionDisabled = isDisabled; }
 		void OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo);
+		//void SetMovementChange(bool isDisabled) { m_IsDisabled = isDisabled; }
 
 
 

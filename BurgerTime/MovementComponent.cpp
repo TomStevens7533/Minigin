@@ -30,10 +30,7 @@ void Burger::MovementComponent::Start()
 
 void Burger::MovementComponent::Update()
 {
-	if (m_IsDisabled) {
-		std::cout << "disable\n";
-		return;
-	}
+	
 
 	Transform& tr = m_pParent->GetTransform();
 	glm::vec2 newPos;
@@ -97,6 +94,9 @@ void Burger::MovementComponent::LateUpdate()
 
 void Burger::MovementComponent::SetNewDirection(Direction newDir)
 {
+	if (m_IsDisabled) {
+		return;
+	}
 	m_CurrentDir = newDir;
 }
 
@@ -109,7 +109,7 @@ void Burger::MovementComponent::OnCollisionStay(const std::shared_ptr<dae::Colli
 
 	if (otherInfo->tag == "Ladder") {
 
-		//UP
+		//UPo
 		searchPos1.x = info.m_ColliderRect.x + (info.m_ColliderRect.width / 2.f);
 		searchPos1.y = info.m_ColliderRect.y + (info.m_ColliderRect.height / 2.f);
 
