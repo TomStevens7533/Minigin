@@ -16,7 +16,6 @@
 
 namespace Burger {
 
-	bool PetterPepperComponent::m_IsFinished = false;
 
 	int PetterPepperComponent::m_PepperAmountInGame = 0;
 
@@ -75,8 +74,6 @@ namespace Burger {
 		if (CollComp) {
 			dae::ColliderCallbacks colBack;
 			colBack.OverlapEnterFunc = std::bind(&PetterPepperComponent::OnCollisionEnter, this, std::placeholders::_1);
-			colBack.OverlopExitFunc = std::bind(&PetterPepperComponent::OnCollisionExit, this, std::placeholders::_1);
-			colBack.OverlapStayFunc = std::bind(&PetterPepperComponent::OnCollisionStay, this, std::placeholders::_1);
 
 			CollComp->AddListener(colBack);
 		}
@@ -85,16 +82,15 @@ namespace Burger {
 
 	void PetterPepperComponent::Update()
 	{
-		if (m_IsVictory) {
+		if (m_PepperState == PepperStates::Victory) {
 
 			if (m_CurrentVictroyDance < m_MaxVictoryDance)
 				m_CurrentVictroyDance += dae::Time::GetInstance().GetDeltaTime();
 			else {
-				if (m_IsFinished == false) { //make sure it does not get called multiple times in coop
-					m_PepperAmountInGame = 0;
-					m_CurrentVictroyDance = 0.f;
+				if(m_PepperAmountInGame > 0)
 					GameManager::GetInstance().GoToNextLevel();
-				}
+				m_PepperAmountInGame = 0;
+				m_CurrentVictroyDance = 0.f;
 			}
 		}
 		UpdateSprite();
@@ -104,26 +100,19 @@ namespace Burger {
 	{
 
 
-		if (m_IsHit && m_SpriteComponent->IsActiveInFinalFrame()) {
+		if (m_PepperState == PepperStates::Death && m_SpriteComponent->IsActiveInFinalFrame()) {
 
 			m_PepperAmountInGame = 0;
 			notify(this, PepperEvent::HEALTH_DECREASE);
-			m_IsHit = false;
+			m_PepperState = PepperStates::Live;
 		}
-	}
-
-	void PetterPepperComponent::OnCollisionStay(const std::shared_ptr<dae::ColliderInfo> otherInfo)
-	{
-
-
-
 	}
 
 	void PetterPepperComponent::OnCollisionEnter(const std::shared_ptr<dae::ColliderInfo> otherInfo)
 	{
 		//Check enemy hit
-		if (otherInfo->tag == "Enemy" && m_IsVictory == false) {
-			m_IsHit = true;
+		if (otherInfo->tag == "Enemy" && m_PepperState != PepperStates::Victory) {
+			m_PepperState = PepperStates::Death;
 			m_SpriteComponent->SetActiveAnimation("Death");
 			m_SpriteComponent->SetFlipState(false);
 			auto moveComp = GetAttachedGameObject()->GetComponent<MovementComponent>();
@@ -134,10 +123,6 @@ namespace Burger {
 		}
 	}
 
-	void PetterPepperComponent::OnCollisionExit(const std::shared_ptr<dae::ColliderInfo> otherInfo)
-	{
-
-	}
 
 	void PetterPepperComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* /*= nullptr*/)
 	{
@@ -147,7 +132,8 @@ namespace Burger {
 			//Start dance
 			m_SpriteComponent->SetActiveAnimation("Victory");
 			ServiceLocator::GetSoundSystem().play("Resources/FX/Victory.mp3");
-			m_IsVictory = true;
+			m_PepperState = PepperStates::Victory;
+
 			break;
 		default:
 			break;
@@ -157,7 +143,7 @@ namespace Burger {
 	void PetterPepperComponent::UpdateSprite()
 	{
 		//make death and victory state
-		if (m_IsHit || m_IsVictory)
+		if (m_PepperState != PepperStates::Live)
 			return;
 
 		Direction dir = m_MovementComponent->GetMovement();

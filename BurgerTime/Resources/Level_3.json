@@ -29,10 +29,6 @@
         ]
       },
       {
-        "name": "PeterPepperPrefab",
-        "Positions": [ [ 100, 346 ], [ 200, 346 ] ]
-      },
-      {
         "name": "PlatformLongPrefab",
         "Positions": [
           [ 55, 54 ],
@@ -102,6 +98,10 @@
           }
           ]
         
+      },
+      {
+        "name": "PeterPepperPrefab",
+        "Positions": [ [ 100, 346 ], [ 300, 346 ] ]
       },
       {
         "name": "ScoreUI",

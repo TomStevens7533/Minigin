@@ -1,5 +1,7 @@
+#pragma warning(disable:4201)
+
 #include "MiniginPCH.h"
-#include "AIBehaviourComponent.h"
+#include "EnemyBehaviourComponent.h"
 #include "GameObject.h"
 #include "Scene.h"
 #include "MovementComponent.h"
@@ -15,19 +17,19 @@
 
 using namespace dae;
 
-Burger::AIBehaviourComponent::AIBehaviourComponent(std::string tagToFollow, EnemyType type, int score, bool isPlayerControlled)
+Burger::EnemyBehaviourComponent::EnemyBehaviourComponent(std::string tagToFollow, EnemyType type, int score, bool isPlayerControlled)
 	: m_TagToFollow{tagToFollow}, m_Type{ type }, m_Score{ score }, m_IsPlayerControllerd{ isPlayerControlled }
 {
 
 }
 
-Burger::AIBehaviourComponent::~AIBehaviourComponent()
+Burger::EnemyBehaviourComponent::~EnemyBehaviourComponent()
 {
 	if (m_CurrState != nullptr)
 		delete m_CurrState;
 }
 
-void Burger::AIBehaviourComponent::Start()
+void Burger::EnemyBehaviourComponent::Start()
 {
 	
 	m_MovementComponent = GetAttachedGameObject()->GetComponent<MovementComponent>();
@@ -39,21 +41,21 @@ void Burger::AIBehaviourComponent::Start()
 	assert(m_ColliderComponent);
 
 	ColliderCallbacks colBack;
-	colBack.OverlapEnterFunc = std::bind(&AIBehaviourComponent::OnCollisionEnter, this, std::placeholders::_1);
-	colBack.OverlopExitFunc = std::bind(&AIBehaviourComponent::OnCollisionExit, this, std::placeholders::_1);
-	colBack.OverlapStayFunc = std::bind(&AIBehaviourComponent::OnCollisionStay, this, std::placeholders::_1);
+	colBack.OverlapEnterFunc = std::bind(&EnemyBehaviourComponent::OnCollisionEnter, this, std::placeholders::_1);
+	colBack.OverlopExitFunc = std::bind(&EnemyBehaviourComponent::OnCollisionExit, this, std::placeholders::_1);
+	colBack.OverlapStayFunc = std::bind(&EnemyBehaviourComponent::OnCollisionStay, this, std::placeholders::_1);
 
 	m_ColliderComponent->AddListener(colBack);
 
 	m_PlayerVec = GetAttachedGameObject()->GetScene()->GetGameObjectsWithTag(m_TagToFollow);
 }
 
-void Burger::AIBehaviourComponent::Render() const
+void Burger::EnemyBehaviourComponent::Render() const
 {
 	
 }
 
-void Burger::AIBehaviourComponent::Update()
+void Burger::EnemyBehaviourComponent::Update()
 {
 	if (m_CurrState != nullptr) {
 		AIState* newState = m_CurrState->UpdateState(*this);
@@ -83,7 +85,7 @@ void Burger::AIBehaviourComponent::Update()
 	UpdateSprite();
 
 }
-void Burger::AIBehaviourComponent::SetFallState(float velocity)
+void Burger::EnemyBehaviourComponent::SetFallState(float velocity)
 {
 	if (!m_IsFalling) {
 		if (m_CurrState != nullptr) {
@@ -101,9 +103,9 @@ void Burger::AIBehaviourComponent::SetFallState(float velocity)
 	}
 }
 
-glm::vec2 Burger::AIBehaviourComponent::GetClosestPlayerPos() const
+point Burger::EnemyBehaviourComponent::GetClosestPlayerPos() const
 {
-	glm::vec2 closestPos;
+	point closestPos{};
 	glm::vec3 HotDoggPos = GetAttachedGameObject()->GetTransform().GetPosition();
 	float distance = FLT_MAX;
 	assert(m_PlayerVec.size() != 0);
@@ -130,7 +132,7 @@ glm::vec2 Burger::AIBehaviourComponent::GetClosestPlayerPos() const
 
 
 
-void Burger::AIBehaviourComponent::UpdateSprite()
+void Burger::EnemyBehaviourComponent::UpdateSprite()
 {
 
 	Direction dir = m_MovementComponent->GetMovement();
@@ -162,7 +164,7 @@ void Burger::AIBehaviourComponent::UpdateSprite()
 	}
 }
 
-void Burger::AIBehaviourComponent::OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo)
+void Burger::EnemyBehaviourComponent::OnCollisionStay(const std::shared_ptr<ColliderInfo> otherInfo)
 {
 	ColliderInfo aiColInfo = m_ColliderComponent->GetColliderInfo();
 	glm::vec2 searchPos = { aiColInfo.m_ColliderRect.x + (m_SpriteComponent->GetFLipState() ? 0.f
@@ -186,7 +188,7 @@ void Burger::AIBehaviourComponent::OnCollisionStay(const std::shared_ptr<Collide
 
 }
 
-void Burger::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo)
+void Burger::EnemyBehaviourComponent::OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo)
 {
 	if (otherInfo->tag == "Shot") {
 		if (m_CurrState != nullptr) {
@@ -227,12 +229,12 @@ void Burger::AIBehaviourComponent::OnCollisionEnter(const std::shared_ptr<Collid
 
 }
 
-void Burger::AIBehaviourComponent::OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo)
+void Burger::EnemyBehaviourComponent::OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo)
 {
 
 }
 
-void Burger::HorizontalState::Entry(AIBehaviourComponent& ai)
+void Burger::HorizontalState::Entry(EnemyBehaviourComponent& ai)
 {
 	ColliderInfo AiInfo = ai.m_ColliderComponent->GetColliderInfo();
 	glm::vec2 searchPos = { AiInfo.m_ColliderRect.x + (ai.m_SpriteComponent->GetFLipState() ? 0.f
@@ -254,7 +256,7 @@ void Burger::HorizontalState::Entry(AIBehaviourComponent& ai)
 	}
 
 	if (ai.m_MovementComponent->GetDirection() == Direction::NONE || ai.m_Type == EnemyType::SPIKE) {
-		glm::vec2 pos = ai.GetClosestPlayerPos();
+		point pos = ai.GetClosestPlayerPos();
 		float currPosx = ai.GetAttachedGameObject()->GetTransform().GetPosition().x;
 
 		if (pos.x < (currPosx)) {
@@ -274,7 +276,7 @@ void Burger::HorizontalState::Entry(AIBehaviourComponent& ai)
 	
 }
 
-Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
+Burger::AIState* Burger::HorizontalState::UpdateState(EnemyBehaviourComponent& ai)
 {
 	if (ai.m_IsOnLadder && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
@@ -292,13 +294,13 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 
 
 
-void Burger::HorizontalState::Exit(AIBehaviourComponent& )
+void Burger::HorizontalState::Exit(EnemyBehaviourComponent& )
 {
 
 
 }
 
-Burger::AIState* Burger::VerticalState::UpdateState(AIBehaviourComponent& ai)
+Burger::AIState* Burger::VerticalState::UpdateState(EnemyBehaviourComponent& ai)
 {
 	if (ai.m_IsOnFloor && m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
@@ -312,13 +314,13 @@ Burger::AIState* Burger::VerticalState::UpdateState(AIBehaviourComponent& ai)
 
 }
 
-void Burger::VerticalState::Exit(AIBehaviourComponent& ai)
+void Burger::VerticalState::Exit(EnemyBehaviourComponent& ai)
 {
 	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 }
 
 
-void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
+void Burger::VerticalState::Entry(EnemyBehaviourComponent& ai)
 {
 	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 
@@ -363,7 +365,7 @@ void Burger::VerticalState::Entry(AIBehaviourComponent& ai)
 }
 
 //HIT
-void Burger::HitState::Entry(AIBehaviourComponent& ai)
+void Burger::HitState::Entry(EnemyBehaviourComponent& ai)
 {
 	//Se sprite
 	ai.m_SpriteComponent->SetActiveAnimation("Fried");
@@ -380,7 +382,7 @@ void Burger::HitState::Entry(AIBehaviourComponent& ai)
 	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 	ai.m_MovementComponent->SetChangeMovementDisable(true);
 }
-Burger::AIState* Burger::HitState::UpdateState(AIBehaviourComponent&)
+Burger::AIState* Burger::HitState::UpdateState(EnemyBehaviourComponent&)
 {
 	if (m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
@@ -392,14 +394,14 @@ Burger::AIState* Burger::HitState::UpdateState(AIBehaviourComponent&)
 	}
 
 }
-void Burger::HitState::Exit(AIBehaviourComponent& ai)
+void Burger::HitState::Exit(EnemyBehaviourComponent& ai)
 {
 	ai.m_ColliderComponent->EnableCollider();
 	ai.m_MovementComponent->SetChangeMovementDisable(false);
 
 }
 //DEATH
-void Burger::DeathState::Entry(AIBehaviourComponent& ai)
+void Burger::DeathState::Entry(EnemyBehaviourComponent& ai)
 {
 	//play fx
 	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDeath.mp3");
@@ -407,10 +409,9 @@ void Burger::DeathState::Entry(AIBehaviourComponent& ai)
 	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 	ai.m_SpriteComponent->SetActiveAnimation("Death");
 }
-Burger::AIState* Burger::DeathState::UpdateState(AIBehaviourComponent& ai)
+Burger::AIState* Burger::DeathState::UpdateState(EnemyBehaviourComponent& ai)
 {
 	if (ai.m_SpriteComponent->IsActiveInFinalFrame()) {
-		m_IsSpawning = true;
 		//Notify death of enemy
 		EnemyArgs eArgs;
 		eArgs.type = ai.m_Type;
@@ -421,12 +422,12 @@ Burger::AIState* Burger::DeathState::UpdateState(AIBehaviourComponent& ai)
 	return nullptr;
 }
 
-void Burger::DeathState::Exit(AIBehaviourComponent& ai)
+void Burger::DeathState::Exit(EnemyBehaviourComponent& ai)
 {
 	ai.m_ColliderComponent->DisableCollider();
 }
 //FALLL
-void Burger::FallingState::Entry(AIBehaviourComponent& ai)
+void Burger::FallingState::Entry(EnemyBehaviourComponent& ai)
 {
 
 	ai.m_MovementComponent->SetNewDirection(Direction::DOWN);
@@ -439,12 +440,12 @@ void Burger::FallingState::Entry(AIBehaviourComponent& ai)
 	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDrop.mp3");
 }
 
-Burger::AIState* Burger::FallingState::UpdateState(AIBehaviourComponent& )
+Burger::AIState* Burger::FallingState::UpdateState(EnemyBehaviourComponent& )
 {
 	return nullptr;
 }
 
-void Burger::FallingState::Exit(AIBehaviourComponent& ai)
+void Burger::FallingState::Exit(EnemyBehaviourComponent& ai)
 {
 	ai.m_MovementComponent->SetChangeMovementDisable(false);
 

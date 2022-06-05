@@ -9,8 +9,7 @@
 #include "EventType.h"
 #include "BurgerEvents.h"
 #include "BaseComponent.h"
-#include "AIBehaviourComponent.h"
-
+#include "EnemyBehaviourComponent.h"
 
 void Burger::BunBehaviour::Render() const
 {
@@ -62,7 +61,7 @@ void Burger::BunBehaviour::OnCollisionStay(const std::shared_ptr<dae::ColliderIn
 		if (enemyPos.y < GetAttachedGameObject()->GetTransform().GetPosition().y) {
 
 			//TODO DECOUPLE if possible
-			auto enemyBeh = otherInfo->m_pAttachedGameObject->GetComponent<AIBehaviourComponent>();
+			auto enemyBeh = otherInfo->m_pAttachedGameObject->GetComponent<EnemyBehaviourComponent>();
 			if (enemyBeh != nullptr) {
 				enemyBeh->SetFallState(m_Velocity);
 			}

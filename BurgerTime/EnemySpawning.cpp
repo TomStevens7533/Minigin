@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "Scene.h"
 #include "EventType.h"
-#include "AIBehaviourComponent.h"
+#include "EnemyBehaviourComponent.h"
 #include "ScoreDisplayComponent.h"
 #include "DeltaTime.h"
 #include "BurgerEvents.h"
@@ -92,7 +92,7 @@ void Burger::EnemySpawnComponent::SpawnEnemy()
 			{
 				int spawnPosIndex = (rand() % static_cast<int>(m_SpawnPoints.size()));
 				auto enemyGO = GetEnemyPrefab(element.first, m_SpawnPoints[spawnPosIndex], element.second.Score);
-				auto comp = enemyGO->GetComponent<AIBehaviourComponent>();
+				auto comp = enemyGO->GetComponent<EnemyBehaviourComponent>();
 				comp->addObserver(this);
 				GetAttachedGameObject()->GetScene()->Add(enemyGO);
 				++element.second.CurrentInStage;

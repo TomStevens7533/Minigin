@@ -12,23 +12,23 @@ class BoxColliderComponent;
 
 namespace Burger {
 
-	class AIBehaviourComponent;
+	class EnemyBehaviourComponent;
 	class AIState {
 	public:
 		virtual ~AIState() {};
-		virtual void Entry(AIBehaviourComponent&) = 0;
-		virtual  AIState* UpdateState(AIBehaviourComponent& ) = 0;
-		virtual void Exit(AIBehaviourComponent&) = 0;
-		friend AIBehaviourComponent;
+		virtual void Entry(EnemyBehaviourComponent&) = 0;
+		virtual  AIState* UpdateState(EnemyBehaviourComponent& ) = 0;
+		virtual void Exit(EnemyBehaviourComponent&) = 0;
+		friend EnemyBehaviourComponent;
 	};
 
 
 
 	class HorizontalState final : public AIState {
 	public:
-		virtual void Entry(AIBehaviourComponent& ai) override;
-		virtual AIState* UpdateState(AIBehaviourComponent& ai) override;
-		virtual void Exit(AIBehaviourComponent&) override;
+		virtual void Entry(EnemyBehaviourComponent& ai) override;
+		virtual AIState* UpdateState(EnemyBehaviourComponent& ai) override;
+		virtual void Exit(EnemyBehaviourComponent&) override;
 
 
 
@@ -38,9 +38,9 @@ namespace Burger {
 	};
 	class VerticalState final : public AIState {
 	public:
-		virtual void Entry(AIBehaviourComponent& ai) override;
-		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
-		virtual void Exit(AIBehaviourComponent&) override;
+		virtual void Entry(EnemyBehaviourComponent& ai) override;
+		virtual  AIState* UpdateState(EnemyBehaviourComponent& ai)  override;
+		virtual void Exit(EnemyBehaviourComponent&) override;
 
 	private:
 		float m_MinExitTime = 1.0f;
@@ -49,9 +49,9 @@ namespace Burger {
 	};
 	class HitState final : public AIState {
 	public:
-		virtual void Entry(AIBehaviourComponent&) override;
-		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
-		virtual void Exit(AIBehaviourComponent&) override;
+		virtual void Entry(EnemyBehaviourComponent&) override;
+		virtual  AIState* UpdateState(EnemyBehaviourComponent& ai)  override;
+		virtual void Exit(EnemyBehaviourComponent&) override;
 
 
 	private:
@@ -61,36 +61,30 @@ namespace Burger {
 	};
 	class DeathState final : public AIState {
 	public:
-		virtual void Entry(AIBehaviourComponent&) override;
-		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
-		virtual void Exit(AIBehaviourComponent&) override;
-
-
-	private:
-		float m_MinExitTime = 5.f;
-		float m_CurrentTime = 0.f;
-		bool m_IsSpawning = false;
+		virtual void Entry(EnemyBehaviourComponent&) override;
+		virtual  AIState* UpdateState(EnemyBehaviourComponent& ai)  override;
+		virtual void Exit(EnemyBehaviourComponent&) override;
 	};
 	class FallingState final : public AIState {
 	public:
-		virtual void Entry(AIBehaviourComponent&) override;
-		virtual  AIState* UpdateState(AIBehaviourComponent& ai)  override;
-		virtual void Exit(AIBehaviourComponent&) override;
+		virtual void Entry(EnemyBehaviourComponent&) override;
+		virtual  AIState* UpdateState(EnemyBehaviourComponent& ai)  override;
+		virtual void Exit(EnemyBehaviourComponent&) override;
 	};
 
 	class GameObject;
 	class MovementComponent;
-	class AIBehaviourComponent final : public dae::BaseComponent, public dae::Subject
+	class EnemyBehaviourComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
-		AIBehaviourComponent(std::string tagToFollow, EnemyType type, int score, bool isPlayerControlled = false);
-		~AIBehaviourComponent();
+		EnemyBehaviourComponent(std::string tagToFollow, EnemyType type, int score, bool isPlayerControlled = false);
+		~EnemyBehaviourComponent();
 
 
-		AIBehaviourComponent(const AIBehaviourComponent& other) = delete;
-		AIBehaviourComponent(AIBehaviourComponent&& other) = delete;
-		AIBehaviourComponent& operator=(const AIBehaviourComponent& other) = delete;
-		AIBehaviourComponent& operator=(AIBehaviourComponent&& other) = delete;
+		EnemyBehaviourComponent(const EnemyBehaviourComponent& other) = delete;
+		EnemyBehaviourComponent(EnemyBehaviourComponent&& other) = delete;
+		EnemyBehaviourComponent& operator=(const EnemyBehaviourComponent& other) = delete;
+		EnemyBehaviourComponent& operator=(EnemyBehaviourComponent&& other) = delete;
 
 
 		virtual void Start() override;
@@ -99,7 +93,6 @@ namespace Burger {
 		virtual void FixedUpdate() override {};
 
 		void SetFallState(float velocity);
-		glm::vec2 GetClosestPlayerPos() const;
 
 		friend class HorizontalState;
 		friend class VerticalState;
@@ -108,14 +101,15 @@ namespace Burger {
 		friend class FallingState;
 
 
-		void UpdateSprite();
 
 
 
 		void OnCollisionStay (const std::shared_ptr<dae::ColliderInfo> otherInfo);
 		void OnCollisionEnter(const std::shared_ptr<dae::ColliderInfo> otherInfo);
 		void OnCollisionExit (const std::shared_ptr<dae::ColliderInfo> otherInfo);
-
+	private:
+		void UpdateSprite();
+		point GetClosestPlayerPos() const;
 	private:
 		AIState* m_CurrState = nullptr;
 		std::vector <dae::GameObject*> m_PlayerVec;

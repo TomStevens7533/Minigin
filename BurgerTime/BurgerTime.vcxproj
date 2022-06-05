@@ -181,7 +181,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AIBehaviourComponent.h" />
+    <ClInclude Include="EnemyBehaviourComponent.h" />
     <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="BunBehaviour.h" />
     <ClInclude Include="BurgerEvents.h" />
@@ -203,7 +203,7 @@
     <ClInclude Include="ScoreDisplayComponent.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AIBehaviourComponent.cpp" />
+    <ClCompile Include="EnemyBehaviourComponent.cpp" />
     <ClCompile Include="AttackComponent.cpp" />
     <ClCompile Include="BunBehaviour.cpp" />
     <ClCompile Include="BurgerTime.cpp" />

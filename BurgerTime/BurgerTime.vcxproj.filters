@@ -39,7 +39,7 @@
     <ClInclude Include="MovementComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="AIBehaviourComponent.h">
+    <ClInclude Include="EnemyBehaviourComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="AttackComponent.h">
@@ -89,7 +89,7 @@
     <ClCompile Include="PrefabCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AIBehaviourComponent.cpp">
+    <ClCompile Include="EnemyBehaviourComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="AttackComponent.cpp">

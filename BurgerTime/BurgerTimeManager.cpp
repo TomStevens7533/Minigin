@@ -52,6 +52,7 @@ void GameManager::ResetScore()
 		oStream.close();
 	}
 	m_Score = 0;
+	m_IsLoadingLevel = false;
 }
 
 std::vector<int> GameManager::ReadScore()

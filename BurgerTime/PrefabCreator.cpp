@@ -8,7 +8,7 @@
 #include "AttackComponent.h"
 #include "TextureComponent.h"
 #include "BunBehaviour.h"
-#include "AIBehaviourComponent.h"
+#include "EnemyBehaviourComponent.h"
 #include "EnemySpawning.h"
 #include "TextComponent.h"
 #include "ScoreDisplayComponent.h"
@@ -39,7 +39,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateEggEnemy(point pos, int m_
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
 	auto movementComp = std::make_shared<MovementComponent>(40.f);
-	auto hotdogg = std::make_shared<AIBehaviourComponent>("Player", EnemyType::EGG, m_Score);
+	auto hotdogg = std::make_shared<EnemyBehaviourComponent>("Player", EnemyType::EGG, m_Score);
 
 
 
@@ -52,7 +52,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateEggEnemy(point pos, int m_
 	eggEnemy->AddComponent<dae::SpriteComponent>(spriteComponent);
 	eggEnemy->AddComponent<dae::BoxColliderComponent>(boxCollider);
 	eggEnemy->AddComponent<MovementComponent>(movementComp);
-	eggEnemy->AddComponent<AIBehaviourComponent>(hotdogg);
+	eggEnemy->AddComponent<EnemyBehaviourComponent>(hotdogg);
 
 	eggEnemy->SetPosition(pos.x, pos.y);
 	return eggEnemy;
@@ -65,7 +65,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateSpikey(point pos, int m_Sc
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
 	auto movementComp = std::make_shared<MovementComponent>(50.f);
-	auto hotdogg = std::make_shared<AIBehaviourComponent>("Player", EnemyType::SPIKE, m_Score);
+	auto hotdogg = std::make_shared<EnemyBehaviourComponent>("Player", EnemyType::SPIKE, m_Score);
 
 
 
@@ -78,7 +78,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreateSpikey(point pos, int m_Sc
 	spikey->AddComponent<dae::SpriteComponent>(spriteComponent);
 	spikey->AddComponent<dae::BoxColliderComponent>(boxCollider);
 	spikey->AddComponent<MovementComponent>(movementComp);
-	spikey->AddComponent<AIBehaviourComponent>(hotdogg);
+	spikey->AddComponent<EnemyBehaviourComponent>(hotdogg);
 
 	spikey->SetPosition(pos.x, pos.y);
 	return spikey;
@@ -89,7 +89,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatWorstEnemyrPrefab(point pos
 	auto spriteComponent = std::make_shared<dae::SpriteComponent>("SpiteSheet.png", 15, 11, 0.3f);
 	auto boxCollider = std::make_shared<dae::BoxColliderComponent>("Enemy", 5);
 	auto movementComp = std::make_shared<MovementComponent>(40.f);
-	auto hotdogg = std::make_shared<AIBehaviourComponent>("Player", EnemyType::WORST, m_Score);
+	auto hotdogg = std::make_shared<EnemyBehaviourComponent>("Player", EnemyType::WORST, m_Score);
 
 
 	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);
@@ -101,7 +101,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatWorstEnemyrPrefab(point pos
 	hotdoggGo->AddComponent<dae::SpriteComponent>(spriteComponent);
 	hotdoggGo->AddComponent<dae::BoxColliderComponent>(boxCollider);
 	hotdoggGo->AddComponent<MovementComponent>(movementComp);
-	hotdoggGo->AddComponent<AIBehaviourComponent>(hotdogg);
+	hotdoggGo->AddComponent<EnemyBehaviourComponent>(hotdogg);
 
 	hotdoggGo->SetPosition(pos.x, pos.y);
 	return hotdoggGo;
@@ -182,7 +182,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayableWorstPrefab(point 
 	inputComponent->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_DOWN, 40, new MoveDownExitCommand(pMove), dae::KeyState::RELEASED);
 
 	//Make playable
-	auto hotdogg = std::make_shared<AIBehaviourComponent>("Player", EnemyType::WORST, score, true);
+	auto hotdogg = std::make_shared<EnemyBehaviourComponent>("Player", EnemyType::WORST, score, true);
 
 
 	spriteComponent->AddAnimation("MoveSide", 2, 2, 4, 3);
@@ -194,7 +194,7 @@ std::shared_ptr<dae::GameObject> PrefabCreator::CreatePlayableWorstPrefab(point 
 	hotdoggGo->AddComponent<dae::SpriteComponent>(spriteComponent);
 	hotdoggGo->AddComponent<dae::BoxColliderComponent>(boxCollider);
 	hotdoggGo->AddComponent<MovementComponent>(movementComp);
-	hotdoggGo->AddComponent<AIBehaviourComponent>(hotdogg);
+	hotdoggGo->AddComponent<EnemyBehaviourComponent>(hotdogg);
 	hotdoggGo->AddComponent<dae::InputComponent>(inputComponent);
 
 
