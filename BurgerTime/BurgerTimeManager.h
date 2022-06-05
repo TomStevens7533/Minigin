@@ -18,6 +18,8 @@ public:
 	void ResetCurrentLevel();
 	void GoToNextLevel();
 	void ResetScore();
+	std::vector<int> ReadScore();
+
 	Gamemode GetCurrentGamemode() const { return m_CurrentGamemode; }
 
 	void AddToScore(int score);
@@ -35,10 +37,9 @@ public:
 private:
 	Burger::BurgerTime* m_pGame = nullptr;
 	Gamemode m_CurrentGamemode = Gamemode::SOLO;
-	
+	const std::string m_HighScoreSavePath = "BurgerTimeHighScores.sav";
 	LevelInfo m_CurrentInfo;
 	LevelInfo m_ResetInfo;
-
 	int m_Score;
 
 	bool m_IsLoadingLevel = true;

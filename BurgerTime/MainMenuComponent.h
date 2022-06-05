@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 #include "BurgerStructs.h"
+#include <vector>
 namespace Burger {
 	class MainMenuComp final : public dae::BaseComponent
 	{
@@ -17,7 +18,9 @@ namespace Burger {
 		MainMenuComp& operator=(const MainMenuComp& other) = delete;
 		MainMenuComp& operator=(MainMenuComp&& other) = delete;
 	private:
+	private:
 		Gamemode m_SelectedGamemode = Gamemode::SOLO;
+		std::vector<int> m_HighScoreVec{};
 
 	};
 }

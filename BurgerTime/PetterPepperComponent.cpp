@@ -40,9 +40,6 @@ namespace Burger {
 		auto attackComp = GetAttachedGameObject()->GetComponent<AttackComponent>();
 
 		GameManager::GetInstance().addObserver(this);
-
-		//addObserver(GameManager::GetInstance());
-
 		if (m_PepperAmountInGame % 2 == 1)
 		{
 			//ARROWS

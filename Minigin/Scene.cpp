@@ -9,7 +9,6 @@ Scene::Scene(const std::string& name) : m_Name(name) {}
 
 Scene::~Scene() {
 	m_Objects.clear();
-	std::cout << "fered\n";
 };
 
 void Scene::Add(const std::shared_ptr<GameObject>& object)

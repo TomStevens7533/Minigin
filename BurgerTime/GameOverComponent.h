@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
+#include <vector>
 namespace Burger {
 	class GameoverComp final : public dae::BaseComponent
 	{
@@ -16,6 +17,7 @@ namespace Burger {
 		GameoverComp& operator=(const GameoverComp& other) = delete;
 		GameoverComp& operator=(GameoverComp&& other) = delete;
 	private:
+		std::vector<int> m_HighScoreVec{};
 
 	};
 }

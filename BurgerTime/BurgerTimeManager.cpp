@@ -3,8 +3,9 @@
 #include "BaseComponent.h"
 #include "Observer.h"
 #include "EventType.h"
-#include <iostream>
 #include "InputManager.h"
+#include <iostream>
+#include <fstream>
 
 void GameManager::SetGamemode(Gamemode newMode)
 {
@@ -41,7 +42,38 @@ void GameManager::GoToNextLevel()
 void GameManager::ResetScore()
 {
 	//save score to file
+	if (m_Score != 0) {
+		std::fstream oStream{ m_HighScoreSavePath, std::fstream::app |std::ios::out | std::ios::binary };
+
+		if (oStream.is_open())
+		{
+			oStream.write(reinterpret_cast<const char*>(&m_Score), sizeof(int));
+		}
+		oStream.close();
+	}
 	m_Score = 0;
+}
+
+std::vector<int> GameManager::ReadScore()
+{
+	std::vector<int> m_LoadedScores;
+	int score;
+	std::ifstream iSteam(m_HighScoreSavePath, std::ios::in | std::ios::binary);
+	if (iSteam.is_open()) {
+
+		while (!iSteam.eof())
+		{
+			iSteam.read((char*)&score, sizeof(int));
+			if (!iSteam.good()){
+				//input failure, leave the loop
+				break;
+			}
+			m_LoadedScores.push_back(score);
+		}
+	}
+	iSteam.close();
+	std::reverse(m_LoadedScores.begin(), m_LoadedScores.end());
+	return m_LoadedScores;
 }
 
 void GameManager::AddToScore(int score)
