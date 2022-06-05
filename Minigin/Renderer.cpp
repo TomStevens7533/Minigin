@@ -22,6 +22,7 @@ int GetOpenGLDriverIndex()
 void dae::Renderer::Init(SDL_Window* window)
 {
 	m_Window = window;
+	//Get size of window
 	SDL_GetWindowSize(m_Window, &m_WindowInfo.width, &m_WindowInfo.height);
 	m_Renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (m_Renderer == nullptr)

@@ -3,6 +3,7 @@
 #include "BurgerTimeManager.h"
 #include "ServiceLocator.h"
 #include <string>
+#include "Renderer.h"
 
 void Burger::MainMenuComp::Start()
 {
@@ -21,14 +22,14 @@ bool HighScoreGetter(void* data, int n, const char** out_text)
 
 void Burger::MainMenuComp::Render() const
 {
-
+	dae::WindowInformation windowInfo = dae::Renderer::GetInstance().GetInfo();
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
-	ImGui::SetNextWindowPos({ 180,80 });
+	ImGui::SetNextWindowPos({ windowInfo.width / 4.f,windowInfo.height / 4.f });
 	ImGui::Begin("BURGER TIME!!!!!!!!!!!!!!", nullptr, window_flags);
-	ImGui::SetWindowSize({ 300, 300 });
+	ImGui::SetWindowSize({ windowInfo.width / 2.f, windowInfo.height / 2.f });
 
 	ImGui::Text("Welcome to epic Burger time");
 	ImGui::Spacing();
