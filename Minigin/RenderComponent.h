@@ -17,6 +17,10 @@ namespace dae {
 		void FixedUpdate() override;
 		void SetData(Texture2D* newData);
 
+		RenderComponent(const RenderComponent& other) = delete;
+		RenderComponent(RenderComponent&& other) = delete;
+		RenderComponent& operator=(const RenderComponent& other) = delete;
+		RenderComponent& operator=(RenderComponent&& other) = delete;
 	private:
 		Texture2D* m_DataToRender;
 	};

@@ -7,7 +7,7 @@
 namespace dae 
 {
 
-	class EntityManager 
+	class EntityManager final
 	{
 	public:
 		EntityManager() = default;

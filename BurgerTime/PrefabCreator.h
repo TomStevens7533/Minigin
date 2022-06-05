@@ -12,7 +12,7 @@ namespace Burger {
 	class ScoreDisplayComponent;
 	class PepperDisplayComponent;
 
-	class PrefabCreator {
+	class PrefabCreator final {
 	public:
 		static std::shared_ptr<dae::GameObject> CreatePlayerPrefab(point pos, int playerID);
 		static std::shared_ptr<dae::GameObject> CreatePlayableWorstPrefab(point pos, int score, int playerID);

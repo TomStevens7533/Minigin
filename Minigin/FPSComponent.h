@@ -15,7 +15,10 @@ namespace dae {
 		void FixedUpdate() override;
 		inline const int GetFpsCount() const { return m_fps; }
 
-
+		FPSComponent(const FPSComponent& other) = delete;
+		FPSComponent(FPSComponent&& other) = delete;
+		FPSComponent& operator=(const FPSComponent& other) = delete;
+		FPSComponent& operator=(FPSComponent&& other) = delete;
 	private:
 		int m_fps;
 		int m_fpscount;

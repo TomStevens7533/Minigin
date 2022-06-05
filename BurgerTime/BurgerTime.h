@@ -15,7 +15,7 @@ namespace Burger {
 	};
 
 
-	class BurgerTime {
+	class BurgerTime final {
 	public:
 		void Initialize();
 		void CreateMainMenu();

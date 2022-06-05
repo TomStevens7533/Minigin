@@ -11,7 +11,7 @@ namespace dae {
 
 
 
-class GameManager : public dae::Singleton<GameManager>, public dae::Observer, public dae::Subject {
+class GameManager final : public dae::Singleton<GameManager>, public dae::Observer, public dae::Subject {
 public:
 	void SetGamemode(Gamemode newMode);
 	void SetBurgerGame(Burger::BurgerTime* pgame);

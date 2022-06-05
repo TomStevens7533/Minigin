@@ -6,11 +6,7 @@ SoundEffect::SoundEffect(std::string path, float volume, int) : m_path{path}, m_
 {
 }
 
-SoundEffect::~SoundEffect()
-{
 
-	
-}
 
 void SoundEffect::Play()
 {

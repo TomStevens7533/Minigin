@@ -5,7 +5,7 @@
 namespace Burger {
 
 	class BoxColliderComponent;
-	class MovementComponent : public dae::BaseComponent
+	class MovementComponent final : public dae::BaseComponent
 	{
 	public:
 		MovementComponent(float movementVelocity);

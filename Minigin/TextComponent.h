@@ -23,6 +23,10 @@ namespace dae {
 		void FixedUpdate() override;
 		virtual void Start() override;
 
+		TextComponent(const TextComponent& other) = delete;
+		TextComponent(TextComponent&& other) = delete;
+		TextComponent& operator=(const TextComponent& other) = delete;
+		TextComponent& operator=(TextComponent&& other) = delete;
 
 	private:
 		RenderComponent* m_pRenderComponent;

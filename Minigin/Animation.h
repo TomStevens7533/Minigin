@@ -5,11 +5,10 @@
 struct SDL_Texture;
 namespace dae {
 	class Texture2D;
-	class Animation
+	class Animation final
 	{
 	public:
 		Animation(SDL_Texture* animTexture, int widthPerCell, int heightPerCell, float m_TimeFrame);
-		Animation(const Animation& lhs);
 
 		~Animation();
 
@@ -18,6 +17,11 @@ namespace dae {
 		glm::vec2 GetCurrentDimensions();
 		bool IsInFinalFrame() const;
 
+
+		Animation(const Animation& lhs);
+		Animation(Animation&& other) = delete;
+		Animation& operator=(const Animation& other) = delete;
+		Animation& operator=(Animation&& other) = delete;
 	private:
 		std::shared_ptr<Texture2D> m_AnimationSprite;
 		Rectf m_RectToDraw;

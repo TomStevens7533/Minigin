@@ -16,7 +16,7 @@ namespace Burger {
 		{}
 	};
 
-	class LevelCreator
+	class LevelCreator final
 	{
 	public:
 		static void CreateLevel(std::string path, dae::Scene* sceneToLoad);

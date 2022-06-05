@@ -3,7 +3,7 @@
 #include <chrono>
 
 namespace dae {
-	class Time : public Singleton<Time>
+	class Time final : public Singleton<Time>
 	{
 	public:
 		Time();

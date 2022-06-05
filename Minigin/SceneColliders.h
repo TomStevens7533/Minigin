@@ -6,7 +6,7 @@
 namespace dae {
 	class GameObject;
 
-	class SceneColliders
+	class SceneColliders final
 	{
 	public:
 		SceneColliders() = default;

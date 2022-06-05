@@ -30,7 +30,7 @@ namespace dae
 		RELEASED
 	};
 
-	class InputManager : public Singleton<InputManager>
+	class InputManager final : public Singleton<InputManager>
 	{
 	public:
 		InputManager();
@@ -48,7 +48,9 @@ namespace dae
 		int GetDeviceAmount();
 
 		InputManager(const InputManager&& e) = delete;
-		InputManager& operator=(InputManager e) = delete;
+		InputManager(const InputManager& other) = delete;
+		InputManager& operator=(InputManager&& e) = delete;
+		InputManager& operator=(const InputManager& other) = delete;
 
 	public:
 		friend class Singleton<InputManager>;

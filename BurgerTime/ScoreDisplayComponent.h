@@ -15,7 +15,10 @@ namespace Burger {
 		virtual void Render() const override {};
 		virtual void onNotify(const BaseComponent* entity, int event, dae::EventArgs* args) override;
 
-
+		ScoreDisplayComponent(const ScoreDisplayComponent& other) = delete;
+		ScoreDisplayComponent(ScoreDisplayComponent&& other) = delete;
+		ScoreDisplayComponent& operator=(const ScoreDisplayComponent& other) = delete;
+		ScoreDisplayComponent& operator=(ScoreDisplayComponent&& other) = delete;
 
 	private:
 		std::string m_BaseString{};

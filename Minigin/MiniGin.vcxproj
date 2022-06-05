@@ -246,7 +246,6 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath)  /Y</Command>
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="MathHelper.h" />
-    <ClInclude Include="Prefab.h" />
     <ClInclude Include="SceneColliders.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputManager.h" />

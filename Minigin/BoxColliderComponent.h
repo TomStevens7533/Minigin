@@ -9,15 +9,15 @@ namespace dae {
 		STATIC, DYNAMIC
 	};
 
-	class BoxColliderComponent : public BaseComponent
+	class BoxColliderComponent final : public BaseComponent
 	{
 	public:
 		BoxColliderComponent(std::string tag, int precision = 0);
 		~BoxColliderComponent();
 
 		void Render() const override;
-		void Update() override;
-		void FixedUpdate() override {};
+		void Update() override {};
+		void FixedUpdate() override;
 		virtual void Start() override;
 
 		void DisableCollider();
@@ -26,7 +26,6 @@ namespace dae {
 		void AddListener(ColliderCallbacks otherComp);
 		void RemoveListender(ColliderCallbacks otherComp);
 
-		void SetNewType(BoxColliderType type);
 		void SetNewWidth(float size);
 		void SetNewHeight(float size);
 		void SetNewPos(glm::vec2 pos);

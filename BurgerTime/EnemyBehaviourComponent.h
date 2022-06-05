@@ -41,7 +41,7 @@ namespace Burger {
 	private:
 		void UpdateSprite();
 		point GetClosestPlayerPos() const;
-		bool IsEnemyMutable();
+		bool IsEnemyMutable() const;
 	private:
 		enum class EnemyState {
 			Falling		 = (1 << 0),
@@ -49,7 +49,6 @@ namespace Burger {
 			Ladder		 = (1 << 2),
 			Floor		 = (1 << 3),
 			Death		 = (1 << 4)
-
 		};
 
 	private: //AI STATES

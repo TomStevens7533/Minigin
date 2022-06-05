@@ -14,6 +14,11 @@ namespace dae {
 		virtual void Render() const override {};
 		virtual void Update() override;
 		virtual void FixedUpdate() override {};
+
+		InputComponent(const InputComponent& other) = delete;
+		InputComponent(InputComponent&& other) = delete;
+		InputComponent& operator=(const InputComponent& other) = delete;
+		InputComponent& operator=(InputComponent&& other) = delete;
 	private:
 		int m_deviceIdx{};
 		bool m_IsTriggered = false;

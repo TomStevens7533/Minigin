@@ -5,7 +5,7 @@
 namespace Burger {
 	struct ColliderInfo;
 	class BoxColliderComponent;
-	class BunBehaviour : public dae::BaseComponent, public dae::Subject
+	class BunBehaviour final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
 		BunBehaviour() = default;
@@ -14,7 +14,7 @@ namespace Burger {
 		void FixedUpdate() override;
 		virtual void Start() override;
 
-		bool GetFinalPos() { return m_IsInFinalPos; };
+		bool GetFinalPos() const { return m_IsInFinalPos; };
 		BunBehaviour(const BunBehaviour& other) = delete;
 		BunBehaviour(BunBehaviour&& other) = delete;
 		BunBehaviour& operator=(const BunBehaviour& other) = delete;

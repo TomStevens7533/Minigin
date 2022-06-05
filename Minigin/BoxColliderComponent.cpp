@@ -155,7 +155,7 @@ void dae::BoxColliderComponent::Render() const
 
 }
 
-void dae::BoxColliderComponent::Update()
+void dae::BoxColliderComponent::FixedUpdate()
 {
 	if (m_pColliderInfo != nullptr && m_ColType == BoxColliderType::DYNAMIC) {
 		//Update position of BoxCollider

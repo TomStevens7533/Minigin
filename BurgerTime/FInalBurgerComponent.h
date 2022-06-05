@@ -6,7 +6,7 @@
 namespace dae { class BoxColliderComponent; }
 namespace Burger {
 	struct ColliderInfo;
-	class FinalBurgerComponent : public dae::BaseComponent, public dae::Subject
+	class FinalBurgerComponent  final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
 		FinalBurgerComponent(int fullBurger);

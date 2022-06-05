@@ -6,7 +6,7 @@
 
 namespace Burger {
 
-	struct AttackArgs : public dae::EventArgs
+	struct AttackArgs final : public dae::EventArgs
 	{
 		int pepperShots;
 	};
