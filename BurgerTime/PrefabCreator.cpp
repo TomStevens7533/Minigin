@@ -1,3 +1,5 @@
+#pragma warning(disable:4201)
+
 #include "PrefabCreator.h"
 #include "InputComponent.h"
 #include "SpriteComponent.h"

@@ -139,7 +139,7 @@ namespace Burger {
 
 	}
 
-	void PetterPepperComponent::onNotify(const BaseComponent* entity, int event, dae::EventArgs* args /*= nullptr*/)
+	void PetterPepperComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* /*= nullptr*/)
 	{
 		switch (event)
 		{

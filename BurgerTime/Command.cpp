@@ -1,3 +1,4 @@
+#pragma warning(disable:4201)
 #include "MovementComponent.h"
 #include "Command.h"
 #include "AttackComponent.h"

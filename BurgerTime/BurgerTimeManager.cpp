@@ -122,7 +122,7 @@ void GameManager::SubtractLive()
 	}
 }
 
-void GameManager::onNotify(const dae::BaseComponent* entity, int event, dae::EventArgs* args /*= nullptr*/)
+void GameManager::onNotify(const dae::BaseComponent*, int event, dae::EventArgs* /*= nullptr*/)
 {
 	switch (event)
 	{

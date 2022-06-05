@@ -45,7 +45,7 @@ void Burger::MainMenuComp::Render() const
 		ServiceLocator::GetSoundSystem().StopAll();
 	}
 	ImGui::Spacing();
-	int selectedIndex = 0;
+	size_t selectedIndex = 0;
 	//Listbox of hightscore
 	ImGui::BeginListBox("HIGHSCORES");
 	for (size_t i = 0; i < m_HighScoreVec.size(); i++)

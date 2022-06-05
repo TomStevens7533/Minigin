@@ -1,3 +1,4 @@
+#pragma warning(disable:4201)
 #include "BurgerTimePCH.h"
 #include "BurgerTime.h"
 #include "ResourceManager.h"

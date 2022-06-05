@@ -25,7 +25,7 @@ void Burger::PepperDisplayComponent::Start()
 
 }
 
-void Burger::PepperDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* args)
+void Burger::PepperDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs*)
 {
 	//Unsafe
 	switch (event)

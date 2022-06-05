@@ -1,3 +1,4 @@
+#pragma warning(disable:4201)
 
 #include <stdio.h>
 #include <iostream> // std::cout
@@ -39,7 +40,7 @@ void Burger::LevelCreator::CreateLevel(std::string path, dae::Scene* currSceneTo
 		for (auto memIt = ElementObj.MemberBegin(); memIt != ElementObj.MemberEnd(); memIt++)
 		{
 			if (memIt->name == "LevelInfo") {
-				LevelInfo currLevelInfo;
+				LevelInfo currLevelInfo{};
 				GenericObject obj = memIt->value.GetObj();
 				for (auto levelIt = obj.MemberBegin(); levelIt != obj.MemberEnd(); levelIt++)
 				{
@@ -63,33 +64,33 @@ void Burger::LevelCreator::CreateLevel(std::string path, dae::Scene* currSceneTo
 				{
 					std::string objName;
 					std::vector<point> posVec;
-					GenericObject obj = posArray[x].GetObj();
+					GenericObject posObj = posArray[x].GetObj();
 
-					for (auto memIt = obj.MemberBegin(); memIt != obj.MemberEnd(); memIt++)
+					for (auto localMemIt = posObj.MemberBegin(); localMemIt != posObj.MemberEnd(); localMemIt++)
 					{
 						
 
-						if (memIt->name == "Positions") {
+						if (localMemIt->name == "Positions") {
 							//Read in pos
-							GenericArray posArray = memIt->value.GetArray();
-							posVec.reserve(posArray.Size());
+							GenericArray enemyPosArray = localMemIt->value.GetArray();
+							posVec.reserve(enemyPosArray.Size());
 
 
-							for (SizeType x = 0; x < posArray.Size(); x++)
+							for (SizeType posIdx = 0; posIdx < enemyPosArray.Size(); posIdx++)
 							{
-								if (posArray[x].Size() != 2)
+								if (enemyPosArray[posIdx].Size() != 2)
 									throw ParserException("Not correct format for needed positions: size of pos array needs to be 2");
 
 								point newPos;
-								newPos.x = posArray[x][0].GetFloat();
-								newPos.y = posArray[x][1].GetFloat();
+								newPos.x = enemyPosArray[posIdx][0].GetFloat();
+								newPos.y = enemyPosArray[posIdx][1].GetFloat();
 								posVec.push_back(newPos);
 							}
 						}
-						else if (memIt->value.IsString() == true) {
-							objName = memIt->value.GetString();
+						else if (localMemIt->value.IsString() == true) {
+							objName = localMemIt->value.GetString();
 						}
-						else if (memIt->name == "EnemyInfo") {
+						else if (localMemIt->name == "EnemyInfo") {
 							EnemySpawnInfo inf;
 							EnemyType type;
 							std::map<EnemyType, EnemySpawnInfo> enemyInfo;
@@ -99,16 +100,16 @@ void Burger::LevelCreator::CreateLevel(std::string path, dae::Scene* currSceneTo
 							}
 
 							//Read in Enemy spawn information
-							if (memIt->value.IsArray() == true) {
-								GenericArray enemyArr = memIt->value.GetArray();
-								for (SizeType i = 0; i < enemyArr.Size(); i++)
+							if (localMemIt->value.IsArray() == true) {
+								GenericArray enemyArr = localMemIt->value.GetArray();
+								for (SizeType enemyIdx = 0; enemyIdx < enemyArr.Size(); enemyIdx++)
 								{
-									GenericObject obj = enemyArr[i].GetObj();
+									GenericObject obj = enemyArr[enemyIdx].GetObj();
 
-									for (auto memIt = obj.MemberBegin(); memIt != obj.MemberEnd(); memIt++)
+									for (auto memEnemyIt = obj.MemberBegin(); memEnemyIt != obj.MemberEnd(); memEnemyIt++)
 									{
-										if (memIt->name == "idx") {
-											int id = memIt->value.GetInt();
+										if (memEnemyIt->name == "idx") {
+											int id = memEnemyIt->value.GetInt();
 
 
 											//Get Enemy Type
@@ -119,11 +120,11 @@ void Burger::LevelCreator::CreateLevel(std::string path, dae::Scene* currSceneTo
 												throw std::bad_cast();
 
 										}
-										else if (memIt->name == "maxLevel") {
-											inf.MaxInStage = memIt->value.GetInt();
+										else if (memEnemyIt->name == "maxLevel") {
+											inf.MaxInStage = memEnemyIt->value.GetInt();
 										}
-										else if (memIt->name == "KillScore") {
-											inf.Score = memIt->value.GetInt();
+										else if (memEnemyIt->name == "KillScore") {
+											inf.Score = memEnemyIt->value.GetInt();
 										}
 										else {
 											std::string exeptionStr = std::string("Unknown in enemyinfo!! Name of faulty obj: ") + memIt->name.GetString();
@@ -261,7 +262,7 @@ void Burger::LevelCreator::AddPrefabToScene(const std::string& name, const std::
 		case Gamemode::COOP:
 			for (size_t i = 0; i < posVec.size(); i++)
 			{
-				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[i], i);
+				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[i], static_cast<int>(i));
 				//Set Score UI
 				currScene->Add(pepper);
 			}
@@ -275,13 +276,12 @@ void Burger::LevelCreator::AddPrefabToScene(const std::string& name, const std::
 			}
 			break;
 		case Gamemode::SOLO:
-			for (size_t i = 0; i < posVec.size(); i++)
-			{
-				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[i], i);
+			if (posVec.size() > 0) {
+				auto pepper = PrefabCreator::CreatePlayerPrefab(posVec[0], 0);
 				//Set Score UI
 				currScene->Add(pepper);
-				break;
 			}
+
 			break;
 		default:
 			break;

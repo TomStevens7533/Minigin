@@ -292,7 +292,7 @@ Burger::AIState* Burger::HorizontalState::UpdateState(AIBehaviourComponent& ai)
 
 
 
-void Burger::HorizontalState::Exit(AIBehaviourComponent& ai)
+void Burger::HorizontalState::Exit(AIBehaviourComponent& )
 {
 
 
@@ -439,7 +439,7 @@ void Burger::FallingState::Entry(AIBehaviourComponent& ai)
 	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDrop.mp3");
 }
 
-Burger::AIState* Burger::FallingState::UpdateState(AIBehaviourComponent& ai)
+Burger::AIState* Burger::FallingState::UpdateState(AIBehaviourComponent& )
 {
 	return nullptr;
 }

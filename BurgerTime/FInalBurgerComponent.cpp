@@ -1,3 +1,5 @@
+#pragma warning(disable:4201)
+
 #include "FInalBurgerComponent.h"
 #include "BoxColliderComponent.h"
 #include "GameObject.h"

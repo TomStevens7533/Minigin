@@ -26,7 +26,7 @@ void Burger::LivesDisplayComponent::Start()
 	m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(GameManager::GetInstance().GetLives()));
 }
 
-void Burger::LivesDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* args)
+void Burger::LivesDisplayComponent::onNotify(const BaseComponent*, int event, dae::EventArgs*)
 {
 	//GetComponent
 	switch (event)

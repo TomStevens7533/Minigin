@@ -1,5 +1,6 @@
+#pragma warning(disable:4201)
+
 #include "EnemySpawning.h"
-#include "glm/glm.hpp"
 #include "PrefabCreator.h"
 #include "GameObject.h"
 #include "Scene.h"
@@ -8,7 +9,6 @@
 #include "ScoreDisplayComponent.h"
 #include "DeltaTime.h"
 #include "BurgerEvents.h"
-
 void Burger::EnemySpawnComponent::Start()
 {
 	m_MaxSpawnTime = m_BaseSpawnTime;
@@ -22,7 +22,7 @@ Burger::EnemySpawnComponent::EnemySpawnComponent(std::vector<point>& vec, std::m
 }
 
 
-void Burger::EnemySpawnComponent::onNotify(const BaseComponent* entity, int event, dae::EventArgs* args /*= nullptr*/)
+void Burger::EnemySpawnComponent::onNotify(const BaseComponent*, int event, dae::EventArgs* args /*= nullptr*/)
 {
 	
 	switch (event)
@@ -32,7 +32,7 @@ void Burger::EnemySpawnComponent::onNotify(const BaseComponent* entity, int even
 		//Score to throw
 		ScoreArgs sArgs;
 
-		EnemyArgs* eArgs = static_cast<EnemyArgs*>(args);
+		EnemyArgs* eArgs = reinterpret_cast<EnemyArgs*>(args);
 
 		//Get random extra spawn time
 		m_MaxSpawnTime += (static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / m_RandSpawnTime))) + m_BaseSpawnTime;
