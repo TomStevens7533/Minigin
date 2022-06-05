@@ -30,28 +30,39 @@ void PrintSDLVersion()
 void dae::Minigin::Initialize()
 {
 	PrintSDLVersion();
-	Renderer::GetInstance().Init(640, 480);
+
+	m_Window = SDL_CreateWindow(
+		"Programming 4 assignment",
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
+		640,
+		480,
+		SDL_WINDOW_OPENGL
+	);
+	if (m_Window == nullptr)
+	{
+		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
+	}
+
+	Renderer::GetInstance().Init(m_Window);
 
 	//Init Sound
 	ServiceLocator::RegisterSoundSystem(new LogginSoundSystem(new SDL_Sound_System()));
 }
-void dae::Minigin::LoadGame() const
-{	
-	
-	
-}
+
 
 void dae::Minigin::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
+	SDL_DestroyWindow(m_Window);
 	ServiceLocator::Delete();
+	m_Window = nullptr;
 	SDL_Quit();
 }
 
 void dae::Minigin::Run()
 {
 
-	LoadGame();
 
 	{
 
@@ -87,6 +98,7 @@ void dae::Minigin::Run()
 				lag -= m_FixedTimeStep;
 			}
 			renderer.Render();
+			//Add late update here
 
 			sceneManager.DestroyFlaggedScenes();
 		}

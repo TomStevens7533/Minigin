@@ -19,27 +19,15 @@ int GetOpenGLDriverIndex()
 	return openglIndex;
 }
 
-void dae::Renderer::Init(int width, int height)
+void dae::Renderer::Init(SDL_Window* window)
 {
-	SDL_Window* win = SDL_CreateWindow(
-		"Programming 4 assignment",
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
-		width,
-		height,
-		SDL_WINDOW_OPENGL
-	);
-	if (win == nullptr)
-	{
-		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
-	}
-
-	m_Window = win;
-	m_Renderer = SDL_CreateRenderer(m_Window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (m_Renderer == nullptr) 
+	m_Window = window;
+	SDL_GetWindowSize(m_Window, &m_WindowInfo.width, &m_WindowInfo.height);
+	m_Renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (m_Renderer == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
-		
+
 	}
 	m_ImguiRender.Init(m_Window);
 
@@ -69,7 +57,6 @@ void dae::Renderer::Destroy()
 		m_Renderer = nullptr;
 	}
 	m_ImguiRender.Destroy();
-	SDL_DestroyWindow(m_Window);
 }
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const

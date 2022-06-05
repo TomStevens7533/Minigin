@@ -22,7 +22,7 @@ namespace dae
 		ImguiRenderer m_ImguiRender;
 		WindowInformation m_WindowInfo;
 	public:
-		void Init(int width, int height);
+		void Init(SDL_Window* window);
 		void Render();
 		void Destroy();
 
