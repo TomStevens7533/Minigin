@@ -6,6 +6,7 @@
 #include "InputManager.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 void GameManager::SetGamemode(Gamemode newMode)
 {
@@ -55,7 +56,9 @@ void GameManager::ResetScore()
 
 std::vector<int> GameManager::ReadScore()
 {
-	std::vector<int> m_LoadedScores;
+	constexpr int m_MaxLoadedScores  = 15;
+
+	std::vector<int> loadedScores;
 	int score;
 	std::ifstream iSteam(m_HighScoreSavePath, std::ios::in | std::ios::binary);
 	if (iSteam.is_open()) {
@@ -67,12 +70,20 @@ std::vector<int> GameManager::ReadScore()
 				//input failure, leave the loop
 				break;
 			}
-			m_LoadedScores.push_back(score);
+			loadedScores.push_back(score);
 		}
 	}
 	iSteam.close();
-	std::reverse(m_LoadedScores.begin(), m_LoadedScores.end());
-	return m_LoadedScores;
+	//sort vec highest first
+	std::sort(loadedScores.begin(), loadedScores.end(), std::greater<int>());
+
+	if (loadedScores.size() > m_MaxLoadedScores) {
+		//pop the rest off vector
+		auto it = loadedScores.begin();
+		std::advance(it, m_MaxLoadedScores);
+		loadedScores.erase(it, loadedScores.end());
+	}
+	return loadedScores;
 }
 
 void GameManager::AddToScore(int score)

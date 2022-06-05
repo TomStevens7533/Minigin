@@ -41,6 +41,5 @@ private:
 	LevelInfo m_CurrentInfo;
 	LevelInfo m_ResetInfo;
 	int m_Score;
-
 	bool m_IsLoadingLevel = false;
 };
