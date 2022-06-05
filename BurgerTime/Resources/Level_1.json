@@ -92,12 +92,12 @@
         "EnemyInfo": [
           {
             "idx": 1,
-            "maxLevel": 1,
+            "maxLevel": 4,
             "KillScore": 100
           },
           {
             "idx": 2,
-            "maxLevel": 0,
+            "maxLevel": 1,
             "KillScore": 300
           }
           ]

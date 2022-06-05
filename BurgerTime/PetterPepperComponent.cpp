@@ -131,6 +131,7 @@ namespace Burger {
 		case Burger::PepperEvent::LEVEL_COMPLETE:
 			//Start dance
 			m_SpriteComponent->SetActiveAnimation("Victory");
+			m_PepperAmountInGame = 0;
 			ServiceLocator::GetSoundSystem().play("Resources/FX/Victory.mp3");
 			m_PepperState = PepperStates::Victory;
 
