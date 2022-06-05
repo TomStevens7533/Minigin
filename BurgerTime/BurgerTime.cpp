@@ -24,12 +24,13 @@ void BurgerTime::Initialize()
 
 
 	std::cout << "---USER INFO----\n";
+	std::cout << "Use controller for input or use keyboard\n";
 	std::cout << "--P1-- \n";
 	std::cout << "WASD TO MOVE \n";
 	std::cout << "Q TO PEPPER \n";
 	std::cout << "--P2-- \n";
 	std::cout << "ARROWS TO MOVE \n";
-	std::cout << ". TO PEPPER \n";
+	std::cout << "ENTER TO PEPPER \n";
 
 
 	std::cout << std::endl;

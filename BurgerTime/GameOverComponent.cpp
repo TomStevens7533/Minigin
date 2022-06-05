@@ -2,7 +2,6 @@
 #include "../Imgui/imgui.h"
 #include "BurgerTimeManager.h"
 #include <string>
-#include "Renderer.h"
 
 
 void Burger::GameoverComp::Start()
@@ -13,15 +12,12 @@ void Burger::GameoverComp::Start()
 
 void Burger::GameoverComp::Render() const
 {
-	dae::WindowInformation windowInfo = dae::Renderer::GetInstance().GetInfo();
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 
-	ImGui::SetNextWindowPos({ windowInfo.width / 4.f,windowInfo.height / 4.f });
 	ImGui::Begin("RIP", nullptr, window_flags);
-	ImGui::SetWindowSize({ windowInfo.width / 2.f, windowInfo.height / 2.f });
 	ImGui::Spacing();
 	ImGui::Text("Boeken toe!!!");
 	ImGui::Spacing();

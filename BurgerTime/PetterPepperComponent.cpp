@@ -41,7 +41,7 @@ namespace Burger {
 		if (m_PepperAmountInGame % 2 == 1)
 		{
 			//ARROWS
-			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 46, new AttackCommand(attackComp), dae::KeyState::PRESSED);
+			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_BUTTON_EAST, 13, new AttackCommand(attackComp), dae::KeyState::PRESSED);
 			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_LEFT, 37, new MoveLeftEnterCommand(m_MovementComponent), dae::KeyState::DOWN);
 			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_RIGHT, 39, new MoveRightEnterCommand(m_MovementComponent), dae::KeyState::DOWN);
 			inputComp->AddCommand(dae::ControllerButton::GAMEPAD_DPAD_UP, 38, new MoveUpEnterCommand(m_MovementComponent), dae::KeyState::DOWN);
