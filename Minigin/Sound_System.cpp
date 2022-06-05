@@ -18,7 +18,7 @@ public:
 	void SetGlobalVolumeLevel(float volume);
 private:
 	void PlaySoundQueue();
-	void RemoveSoundQueue();
+	void RemoveSoundCheck();
 
 private:
 	std::jthread m_PlayThread;
@@ -26,7 +26,7 @@ private:
 
 	std::condition_variable m_Variable;
 	std::deque<SoundEffect> m_SoundQueue;
-	std::vector<SoundEffect> m_DeleteionQueue; //random acces it
+	std::vector<SoundEffect> m_DeleteionCheckVec; //random acces it
 
 	std::mutex m_Mutex;
 	std::condition_variable m_Cv;
@@ -47,7 +47,7 @@ SDL_Sound_System::SDL_SoundSystemImpl::SDL_SoundSystemImpl() {
 		exit(-1);
 	}
 	m_PlayThread = std::jthread{ &SDL_SoundSystemImpl::PlaySoundQueue, this };
-	m_StopThread = std::jthread{ &SDL_SoundSystemImpl::RemoveSoundQueue, this };
+	m_StopThread = std::jthread{ &SDL_SoundSystemImpl::RemoveSoundCheck, this };
 
 }
 SDL_Sound_System::SDL_SoundSystemImpl::~SDL_SoundSystemImpl()
@@ -73,7 +73,7 @@ void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 			currChunk.load();
 			currChunk.Play();
 			m_SoundQueue.pop_front();
-			m_DeleteionQueue.push_back(currChunk);
+			m_DeleteionCheckVec.push_back(currChunk);
 		}
 		//Notify deletion queue
 		m_Cv.notify_all();
@@ -84,22 +84,22 @@ void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 	
 }
 
-void SDL_Sound_System::SDL_SoundSystemImpl::RemoveSoundQueue()
+void SDL_Sound_System::SDL_SoundSystemImpl::RemoveSoundCheck()
 {
 	while (m_IsRunning) {
 
 		std::unique_lock lock(m_Mutex);
 		m_Cv.wait(lock); //wait for PlaySoundQueue thread
-		for (size_t i = 0; i < m_DeleteionQueue.size(); i++)
+		for (size_t i = 0; i < m_DeleteionCheckVec.size(); i++)
 		{
-			SoundEffect& currChunk = m_DeleteionQueue[i];
+			SoundEffect& currChunk = m_DeleteionCheckVec[i];
 			if (currChunk.GetIsPlaying() == false) {
 				currChunk.ReleaseSound();
 
 				//Delete sound
-				auto deletionIt = m_DeleteionQueue.begin();
+				auto deletionIt = m_DeleteionCheckVec.begin();
 				std::advance(deletionIt, i);
-				m_DeleteionQueue.erase(deletionIt);
+				m_DeleteionCheckVec.erase(deletionIt);
 			}
 		}
 

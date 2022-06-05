@@ -45,7 +45,7 @@ void BurgerTime::CreateLevel1()
 
 	m_CurrentLevel = Level::LEVEL1;
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene("Level1");
-	CreateLevel("Resources/Level_2.json", &scene);
+	CreateLevel("Resources/Level_1.json", &scene);
 	scene.Start();
 }
 

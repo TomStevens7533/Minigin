@@ -30,7 +30,7 @@ void GameManager::ResetCurrentLevel()
 
 void GameManager::GoToNextLevel()
 {
-	if (m_pGame != nullptr) {
+	if (m_pGame != nullptr && m_IsLoadingLevel == false) {
 		m_IsLoadingLevel = true;
 		m_pGame->RemoveStage(m_pGame->GetCurrentStage());
 		dae::InputManager::GetInstance().RemoveAllPlayers();
@@ -105,7 +105,7 @@ void GameManager::SubtractLive()
 {
 	--m_CurrentInfo.MaxLives;
 	if (m_CurrentInfo.MaxLives <= 0) {
-		m_IsLoadingLevel = true;
+		m_IsLoadingLevel = false;
 		m_pGame->RemoveStage(m_pGame->GetCurrentStage());
 		m_pGame->LoadStage(Burger::Level::GAME_OVER);
 	}

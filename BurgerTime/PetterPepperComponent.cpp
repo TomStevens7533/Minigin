@@ -30,8 +30,6 @@ namespace Burger {
 
 	void PetterPepperComponent::Start()
 	{
-		m_IsFinished = false;
-
 		auto inputComp = GetAttachedGameObject()->GetComponent<dae::InputComponent>();
 		m_SpriteComponent = GetAttachedGameObject()->GetComponent<dae::SpriteComponent>();
 		auto CollComp = GetAttachedGameObject()->GetComponent<dae::BoxColliderComponent>();
@@ -94,8 +92,8 @@ namespace Burger {
 			else {
 				if (m_IsFinished == false) { //make sure it does not get called multiple times in coop
 					m_PepperAmountInGame = 0;
+					m_CurrentVictroyDance = 0.f;
 					GameManager::GetInstance().GoToNextLevel();
-					m_IsFinished = true;
 				}
 			}
 		}
