@@ -410,7 +410,6 @@ void Burger::DeathState::Entry(AIBehaviourComponent& ai)
 Burger::AIState* Burger::DeathState::UpdateState(AIBehaviourComponent& ai)
 {
 	if (ai.m_SpriteComponent->IsActiveInFinalFrame()) {
-		std::cout << "death\n";
 		m_IsSpawning = true;
 		//Notify death of enemy
 		EnemyArgs eArgs;

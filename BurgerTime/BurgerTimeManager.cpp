@@ -10,7 +10,6 @@
 void GameManager::SetGamemode(Gamemode newMode)
 {
 	m_CurrentGamemode = newMode;
-	std::cout << (int)m_CurrentGamemode << std::endl;
 }
 
 void GameManager::SetBurgerGame(Burger::BurgerTime* pgame)

@@ -23,6 +23,19 @@ void BurgerTime::Initialize()
 	GameManager::GetInstance().SetBurgerGame(this);
 
 
+	std::cout << "---USER INFO----\n";
+	std::cout << "--P1-- \n";
+	std::cout << "WASD TO MOVE \n";
+	std::cout << "Q TO PEPPER \n";
+	std::cout << "--P2-- \n";
+	std::cout << "ARROWS TO MOVE \n";
+	std::cout << ". TO PEPPER \n";
+
+
+	std::cout << std::endl;
+
+
+
 }
 
 void BurgerTime::CreateLevel1()

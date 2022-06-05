@@ -43,6 +43,7 @@ void SoundEffect::load()
 
 void SoundEffect::ReleaseSound()
 {
+	std::cout << "delete music\n";
 	Mix_FreeChunk(m_SoundEffect);
 	m_SoundEffect = NULL;
 }

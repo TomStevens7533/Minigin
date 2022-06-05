@@ -29,11 +29,6 @@ void PrintSDLVersion()
 
 void dae::Minigin::Initialize()
 {
-	std::cout << "---USER INFO----\n";
-	std::cout << "WASD to move and play sounds :D \n";
-
-	std::cout << std::endl;
-
 	PrintSDLVersion();
 	Renderer::GetInstance().Init(640, 480);
 

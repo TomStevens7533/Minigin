@@ -26,7 +26,7 @@ private:
 
 	std::condition_variable m_Variable;
 	std::deque<SoundEffect> m_SoundQueue;
-	std::deque<SoundEffect> m_DeleteionQueue;
+	std::vector<SoundEffect> m_DeleteionQueue; //random acces it
 
 	std::mutex m_Mutex;
 	std::condition_variable m_Cv;
@@ -76,7 +76,7 @@ void SDL_Sound_System::SDL_SoundSystemImpl::PlaySoundQueue()
 			m_DeleteionQueue.push_back(currChunk);
 		}
 		//Notify deletion queue
-		m_Cv.notify_one();
+		m_Cv.notify_all();
 		m_Cv.wait(lock);
 
 
@@ -89,20 +89,18 @@ void SDL_Sound_System::SDL_SoundSystemImpl::RemoveSoundQueue()
 	while (m_IsRunning) {
 
 		std::unique_lock lock(m_Mutex);
-		while (!m_DeleteionQueue.empty())
+		m_Cv.wait(lock); //wait for PlaySoundQueue thread
+		for (size_t i = 0; i < m_DeleteionQueue.size(); i++)
 		{
-			m_Cv.wait(lock); //wait for PlaySoundQueue thread
-			SoundEffect& currChunk = m_DeleteionQueue.front();
+			SoundEffect& currChunk = m_DeleteionQueue[i];
 			if (currChunk.GetIsPlaying() == false) {
 				currChunk.ReleaseSound();
-				m_DeleteionQueue.pop_front();
+
+				//Delete sound
+				auto deletionIt = m_DeleteionQueue.begin();
+				std::advance(deletionIt, i);
+				m_DeleteionQueue.erase(deletionIt);
 			}
-			else {
-				m_DeleteionQueue.pop_front();
-				m_DeleteionQueue.push_back(currChunk);
-			}
-			if (m_IsRunning == false)
-				return;
 		}
 
 
