@@ -24,7 +24,6 @@ void Scene::Add(const std::shared_ptr<GameObject>& object)
 
 void Scene::Update()
 {
-	m_SceneGrid.UpdateColliders();
 
 	for (size_t i = 0; i < m_Objects.size(); i++)
 	{
@@ -93,11 +92,13 @@ void Scene::Render() const
 	}
 }
 
-void Scene::LateUpdate()
+void Scene::FixedUpdate()
 {
 	for (auto& object : m_Objects)
 	{
-		object->LateUpdate();
+		object->FixedUpdate();
 	}
+	m_SceneGrid.UpdateColliders();
+
 }
 

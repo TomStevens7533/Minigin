@@ -10,7 +10,7 @@ namespace Burger {
 		~MainMenuComp() = default;
 		void Render() const override ;
 		void Update() override { };
-		void LateUpdate() override {};
+		void FixedUpdate() override {};
 		virtual void Start() override;
 
 		MainMenuComp(const MainMenuComp& other) = delete;

@@ -53,7 +53,7 @@ namespace dae {
 		}
 	}
 
-	void TextComponent::LateUpdate()
+	void TextComponent::FixedUpdate()
 	{
 
 	}

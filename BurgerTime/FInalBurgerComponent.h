@@ -12,7 +12,7 @@ namespace Burger {
 		FinalBurgerComponent(int fullBurger);
 		void Render() const override;
 		void Update() override;
-		void LateUpdate() override;
+		void FixedUpdate() override;
 		virtual void Start() override;
 
 		FinalBurgerComponent(const FinalBurgerComponent& other) = delete;

@@ -38,7 +38,7 @@ void Burger::AttackComponent::Update()
 
 }
 
-void Burger::AttackComponent::LateUpdate()
+void Burger::AttackComponent::FixedUpdate()
 {
 
 }

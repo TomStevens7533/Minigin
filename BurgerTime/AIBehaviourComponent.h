@@ -96,7 +96,7 @@ namespace Burger {
 		virtual void Start() override;
 		virtual void Render() const override;
 		virtual void Update() override;
-		virtual void LateUpdate() override {};
+		virtual void FixedUpdate() override {};
 
 		void SetFallState(float velocity);
 		glm::vec2 GetClosestPlayerPos() const;

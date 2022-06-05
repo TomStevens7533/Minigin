@@ -79,7 +79,7 @@ namespace dae
 		}
 		void Start();
 		void Update();
-		void LateUpdate();
+		void FixedUpdate();
 		void Render() const;
 	private:
 		struct BaseComponentHashCalculator {

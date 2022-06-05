@@ -79,7 +79,7 @@ void Burger::MovementComponent::Update()
 
 }
 
-void Burger::MovementComponent::LateUpdate()
+void Burger::MovementComponent::FixedUpdate()
 {
 
 	//Reser movement

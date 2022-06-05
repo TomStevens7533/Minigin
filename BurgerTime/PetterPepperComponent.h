@@ -23,7 +23,7 @@ namespace Burger {
 		~PetterPepperComponent();
 		virtual void Start() override;
 		virtual void Update() override;
-		virtual void LateUpdate() override ;
+		virtual void FixedUpdate() override ;
 		virtual void Render() const override {};
 
 

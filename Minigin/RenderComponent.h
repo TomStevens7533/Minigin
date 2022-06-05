@@ -14,7 +14,7 @@ namespace dae {
 		virtual void Start() override {};
 		void Render() const override;
 		void Update() override;
-		void LateUpdate() override;
+		void FixedUpdate() override;
 		void SetData(Texture2D* newData);
 
 	private:

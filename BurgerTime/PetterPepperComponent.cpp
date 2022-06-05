@@ -100,7 +100,7 @@ namespace Burger {
 		UpdateSprite();
 	}
 
-	void PetterPepperComponent::LateUpdate()
+	void PetterPepperComponent::FixedUpdate()
 	{
 
 

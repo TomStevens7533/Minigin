@@ -35,7 +35,7 @@ namespace dae {
 
 	}
 
-	void FPSComponent::LateUpdate()
+	void FPSComponent::FixedUpdate()
 	{
 
 	}

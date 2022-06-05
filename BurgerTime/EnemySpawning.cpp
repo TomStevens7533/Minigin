@@ -53,7 +53,7 @@ void Burger::EnemySpawnComponent::onNotify(const BaseComponent* entity, int even
 		break;
 	}
 }
-void Burger::EnemySpawnComponent::LateUpdate()
+void Burger::EnemySpawnComponent::FixedUpdate()
 {
 	SpawnEnemy();
 }

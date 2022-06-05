@@ -12,7 +12,7 @@ namespace dae {
 		virtual void Start() {};
 		void Render() const override;
 		void Update() override;
-		void LateUpdate() override;
+		void FixedUpdate() override;
 		inline const int GetFpsCount() const { return m_fps; }
 
 

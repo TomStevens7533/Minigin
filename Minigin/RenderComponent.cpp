@@ -24,7 +24,7 @@ namespace dae {
 	{
 	}
 
-	void RenderComponent::LateUpdate()
+	void RenderComponent::FixedUpdate()
 	{
 
 	}

@@ -11,7 +11,7 @@ namespace Burger {
 		MovementComponent(float movementVelocity);
 		virtual void Start() override;
 		virtual void Update() override;
-		virtual void LateUpdate() override;
+		virtual void FixedUpdate() override;
 		virtual void Render() const override { };
 
 		void SetNewDirection(Direction newDir);

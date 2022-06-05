@@ -29,7 +29,7 @@ void Burger::BunBehaviour::Update()
 
 }
 
-void Burger::BunBehaviour::LateUpdate()
+void Burger::BunBehaviour::FixedUpdate()
 {
 	if (m_ScoreToThrow > 0) {
 		ScoreArgs args;

@@ -12,11 +12,11 @@ void dae::SceneManager::Update()
 	}
 }
 
-void dae::SceneManager::LateUpdate()
+void dae::SceneManager::FixedUpdate()
 {
 	for (size_t i = 0; i < m_Scenes.size(); i++)
 	{
-		m_Scenes[i]->LateUpdate();
+		m_Scenes[i]->FixedUpdate();
 	}
 }
 

@@ -15,7 +15,7 @@ namespace Burger {
 		EnemySpawnComponent(std::vector<point>& vec, std::map<EnemyType, EnemySpawnInfo>& enemyMap);
 		void Render() const override {};
 		void Update() override { };
-		void LateUpdate() override;
+		void FixedUpdate() override;
 		virtual void Start() override;
 
 		EnemySpawnComponent(const EnemySpawnComponent& other) = delete;

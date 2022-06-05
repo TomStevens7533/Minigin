@@ -21,7 +21,7 @@ namespace dae {
 		virtual void Start() override;
 		void Render() const override {};
 		void Update() override {};
-		void LateUpdate() override {};
+		void FixedUpdate() override {};
 
 	private:
 		std::shared_ptr<Texture2D> m_Texture;

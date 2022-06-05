@@ -116,13 +116,13 @@ namespace dae {
 		}
 	}
 
-	void GameObject::LateUpdate()
+	void GameObject::FixedUpdate()
 	{
-		m_EntityManager.LateUpdate();
+		m_EntityManager.FixedUpdate();
 
 		for (auto& child : m_Children)
 		{
-			child->LateUpdate();
+			child->FixedUpdate();
 		}
 	}
 

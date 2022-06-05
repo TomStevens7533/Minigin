@@ -15,7 +15,7 @@ void Burger::FinalBurgerComponent::Update()
 
 }
 
-void Burger::FinalBurgerComponent::LateUpdate()
+void Burger::FinalBurgerComponent::FixedUpdate()
 {
 
 }

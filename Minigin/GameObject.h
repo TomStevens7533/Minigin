@@ -13,7 +13,7 @@ namespace dae
 	public:
 		void Start();
 		void Update();
-		void LateUpdate();
+		void FixedUpdate();
 		void Render() const;
 		void SetName(std::string name);
 		inline std::string GetName() { return m_GameobjectName; }

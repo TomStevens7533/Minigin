@@ -28,11 +28,11 @@ namespace dae {
 		}
 	}
 
-	void EntityManager::LateUpdate()
+	void EntityManager::FixedUpdate()
 	{
 		for (auto mapPair : m_ComponentSet)
 		{
-				mapPair->LateUpdate();
+				mapPair->FixedUpdate();
 		}
 	}
 

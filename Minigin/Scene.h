@@ -11,7 +11,7 @@ namespace dae
 		void Add(const std::shared_ptr<GameObject>& object);
 
 		void Update();
-		void LateUpdate();
+		void FixedUpdate();
 
 		//start is called after everthing is initialized
 		void Start();

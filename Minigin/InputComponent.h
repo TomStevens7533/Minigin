@@ -13,7 +13,7 @@ namespace dae {
 		virtual void Start() override {};
 		virtual void Render() const override {};
 		virtual void Update() override;
-		virtual void LateUpdate() override {};
+		virtual void FixedUpdate() override {};
 	private:
 		int m_deviceIdx{};
 		bool m_IsTriggered = false;

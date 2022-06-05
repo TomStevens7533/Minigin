@@ -22,7 +22,7 @@ namespace dae {
 		bool GetFLipState() { return m_IsFlipped; }
 		void Render() const override;
 		void Update() override;
-		void LateUpdate() override {};
+		void FixedUpdate() override {};
 		virtual void Start() override {};
 
 		bool IsActiveInFinalFrame() const { return m_ActiveAnimation->IsInFinalFrame(); }
