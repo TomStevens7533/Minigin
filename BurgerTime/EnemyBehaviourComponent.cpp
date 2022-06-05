@@ -13,6 +13,12 @@
 #include "EventType.h"
 #include "BurgerEvents.h"
 #include "ServiceLocator.h"
+#include "BitMaskOperators.h"
+
+template<>
+struct enable_bitmask_operators<Burger::EnemyBehaviourComponent::EnemyState> {
+	static const bool enable = true;
+};
 
 
 using namespace dae;
@@ -42,8 +48,9 @@ void Burger::EnemyBehaviourComponent::Start()
 
 	ColliderCallbacks colBack;
 	colBack.OverlapEnterFunc = std::bind(&EnemyBehaviourComponent::OnCollisionEnter, this, std::placeholders::_1);
-	colBack.OverlopExitFunc = std::bind(&EnemyBehaviourComponent::OnCollisionExit, this, std::placeholders::_1);
 	colBack.OverlapStayFunc = std::bind(&EnemyBehaviourComponent::OnCollisionStay, this, std::placeholders::_1);
+	colBack.OverlopExitFunc = std::bind(&EnemyBehaviourComponent::OnCollisionExit, this, std::placeholders::_1);
+
 
 	m_ColliderComponent->AddListener(colBack);
 
@@ -74,32 +81,27 @@ void Burger::EnemyBehaviourComponent::Update()
 			m_MovementComponent->SetMovementCollisionCheckDisable(false);
 			m_CurrState = new HorizontalState();
 			m_CurrState->Entry(*this);
-			m_IsSpawning = false;
 			m_MovementComponent->SetMovementCollisionCheckDisable(true);
+			m_EnemyState &= ~(m_EnemyState & EnemyState::Spawning); //flip floor bit
+
 		}
 		
 
 	}
-	m_IsOnLadder = false;
-	m_IsOnFloor = false;
 	UpdateSprite();
 
 }
 void Burger::EnemyBehaviourComponent::SetFallState(float velocity)
 {
-	if (!m_IsFalling) {
+	if (IsEnemyMutable()) {
 		if (m_CurrState != nullptr) {
 			m_CurrState->Exit(*this);
 		}
 		delete m_CurrState;
 		m_CurrState = new FallingState();
 		m_CurrState->Entry(*this);
-		m_IsFalling = true;
-
-
+		m_EnemyState |= EnemyState::Falling;
 		m_MovementComponent->SetNewVelocity(velocity);
-		
-
 	}
 }
 
@@ -132,14 +134,26 @@ point Burger::EnemyBehaviourComponent::GetClosestPlayerPos() const
 
 
 
+bool Burger::EnemyBehaviourComponent::IsEnemyMutable() const
+{
+	//If death or falling enemy is inmutable
+	EnemyState isDeathActive = m_EnemyState & EnemyState::Death;
+	EnemyState isFallingActive = m_EnemyState & EnemyState::Falling;
+
+	if (isDeathActive  == EnemyState::Death || isFallingActive == EnemyState::Falling) {
+		return false;
+	}
+	return true;
+}
+
 void Burger::EnemyBehaviourComponent::UpdateSprite()
 {
 
-	Direction dir = m_MovementComponent->GetMovement();
 
 	//make death and victory state
-	if (m_IsDeath)
+	if (!IsEnemyMutable())
 		return;
+	Direction dir = m_MovementComponent->GetMovement();
 
 	switch (dir)
 	{
@@ -173,21 +187,35 @@ void Burger::EnemyBehaviourComponent::OnCollisionStay(const std::shared_ptr<Coll
 
 	if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, searchPos)) {
 		if (otherInfo->tag == "Ladder") {
-			if (m_CurrState != nullptr) {
-				m_IsOnLadder = true;
+			if (m_CurrState != nullptr && IsEnemyMutable()) {
+				m_EnemyState |= EnemyState::Ladder; //set ladder flag
+				return;
 			}
 		}
 		if (otherInfo->tag == "Floor") {
 
-			if (m_CurrState != nullptr) {
-				m_IsOnFloor = true;
+			if (m_CurrState != nullptr && IsEnemyMutable()) {
+				m_EnemyState |= EnemyState::Floor; //set floor flag
+				return;
 			}
 		}
 
 	}
 
 }
-
+void Burger::EnemyBehaviourComponent::OnCollisionExit(const std::shared_ptr<dae::ColliderInfo> otherInfo)
+{
+	if (otherInfo->tag == "Ladder") {
+		EnemyState isEnemyLadder = m_EnemyState & EnemyState::Ladder;
+		if(isEnemyLadder == EnemyState::Ladder)
+			m_EnemyState &= ~(isEnemyLadder); //flip ladder bit
+	}
+	if (otherInfo->tag == "Floor") {
+		EnemyState isEnemyFloor = m_EnemyState & EnemyState::Floor;
+		if (isEnemyFloor == EnemyState::Floor)
+			m_EnemyState &= ~(isEnemyFloor); //flip floor bit
+	}
+}
 void Burger::EnemyBehaviourComponent::OnCollisionEnter(const std::shared_ptr<ColliderInfo> otherInfo)
 {
 	if (otherInfo->tag == "Shot") {
@@ -207,7 +235,7 @@ void Burger::EnemyBehaviourComponent::OnCollisionEnter(const std::shared_ptr<Col
 
 		//Bun detection
 		if (MathHelper::IsPointInRect(otherInfo->m_ColliderRect, topCheck)) {
-			m_IsDeath = true;
+			m_EnemyState |= EnemyState::Death;
 			if (m_CurrState != nullptr) {
 				m_CurrState->Exit(*this);
 			}
@@ -218,7 +246,7 @@ void Burger::EnemyBehaviourComponent::OnCollisionEnter(const std::shared_ptr<Col
 		}
 	}
 	else if (otherInfo->tag == "BunEnd") {
-		m_IsDeath = true;
+		m_EnemyState |= EnemyState::Death;
 		if (m_CurrState != nullptr) {
 			m_CurrState->Exit(*this);
 		}
@@ -229,12 +257,10 @@ void Burger::EnemyBehaviourComponent::OnCollisionEnter(const std::shared_ptr<Col
 
 }
 
-void Burger::EnemyBehaviourComponent::OnCollisionExit(const std::shared_ptr<ColliderInfo> otherInfo)
-{
 
-}
 
-void Burger::HorizontalState::Entry(EnemyBehaviourComponent& ai)
+
+void Burger::EnemyBehaviourComponent::HorizontalState::Entry(EnemyBehaviourComponent& ai)
 {
 	ColliderInfo AiInfo = ai.m_ColliderComponent->GetColliderInfo();
 	glm::vec2 searchPos = { AiInfo.m_ColliderRect.x + (ai.m_SpriteComponent->GetFLipState() ? 0.f
@@ -246,11 +272,12 @@ void Burger::HorizontalState::Entry(EnemyBehaviourComponent& ai)
 	auto leftFloorHit = ai.GetAttachedGameObject()->GetScene()->SceneRectcast(AiInfo.m_ColliderRect
 		, glm::vec2(-1, 0), 50.f, "Floor", 1);
 
-	if (rightFloorHit == nullptr && ai.m_IsSpawning == false) {
+	EnemyState isSpawning = ai.m_EnemyState & EnemyState::Spawning;
+	if (rightFloorHit == nullptr && isSpawning != EnemyState::Spawning) {
 		ai.m_MovementComponent->SetNewDirection(Direction::LEFT);
 		return;
 	}
-	if (leftFloorHit == nullptr && ai.m_IsSpawning == false) {
+	if (leftFloorHit == nullptr && isSpawning != EnemyState::Spawning) {
 		ai.m_MovementComponent->SetNewDirection(Direction::RIGHT);
 		return;
 	}
@@ -276,14 +303,20 @@ void Burger::HorizontalState::Entry(EnemyBehaviourComponent& ai)
 	
 }
 
-Burger::AIState* Burger::HorizontalState::UpdateState(EnemyBehaviourComponent& ai)
+Burger::EnemyBehaviourComponent::AIState* Burger::EnemyBehaviourComponent::HorizontalState::UpdateState(EnemyBehaviourComponent& ai)
 {
-	if (ai.m_IsOnLadder && m_CurrentTime > m_MinExitTime) {
+	EnemyState isEnemyLadder = ai.m_EnemyState & EnemyState::Ladder;
+
+	if (isEnemyLadder == EnemyState::Ladder && m_CurrentTime > m_MinExitTime) {
+		//ai.m_EnemyState &= ~(ai.m_EnemyState & EnemyState::Floor); //flip bit
+		//reset ladder bit
 		m_CurrentTime = 0.f;
 		if (MathHelper::RandomBool(0.65f))
 			return new VerticalState();
-		else 
+		else {
+			ai.m_EnemyState &= ~(isEnemyLadder); //flip ladder bit
 			return new HorizontalState();
+		}
 	}
 	else {
 		m_CurrentTime += Time::GetInstance().GetDeltaTime();
@@ -294,15 +327,20 @@ Burger::AIState* Burger::HorizontalState::UpdateState(EnemyBehaviourComponent& a
 
 
 
-void Burger::HorizontalState::Exit(EnemyBehaviourComponent& )
+void Burger::EnemyBehaviourComponent::HorizontalState::Exit(EnemyBehaviourComponent& )
 {
 
 
 }
 
-Burger::AIState* Burger::VerticalState::UpdateState(EnemyBehaviourComponent& ai)
+Burger::EnemyBehaviourComponent::AIState* Burger::EnemyBehaviourComponent::VerticalState::UpdateState(EnemyBehaviourComponent& ai)
 {
-	if (ai.m_IsOnFloor && m_CurrentTime > m_MinExitTime) {
+	EnemyState isEnemyFloor= ai.m_EnemyState & EnemyState::Floor;
+
+	if (isEnemyFloor == EnemyState::Floor  && m_CurrentTime > m_MinExitTime) {
+		//ai.m_EnemyState &= ~(ai.m_EnemyState & EnemyState::Ladder); //flip bit
+
+
 		m_CurrentTime = 0.f;
 		return new HorizontalState();
 		
@@ -314,14 +352,15 @@ Burger::AIState* Burger::VerticalState::UpdateState(EnemyBehaviourComponent& ai)
 
 }
 
-void Burger::VerticalState::Exit(EnemyBehaviourComponent& ai)
+void Burger::EnemyBehaviourComponent::VerticalState::Exit(EnemyBehaviourComponent& ai)
 {
 	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 }
 
 
-void Burger::VerticalState::Entry(EnemyBehaviourComponent& ai)
+void Burger::EnemyBehaviourComponent::VerticalState::Entry(EnemyBehaviourComponent& ai)
 {
+
 	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 
 
@@ -334,8 +373,7 @@ void Burger::VerticalState::Entry(EnemyBehaviourComponent& ai)
 		, AiInfo.m_ColliderRect.y + AiInfo.m_ColliderRect.height };
 	if (posY < (currPosY )) {
 		//Check if floor goes further else go other dir
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, -1), 20.f, "Ladder", 1)
-			|| ai.m_IsSpawning) {
+		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, -1), 20.f, "Ladder", 1)) {
 			ai.m_MovementComponent->SetNewDirection(Direction::UP);
 			return;
 
@@ -348,8 +386,7 @@ void Burger::VerticalState::Entry(EnemyBehaviourComponent& ai)
 
 	if (posY > (currPosY)) {
 		//Check if floor goes further else go other dir
-		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, 1),20.f, "Ladder", 1)
-			|| ai.m_IsSpawning) {
+		if (ai.GetAttachedGameObject()->GetScene()->SceneRaycast(searchPos, glm::vec2(0, 1),20.f, "Ladder", 1)) {
 			//Floor in sight
 				ai.m_MovementComponent->SetNewDirection(Direction::DOWN);
 				return;
@@ -364,8 +401,31 @@ void Burger::VerticalState::Entry(EnemyBehaviourComponent& ai)
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //HIT
-void Burger::HitState::Entry(EnemyBehaviourComponent& ai)
+void Burger::EnemyBehaviourComponent::HitState::Entry(EnemyBehaviourComponent& ai)
 {
 	//Se sprite
 	ai.m_SpriteComponent->SetActiveAnimation("Fried");
@@ -382,7 +442,7 @@ void Burger::HitState::Entry(EnemyBehaviourComponent& ai)
 	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 	ai.m_MovementComponent->SetChangeMovementDisable(true);
 }
-Burger::AIState* Burger::HitState::UpdateState(EnemyBehaviourComponent&)
+Burger::EnemyBehaviourComponent::AIState* Burger::EnemyBehaviourComponent::HitState::UpdateState(EnemyBehaviourComponent&)
 {
 	if (m_CurrentTime > m_MinExitTime) {
 		m_CurrentTime = 0.f;
@@ -394,14 +454,14 @@ Burger::AIState* Burger::HitState::UpdateState(EnemyBehaviourComponent&)
 	}
 
 }
-void Burger::HitState::Exit(EnemyBehaviourComponent& ai)
+void Burger::EnemyBehaviourComponent::HitState::Exit(EnemyBehaviourComponent& ai)
 {
 	ai.m_ColliderComponent->EnableCollider();
 	ai.m_MovementComponent->SetChangeMovementDisable(false);
 
 }
 //DEATH
-void Burger::DeathState::Entry(EnemyBehaviourComponent& ai)
+void Burger::EnemyBehaviourComponent::DeathState::Entry(EnemyBehaviourComponent& ai)
 {
 	//play fx
 	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDeath.mp3");
@@ -409,7 +469,7 @@ void Burger::DeathState::Entry(EnemyBehaviourComponent& ai)
 	ai.m_MovementComponent->SetNewDirection(Direction::NONE);
 	ai.m_SpriteComponent->SetActiveAnimation("Death");
 }
-Burger::AIState* Burger::DeathState::UpdateState(EnemyBehaviourComponent& ai)
+Burger::EnemyBehaviourComponent::AIState* Burger::EnemyBehaviourComponent::DeathState::UpdateState(EnemyBehaviourComponent& ai)
 {
 	if (ai.m_SpriteComponent->IsActiveInFinalFrame()) {
 		//Notify death of enemy
@@ -422,12 +482,12 @@ Burger::AIState* Burger::DeathState::UpdateState(EnemyBehaviourComponent& ai)
 	return nullptr;
 }
 
-void Burger::DeathState::Exit(EnemyBehaviourComponent& ai)
+void Burger::EnemyBehaviourComponent::DeathState::Exit(EnemyBehaviourComponent& ai)
 {
 	ai.m_ColliderComponent->DisableCollider();
 }
 //FALLL
-void Burger::FallingState::Entry(EnemyBehaviourComponent& ai)
+void Burger::EnemyBehaviourComponent::FallingState::Entry(EnemyBehaviourComponent& ai)
 {
 
 	ai.m_MovementComponent->SetNewDirection(Direction::DOWN);
@@ -440,12 +500,12 @@ void Burger::FallingState::Entry(EnemyBehaviourComponent& ai)
 	ServiceLocator::GetSoundSystem().play("Resources/FX/EnemyDrop.mp3");
 }
 
-Burger::AIState* Burger::FallingState::UpdateState(EnemyBehaviourComponent& )
+Burger::EnemyBehaviourComponent::AIState* Burger::EnemyBehaviourComponent::FallingState::UpdateState(EnemyBehaviourComponent& )
 {
 	return nullptr;
 }
 
-void Burger::FallingState::Exit(EnemyBehaviourComponent& ai)
+void Burger::EnemyBehaviourComponent::FallingState::Exit(EnemyBehaviourComponent& ai)
 {
 	ai.m_MovementComponent->SetChangeMovementDisable(false);
 

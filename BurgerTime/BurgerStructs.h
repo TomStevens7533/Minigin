@@ -34,3 +34,5 @@ struct LevelInfo
 	int MaxPepper;
 	int BunWinCoun;
 };
+	
+

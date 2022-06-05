@@ -78,6 +78,9 @@
     <ClInclude Include="GameOverComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BitMaskOperators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
