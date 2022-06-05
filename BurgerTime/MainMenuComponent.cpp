@@ -47,21 +47,21 @@ void Burger::MainMenuComp::Render() const
 	ImGui::Spacing();
 	size_t selectedIndex = 0;
 	//Listbox of hightscore
-	ImGui::BeginListBox("HIGHSCORES");
-	for (size_t i = 0; i < m_HighScoreVec.size(); i++)
-	{
-		const bool isSelected = (selectedIndex == i);
-		if (ImGui::Selectable(std::to_string(m_HighScoreVec[i]).c_str(), isSelected)) {
-			selectedIndex = i;
-		}
+	if (ImGui::ListBoxHeader("HIGHSCORES")) {
+		for (size_t i = 0; i < m_HighScoreVec.size(); i++)
+		{
+			const bool isSelected = (selectedIndex == i);
+			if (ImGui::Selectable(std::to_string(m_HighScoreVec[i]).c_str(), isSelected)) {
+				selectedIndex = i;
+			}
 
-		// Set the initial focus when opening the combo
-		// (scrolling + keyboard navigation focus)
-		if (isSelected) {
-			ImGui::SetItemDefaultFocus();
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
 		}
+		ImGui::ListBoxFooter();
 	}
-	ImGui::EndListBox();
+	
 
 
 

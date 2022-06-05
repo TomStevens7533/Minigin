@@ -34,7 +34,7 @@ void Burger::ScoreDisplayComponent::onNotify(const BaseComponent*, int event, da
 	{
 	case Burger::PepperEvent::SCORE_INCREASE:
 	{
-		ScoreArgs* sargs = static_cast<ScoreArgs*>(args);
+		ScoreArgs* sargs = reinterpret_cast<ScoreArgs*>(args);
 		GameManager::GetInstance().AddToScore(sargs->scoreIncrease);
 		m_pParent->GetComponent<dae::TextComponent>()->SetText(m_BaseString + std::to_string(GameManager::GetInstance().GetScore()));
 		break;

@@ -10,6 +10,7 @@
         "name": "LadderLongPrefab",
         "Positions": [
           [ 184, 192 ],
+          [ 184, 192 ],
           [ 309, 192 ],
           [ 435, 192 ],
           [ 558, 53 ],
@@ -21,6 +22,7 @@
       {
         "name": "LadderShortPrefab",
         "Positions": [
+          [ 62, 290 ],
           [ 62, 53 ],
           [ 184, 112 ],
           [ 309, 290 ],
@@ -93,7 +95,7 @@
           },
           {
             "idx": 3,
-            "maxLevel": 1,
+            "maxLevel": 2,
             "KillScore": 200
           }
           ]
