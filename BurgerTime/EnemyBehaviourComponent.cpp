@@ -82,7 +82,7 @@ void Burger::EnemyBehaviourComponent::Update()
 			m_CurrState = new HorizontalState();
 			m_CurrState->Entry(*this);
 			m_MovementComponent->SetMovementCollisionCheckDisable(true);
-			m_EnemyState &= ~(m_EnemyState & EnemyState::Spawning); //flip floor bit
+			m_EnemyState &= ~(m_EnemyState & EnemyState::Spawning); //flip spawn bit
 
 		}
 		
@@ -263,9 +263,9 @@ void Burger::EnemyBehaviourComponent::OnCollisionEnter(const std::shared_ptr<Col
 void Burger::EnemyBehaviourComponent::HorizontalState::Entry(EnemyBehaviourComponent& ai)
 {
 	ColliderInfo AiInfo = ai.m_ColliderComponent->GetColliderInfo();
-	glm::vec2 searchPos = { AiInfo.m_ColliderRect.x + (ai.m_SpriteComponent->GetFLipState() ? 0.f
-		: AiInfo.m_ColliderRect.width)
-		, AiInfo.m_ColliderRect.y + AiInfo.m_ColliderRect.height };
+	AiInfo.m_ColliderRect.width *= 1.2f;
+	AiInfo.m_ColliderRect.height *= 1.2f;
+
 	//Check bounds
 	auto rightFloorHit = ai.GetAttachedGameObject()->GetScene()->SceneRectcast(AiInfo.m_ColliderRect
 		, glm::vec2(1, 0), 50.f, "Floor", 1);

@@ -88,8 +88,8 @@ namespace Burger {
 				m_CurrentVictroyDance += dae::Time::GetInstance().GetDeltaTime();
 			else {
 				if (m_PepperAmountInGame > 0) {
-					GameManager::GetInstance().GoToNextLevel();
 					m_PepperAmountInGame = 0;
+					GameManager::GetInstance().GoToNextLevel();
 					m_CurrentVictroyDance = 0.f;
 				}
 
